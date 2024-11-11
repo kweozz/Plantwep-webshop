@@ -3,9 +3,51 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Product</title>
+    <title>Calathea Orbifolia - Pauwenplant</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    
+    <nav>
+        <img class="logo" src="images/logo-plantwerp.png" alt="Plantwerp Logo">
+        <ul>
+            <a href="#">Home</a>
+            <a href="#">Collection</a>
+            <a href="#">Latest Plants</a>
+            <a href="#">Best Sellers</a>
+        </ul>
+    </nav>
+
+    <div class="product-container">
+        <div class="product-image">
+            <img src="images/groenekamerplant.png" alt="Calathea Orbifolia Plant">
+        </div>
+        <div class="product-details">
+            <h1>Calathea Orbifolia</h1>
+            <p class="product-price">€39.00</p>
+            <p class="product-description">
+                De Calathea Orbifolia is een prachtige kamerplant met grote, ronde bladeren met een gestreept patroon.
+                Deze plant is een geweldige toevoeging aan elk interieur en staat bekend om zijn luchtzuiverende eigenschappen.
+            </p>
+
+            <div class="product-options">
+                <div class="option">
+                    <label for="quantity">Quantity:</label>
+                    <input type="number" id="quantity" name="quantity" min="1" max="5" value="1">
+                </div>
+                <div class="option">
+                    <label for="size">Size:</label>
+                    <select name="size" id="size">
+                        <option value="small">Small</option>
+                        <option value="medium">Medium</option>
+                        <option value="large">Large</option>
+                    </select>
+                </div>
+            </div>
+
+            <a class="btn" href="#">Add to Cart</a>
+        </div>
+    </div>
+
+
 </body>
 </html>
