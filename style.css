@@ -31,9 +31,11 @@ nav a {
     scroll-snap-type: x mandatory;
     overflow-x: auto;
     scroll-snap-type: x mandatory;
-    -ms-overflow-style: none;  /* Hide scrollbar in Internet Explorer */
-    scrollbar-width: none;     /* Hide scrollbar in Firefox */
-    scroll-behavior: smooth;  
+    -ms-overflow-style: none;
+    /* Hide scrollbar in Internet Explorer */
+    scrollbar-width: none;
+    /* Hide scrollbar in Firefox */
+    scroll-behavior: smooth;
 }
 
 h2 {
@@ -55,8 +57,9 @@ h2 {
     align-items: center;
     position: relative;
 }
+
 .scroll-btn {
-   background-color: white;
+    background-color: white;
     border: none;
     font-size: 24px;
     color: #2A2B2A;
@@ -67,6 +70,7 @@ h2 {
     border-radius: 200px;
     margin: 2%;
 }
+
 .category-card {
     width: 100%;
     height: auto;
@@ -164,15 +168,16 @@ h2 {
 .product-container {
     display: flex;
     flex-wrap: wrap;
-    gap: 10%;
-    justify-content: space-between;
+    gap: 5%;
+    justify-content: center;
     align-items: center;
-    padding-top: 10%;
+    padding: 10% 0%;
 }
 
 .product-image {
-    flex: 1 1 300px;
+    flex: 1 1 200px;
     margin-bottom: 10%;
+    align-items: center;
 }
 
 .product-image img {
@@ -184,7 +189,7 @@ h2 {
     flex: 1 1 300px;
     border-radius: 16px;
     gap: 10%;
-    
+
 }
 
 .product-details h1 {
@@ -208,7 +213,7 @@ h2 {
     font-size: 1em;
     line-height: 1.5;
     margin: 0%;
-    padding: 5% 0%; 
+    padding: 5% 0%;
 }
 
 .product-options {
@@ -261,5 +266,5 @@ h2 {
     .category-card img {
         display: block;
     }
-    
+
 }
