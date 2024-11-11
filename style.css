@@ -13,13 +13,33 @@ nav {
     padding: 20px 0;
 }
 
-nav a {
-    text-decoration: none;
-    color: #2A2B2A;
-    font-weight: bold;
-    padding: 0 20px;
+.nav-items {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+.search-bar {
+    padding: 10px;
+    border: 0px solid #ddd;
+    border-radius: 12px;
+    font-size: 1em;
+    background-color: #f6f6f6;
+    width: 200px;
 }
 
+.icon {
+    color: #2A2B2A;
+    font-size: 1.2em;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.icon:hover {
+    color: #267b3a;
+    transition: color 0.3s;
+}
 .logo {
     width: 5%;
 }
