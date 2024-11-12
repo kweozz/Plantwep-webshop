@@ -18,15 +18,17 @@ nav {
     align-items: center;
     gap: 20px;
 }
-.hero{
+
+.hero {
     height: 300px;
     overflow-y: hidden;
     border-radius: 16px;
     margin-bottom: 5%;
-    background-image: url(/images/plantstore.jpg);
+    background-image: url(/images/store.jpg);
     background-size: cover;
     background-position: center;
 }
+
 .hero-img {
     width: 100%;
     object-fit: cover;
@@ -246,7 +248,7 @@ h2 {
 
 .product-details h1 {
     font-size: 2em;
-    color: #2f8f46;
+    color: #333;
     margin: 0%;
     padding-top: 0%;
 }
@@ -278,7 +280,7 @@ h2 {
 
 }
 
-.option label {
+label {
     font-size: 0.8em;
     color: #333;
     padding-bottom: 2%;
@@ -286,8 +288,8 @@ h2 {
     width: 100%;
 }
 
-.option input[type="number"],
-.option select {
+input[type="number"],
+select {
     width: 100%;
     padding: 10px;
     max-width: 100%;
@@ -298,7 +300,7 @@ h2 {
 }
 
 
-.option input[type="number"] {
+input[type="number"] {
     max-width: 95%;
     /* Set a max-width to control the size */
 }
@@ -328,7 +330,9 @@ h2 {
     display: flex;
     gap: 5%;
 }
+/* signup and sign in */
 
+ 
 /* Responsive */
 @media (min-width: 650px) {
     .product-container {
