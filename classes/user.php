@@ -115,6 +115,7 @@ class User
 
     // Verify the password
     if (password_verify($password, $user['password'])) {
+        $_SESSION['user'] = $user;
         return true; // Login successful
     }
 
@@ -130,27 +131,28 @@ class User
         $users = $statement->fetchAll(PDO::FETCH_ASSOC);
         return $users;
     }
-
-    public static function getById($id)
+   
+    public static function getUserByEmail($email)
     {
         $conn = Db::getConnection();
-        $statement = $conn->prepare('SELECT * FROM users WHERE id = :id');
-        $statement->bindValue(':id', $id, PDO::PARAM_INT);
+        $statement = $conn->prepare("SELECT * FROM users WHERE email = :email");
+        $statement->bindValue(':email', $email);
         $statement->execute();
-        $user = $statement->fetch(PDO::FETCH_ASSOC);
-
-        if ($user) {
-            $userObj = new User();
-            $userObj->setFirstname($user['firstname']);
-            $userObj->setLastname($user['lastname']);
-            $userObj->setEmail($user['email']);
-            $userObj->password = $user['password']; // Directe toekenning omdat hashing hier niet nodig is
-            return $userObj;
-        } else {
-            throw new Exception('User not found');
+    
+        $userData = $statement->fetch(PDO::FETCH_ASSOC);
+    
+        if ($userData) {
+            $user = new self();
+            $user->setFirstname($userData['firstname']);
+            $user->setLastname($userData['lastname']);
+            $user->setEmail($userData['email']);
+            // Stel andere velden in indien nodig
+            return $user;
         }
+    
+        throw new Exception("User not found");
     }
-
+    
     public function changePassword($new_password)
     {
         if (empty($newPassword)) {
@@ -167,7 +169,7 @@ class User
 
         return $result;
     }
-
 }
+
 
 ?>

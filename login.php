@@ -1,34 +1,35 @@
 <?php
+session_start(); // Start the session
 include_once(__DIR__ . '/classes/Db.php');
 include_once(__DIR__ . '/classes/User.php');
 
 $error = ''; // Variable to hold error message
 
-// Check of de form is submitted
+// Check if the form is submitted
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // Get the form data (enkel email en password want we hebben geen firstname en lastname gevraagd)
+    // Get the form data (only email and password)
     $email = $_POST['email'];
     $password = $_POST['password'];
 
     try {
         // Call the login method from the User class
         $loginSuccess = User::login($email, $password);
-        
+
         if ($loginSuccess) {
-            // Redirect to the plantwerp after successful login
-        
+            // Set the session data upon successful login
+            $_SESSION['email'] = $email;
+            // Redirect to the homepage or any other page
             header('Location: index.php');
             exit;
         } else {
             $error = 'Invalid email or password';
-        }   
+        }
     } catch (Exception $e) {
         $error = $e->getMessage();
     }
 }
-
-        
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">

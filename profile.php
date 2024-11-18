@@ -1,17 +1,29 @@
-
 <?php
+
 session_start();
+
+
 
 include_once(__DIR__ . '/classes/Db.php');
 include_once(__DIR__ . '/classes/User.php');
-//als er geeen user is ingelogd, redirect naar login.php
-if (isset($_SESSION['user_id'])) {
-    header('Location: login.php');
+
+// Controleer of de gebruiker is ingelogd
+if (isset($_SESSION['user'])) {
+    // Retrieve user data from session
+    $userData = $_SESSION['user'];
+    
+    // Initialize User object
+    $user = new User();
+    $user->setFirstname($userData['firstname']);
+    $user->setLastname($userData['lastname']);
+    $user->setEmail($userData['email']);
+
+    echo "Welkom, " . htmlspecialchars($user->getFirstname()) . "!";
+} else {
+    // Redirect to login if not logged in
+    header("Location: login.php");
     exit;
 }
-// Haal de ingelogde gebruiker op
-$user = User::getById($_SESSION['user_id']);
-
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Wachtwoord wijzigen
@@ -24,12 +36,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             try {
                 $user->changePassword($new_password);
                 echo "Wachtwoord gewijzigd!";
-            
             } catch (Exception $e) {
                 echo $e->getMessage();
             }
         } else {
-           echo"De wachtwoorden komen niet overeen.";
+            echo "De wachtwoorden komen niet overeen.";
         }
     }
     // Uitloggen
@@ -40,6 +51,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -52,11 +64,30 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 </head>
 
 <body>
+
+<nav> 
+        <a href="index.html"><img class="logo" src="images/logo-plantwerp.png" alt="Plantwerp Logo"></a>
+        <div class="nav-items">
+            <input type="text" placeholder="Zoek naar planten..." class="search-bar">
+            <a href="profile.php" class="icon profile-icon" aria-label="Profiel">
+                <i class="fas fa-user"></i> <!-- Profiel icoon -->
+            </a>
+            <a href="#" class="icon basket-icon" aria-label="Winkelmand">
+                <i class="fas fa-shopping-basket"></i> <!-- Winkelmand icoon -->
+            </a>
+        </div>
+</nav>
     <div class="profile-container">
     <h1>Welkom, <?php echo htmlspecialchars($user->getFirstname()); ?>!</h1>
-<p>Email: <?php echo htmlspecialchars($user->getEmail()); ?></p>
-
-        
+    <p>Email: <?php echo htmlspecialchars($user->getEmail()); ?></p>
+    </div>
+    <div class="profile-info">
+        <div class="profile-details">
+            <h2>Profielgegevens</h2>
+            <p>Voornaam: <?php echo htmlspecialchars($user->getFirstname()); ?></p>
+            <p>Achternaam: <?php echo htmlspecialchars($user->getLastname()); ?></p>
+            <p>Email: <?php echo htmlspecialchars($user->getEmail()); ?></p>
+    </div>
 
         <section class="profile-actions">
             <!-- Wachtwoord wijzigen -->
@@ -88,6 +119,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <h2>Bestellingen</h2>
             <p>Er zijn geen bestellingen gevonden.</p>
     </div>
+    </section>
+
 </body>
 
 </html>
