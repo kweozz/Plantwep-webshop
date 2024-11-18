@@ -9,47 +9,46 @@ include_once(__DIR__ . '/classes/User.php');
 
 // Controleer of de gebruiker is ingelogd
 if (isset($_SESSION['user'])) {
-    // Retrieve user data from session
+    // haaal de user data op uit de sessie
     $userData = $_SESSION['user'];
     
-    // Initialize User object
+    // maak een nieuwe User obj
     $user = new User();
     $user->setFirstname($userData['firstname']);
     $user->setLastname($userData['lastname']);
     $user->setEmail($userData['email']);
-
-    echo "Welkom, " . htmlspecialchars($user->getFirstname()) . "!";
 } else {
-    // Redirect to login if not logged in
+    // Redirect als je niet ingloggd bent
     header("Location: login.php");
     exit;
 }
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // Wachtwoord wijzigen
-    if (isset($_POST['change_password'])) {
-        $current_password = $_POST['current_password'];
-        $new_password = $_POST['new_password'];
-        $confirm_password = $_POST['confirm_password'];
-
-        if ($new_password === $confirm_password) {
-            try {
-                $user->changePassword($new_password);
-                echo "Wachtwoord gewijzigd!";
-            } catch (Exception $e) {
-                echo $e->getMessage();
-            }
+if (isset($_POST["change_password"])) {
+    // Check if all fields are filled
+    if (empty($_POST["current_password"]) || empty($_POST["new_password"]) || empty($_POST["confirm_password"])) {
+        $error = "All fields are required!";
+    } else {
+        // Check of het nieuwe wachtwoord en de bevestiging overeenkomen 
+        if ($_POST["new_password"] !== $_POST["confirm_password"]) {
+            $error = "New password and confirmation do not match!";
         } else {
-            echo "De wachtwoorden komen niet overeen.";
+            try {
+                $user->changePassword($_POST["current_password"], $_POST["new_password"]);
+                echo "Password changed successfully!";
+            } catch (Exception $e) {
+                $error = $e->getMessage();
+            }
         }
     }
-    // Uitloggen
-    if (isset($_POST['logout'])) {
-        session_destroy();
-        header("Location: login.php");
-        exit;
-    }
 }
+
+
+//logout
+if (isset($_POST["logout"])) {
+    session_destroy();
+    header("Location: login.php");
+    exit;
+} 
 ?>
 
 
@@ -79,7 +78,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 </nav>
     <div class="profile-container">
     <h1>Welkom, <?php echo htmlspecialchars($user->getFirstname()); ?>!</h1>
-    <p>Email: <?php echo htmlspecialchars($user->getEmail()); ?></p>
+    
     </div>
     <div class="profile-info">
         <div class="profile-details">
@@ -105,12 +104,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <label for="confirm_password">Bevestig nieuw wachtwoord:</label>
                     <input type="password" id="confirm_password" name="confirm_password" required>
                 </div>
-                <button type="submit" name="change_password">Wijzig wachtwoord</button>
+                <button type="submit" class="btn" name="change_password">Wijzig wachtwoord</button>
             </form>
 
             <!-- Uitloggen -->
             <form action="profile.php" method="POST" class="logout-form">
-                <button type="submit" name="logout" class="logout-btn">Uitloggen</button>
+                <br>
+                <button type="submit" name="logout" class="logout-btn btn">Uitloggen</butto>
             </form>
         </section>
 

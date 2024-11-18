@@ -99,6 +99,7 @@ class User
         $result = $statement->execute();
 
         return $result;
+        
     }
     //public static function login
     public static function login($email, $password)
@@ -152,23 +153,32 @@ class User
     
         throw new Exception("User not found");
     }
-    
-    public function changePassword($new_password)
-    {
-        if (empty($newPassword)) {
-            throw new Exception('New password cannot be empty');
-        }
-        $this->password = password_hash($new_password, PASSWORD_DEFAULT);
-
-        $conn = Db::getConnection();
-        $statement = $conn->prepare("UPDATE users SET password = :password WHERE email = :email");
-        $statement->bindValue(':password', $this->password);
-        $statement->bindValue(':email', $this->getEmail());
-
-        $result = $statement->execute();
-
-        return $result;
+    public function changePassword($current_password, $new_password)
+{
+    // Check if new password is provided
+    if (empty($new_password)) {
+        throw new Exception('New password cannot be empty');
     }
+    $conn = Db::getConnection(); // db conn!
+    $statement = $conn->prepare("SELECT password FROM users WHERE email = :email"); // Get the password from the database
+    $statement->bindValue(':email', $this->getEmail()); // Get the email from the current user
+    $statement->execute();
+    $user = $statement->fetch(PDO::FETCH_ASSOC);
+
+    if (!$user || !password_verify($current_password, $user['password'])) {
+        throw new Exception('Current password is incorrect');
+    }
+
+    // Update password
+    $this->password = password_hash($new_password, PASSWORD_DEFAULT);
+    $statement = $conn->prepare("UPDATE users SET password = :password WHERE email = :email");
+    $statement->bindValue(':password', $this->password);
+    $statement->bindValue(':email', $this->getEmail());
+    $result = $statement->execute();
+
+    return $result;
+}
+
 }
 
 
