@@ -15,7 +15,7 @@
         <a href="index.html"><img class="logo" src="images/logo-plantwerp.png" alt="Plantwerp Logo"></a>
         <div class="nav-items">
             <input type="text" placeholder=" Search for plants..." class="search-bar">
-            <a href="#" class="icon profile-icon" aria-label="Profile">
+            <a href="profile.php" class="icon profile-icon" aria-label="Profile">
                 <i class="fas fa-user"></i> <!-- Profile Icon -->
             </a>
             <a href="#" class="icon basket-icon" aria-label="Basket">

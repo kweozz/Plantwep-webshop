@@ -2,25 +2,32 @@
 include_once(__DIR__ . '/classes/Db.php');
 include_once(__DIR__ . '/classes/User.php');
 
+$error = ''; // Variable to hold error message
+
+// Check of de form is submitted
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // Get the form data (enkel email en password want we hebben geen firstname en lastname gevraagd)
     $email = $_POST['email'];
     $password = $_POST['password'];
 
     try {
-        $user = User::login($email, $password);
-
-        // Start session and store user details
-        session_start();
-        $_SESSION['user_id'] = $user['id'];
-        $_SESSION['user_firstname'] = $user['firstname'];
-
-        // Redirect to the homepage or dashboard
-        header("Location: index.html");
-        exit;
+        // Call the login method from the User class
+        $loginSuccess = User::login($email, $password);
+        
+        if ($loginSuccess) {
+            // Redirect to the plantwerp after successful login
+        
+            header('Location: index.php');
+            exit;
+        } else {
+            $error = 'Invalid email or password';
+        }   
     } catch (Exception $e) {
         $error = $e->getMessage();
     }
 }
+
+        
 ?>
 
 <!DOCTYPE html>
@@ -51,7 +58,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </div>
             <button type="submit" class="signup-btn">Login</button>
         </form>
-        <p>Don’t have an account? <a href="signup.html">Sign up</a></p>
+        <p>Don’t have an account? <a href="signup.php">Sign up</a></p>
     </div>
 </body>
 
