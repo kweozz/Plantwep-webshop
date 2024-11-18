@@ -99,7 +99,7 @@ class User
         $result = $statement->execute();
 
         return $result;
-        
+
     }
     //public static function login
     public static function login($email, $password)
@@ -114,6 +114,7 @@ class User
         return false; // No user found with this email
     }
 
+
     // Verify the password
     if (password_verify($password, $user['password'])) {
         $_SESSION['user'] = $user;
@@ -121,7 +122,21 @@ class User
     }
 
     return false; // Incorrect password
+    //logic to check if account exists
 }
+public static function exists($email)
+{
+    $conn = Db::getConnection();
+    $statement = $conn->prepare("SELECT COUNT(*) FROM users WHERE email = :email");
+    $statement->bindValue(':email', $email);
+    $statement->execute();
+    
+    // Fetch the count (if count > 0, user exists)
+    $count = $statement->fetchColumn();
+    
+    return $count > 0; // Return true if user exists, false otherwise
+}
+
 
 
     public static function getAll()

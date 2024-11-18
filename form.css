@@ -29,8 +29,8 @@ a {
 
 .signup-container h2 {
     font-size: 24px;
-    color: #333; /* Plant-themed color */
-    margin-bottom: 20px;
+    color: #333; 
+  margin: 0;
 }
 
 .signup-form {
@@ -98,4 +98,18 @@ a {
 
 .signup-container .signup-btn {
     font-weight: bold;
+}
+.alert-danger{
+    color: red;
+    font-size:1em;
+    text-align: center;
+    width: 100%;
+    padding: 10px;
+}
+.alert-success{
+    color: green;
+    font-size:1em;
+    text-align: center;
+    width: 100%;
+    padding: 10px;
 }

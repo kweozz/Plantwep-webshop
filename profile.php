@@ -2,8 +2,6 @@
 
 session_start();
 
-
-
 include_once(__DIR__ . '/classes/Db.php');
 include_once(__DIR__ . '/classes/User.php');
 
@@ -18,7 +16,7 @@ if (isset($_SESSION['user'])) {
     $user->setLastname($userData['lastname']);
     $user->setEmail($userData['email']);
 } else {
-    // Redirect als je niet ingloggd bent
+    // Redirect als je niet ingelogd bent
     header("Location: login.php");
     exit;
 }
@@ -34,14 +32,13 @@ if (isset($_POST["change_password"])) {
         } else {
             try {
                 $user->changePassword($_POST["current_password"], $_POST["new_password"]);
-                echo "Password changed successfully!";
+                $success = "Password changed successfully!";  // Set success message here
             } catch (Exception $e) {
                 $error = $e->getMessage();
             }
         }
     }
 }
-
 
 //logout
 if (isset($_POST["logout"])) {
@@ -50,6 +47,7 @@ if (isset($_POST["logout"])) {
     exit;
 } 
 ?>
+
 
 
 <!DOCTYPE html>
@@ -76,19 +74,33 @@ if (isset($_POST["logout"])) {
             </a>
         </div>
 </nav>
+
     <div class="profile-container">
-    <h1>Welkom, <?php echo htmlspecialchars($user->getFirstname()); ?>!</h1>
-    
+        <h1>Welkom, <?php echo htmlspecialchars($user->getFirstname()); ?>!</h1>
     </div>
+
     <div class="profile-info">
         <div class="profile-details">
             <h2>Profielgegevens</h2>
             <p>Voornaam: <?php echo htmlspecialchars($user->getFirstname()); ?></p>
             <p>Achternaam: <?php echo htmlspecialchars($user->getLastname()); ?></p>
             <p>Email: <?php echo htmlspecialchars($user->getEmail()); ?></p>
-    </div>
+        </div>
 
         <section class="profile-actions">
+            <!-- Display error or success message above the form -->
+            <?php if (isset($error)): ?>
+                <div class="alert alert-danger" role="alert">
+                    <?php echo $error; ?>
+                </div>
+            <?php endif; ?>
+
+            <?php if (isset($success)): ?>
+                <div class="alert alert-success" role="alert">
+                    <?php echo $success; ?>
+                </div>
+            <?php endif; ?>
+
             <!-- Wachtwoord wijzigen -->
             <form action="profile.php" method="POST" class="change-password-form">
                 <h2>Wachtwoord wijzigen</h2>
@@ -110,7 +122,7 @@ if (isset($_POST["logout"])) {
             <!-- Uitloggen -->
             <form action="profile.php" method="POST" class="logout-form">
                 <br>
-                <button type="submit" name="logout" class="logout-btn btn">Uitloggen</butto>
+                <button type="submit" name="logout" class="logout-btn btn">Uitloggen</button>
             </form>
         </section>
 
@@ -118,8 +130,8 @@ if (isset($_POST["logout"])) {
         <section class="profile-orders">
             <h2>Bestellingen</h2>
             <p>Er zijn geen bestellingen gevonden.</p>
+        </section>
     </div>
-    </section>
 
 </body>
 
