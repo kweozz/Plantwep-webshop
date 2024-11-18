@@ -1,4 +1,5 @@
 <?php
+include_once(__DIR__ ."/Db.php");
 class User {
     private $firstname;
     private $lastname;
@@ -43,16 +44,16 @@ class User {
     }
 
     public function setPassword($password) {
-        //if empty password create new exception
         if (empty($password)) {
             throw new Exception('Password cannot be empty');
         }
-        $this->password = $password;
+        $this->password = password_hash($password, PASSWORD_DEFAULT); // Hash the password
     }
 
     public function getPassword() {
         return $this->password;
     }
+
 
    /* public function setRole($role) {
         if (empty($role)) {
@@ -68,7 +69,7 @@ class User {
     //save function
     public function save() {
         //connect to the database
-        $conn = new PDO("mysql:host=localhost;dbname=plantwerp", "root", "");
+       $conn = Db::getConnection();
         //insert query into user table (firstname, lastname, email, password)
         $statement = $conn->prepare("INSERT INTO users (firstname, lastname, email, password) VALUES (:firstname, :lastname, :email, :password)");
     
@@ -89,12 +90,32 @@ class User {
         
         return $result;
     }
-    public function getAll() {
-        $conn = new PDO("mysql:host=localhost;dbname=plantwerp", "root", "");
+   //public static function login
+   public static function login($email, $password) {
+    $conn = Db::getConnection();
+    $statement = $conn->prepare("SELECT * FROM users WHERE email = :email");
+    $statement->bindValue(':email', $email);
+    $statement->execute();
+    $user = $statement->fetch(PDO::FETCH_ASSOC);
+    
+    if ($user) {
+        // Verify the password
+        if (password_verify($password, $user['password'])) {
+            return $user; // Login successful
+        } else {
+            throw new Exception("Invalid password.");
+        }
+    } else {
+        throw new Exception("No user found with this email.");
+    }
+}
+
+    public static function getAll() {
+        $conn = Db::getConnection();
         $statement = $conn->prepare('SELECT * FROM users');
         $statement->execute();
-        $result = $statement->fetchAll(PDO::FETCH_ASSOC);
-        return $result;
+        $users = $statement->fetchAll(PDO::FETCH_ASSOC);
+        return $users;
     }
 }
 

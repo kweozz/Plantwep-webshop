@@ -17,12 +17,14 @@ if (!empty($_POST)) {
         $user->save();
         // Redirect to the login page
         $succes = "Account created successfully!";
-        //header('Location: index.html');
+        header('Location: login.php');
     } catch (Exception $e) {
         $error = $e->getMessage();
     }
 }
-//$users = User::getAllUsers();
+$users = User::getAll();
+
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -34,13 +36,14 @@ if (!empty($_POST)) {
     <link rel="stylesheet" href="form.css">
 </head>
 
+
 <body>
-    <?php if (isset($error)) : ?>
+    <?php if (isset($error)): ?>
         <div class="alert alert-danger" role="alert">
             <?php echo $error; ?>
         </div>
     <?php endif; ?>
-    <?php if (isset($succes)) : ?>
+    <?php if (isset($succes)): ?>
         <div class="alert alert-success" role="alert">
             <?php echo $succes; ?>
         </div>
@@ -69,6 +72,7 @@ if (!empty($_POST)) {
         </form>
         <p>Already have an account? <a href="login.html">Login</a></p>
     </div>
+
 </body>
 
 </html>
