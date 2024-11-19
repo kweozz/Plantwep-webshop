@@ -6,7 +6,8 @@ class User
     private $lastname;
     private $email;
     private $password;
-    //private $role;
+
+    private $role;
 
     public function setFirstname($firstname)
     {
@@ -63,8 +64,8 @@ class User
         return $this->password;
     }
 
-
-    /* public function setRole($role) {
+//     public function setRole($role)
+     public function setRole($role) {
          if (empty($role)) {
              throw new Exception('Role cannot be empty');
          }   
@@ -73,7 +74,7 @@ class User
 
      public function getRole() {
          return $this->role;
-     }*/
+     }
 
     //save function
     public function save()
@@ -88,13 +89,13 @@ class User
         $lastname = $this->getLastname();
         $email = $this->getEmail();
         $password = $this->getPassword();
-        //$role = $this->getRole();
+        $role = $this->getRole();
         //bind the parameters
         $statement->bindValue(':firstname', $firstname);
         $statement->bindValue(':lastname', $lastname);
         $statement->bindValue(':email', $email);
         $statement->bindValue(':password', $password);
-        //$statement->bindValue(':role', $role);
+        $statement->bindValue(':role', $role);
 
         $result = $statement->execute();
 

@@ -2,7 +2,7 @@
 class Db {
     // Declare de statische eigenschap $conn
     private static $conn;
-
+//singleton pattern:
     // Methode om de databaseverbinding te verkrijgen
     public static function getConnection() {
         // Controleer of de verbinding al bestaat
