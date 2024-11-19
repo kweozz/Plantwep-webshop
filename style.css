@@ -339,8 +339,15 @@ input[type="number"] {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     border-radius: 10px;
     text-align: center;
+
 }
 
+.profile-info p {
+    font-size: 1em;
+    color: #333;
+    margin-bottom: 0%;
+   
+}
 .signup-container h2 {
     font-size: 24px;
     color: #333;
@@ -401,7 +408,9 @@ input[type="number"] {
     width: 100%;
     padding-top: 5px;
 }
-
+.padding{
+    padding-top: 5%;
+}
 
 /* Buttons */
 .btn {
@@ -418,6 +427,8 @@ input[type="number"] {
     transition: background-color 0.3s;
     cursor: pointer;
 }
+
+
 
 .btn:hover {
     background-color: #267b3a;

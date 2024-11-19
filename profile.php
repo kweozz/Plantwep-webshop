@@ -43,6 +43,7 @@ if (isset($_POST["change_password"])) {
 //logout
 if (isset($_POST["logout"])) {
     session_destroy();
+
     header("Location: login.php");
     exit;
 } 
@@ -79,7 +80,7 @@ if (isset($_POST["logout"])) {
         <h1>Welkom, <?php echo htmlspecialchars($user->getFirstname()); ?>!</h1>
     </div>
 
-    <div class="profile-info">
+    <div class="profile-info padding">
         <div class="profile-details">
             <h2>Profielgegevens</h2>
             <p>Voornaam: <?php echo htmlspecialchars($user->getFirstname()); ?></p>
@@ -87,7 +88,7 @@ if (isset($_POST["logout"])) {
             <p>Email: <?php echo htmlspecialchars($user->getEmail()); ?></p>
         </div>
 
-        <section class="profile-actions">
+        <section class="profile-actions padding">
             <!-- Display error or success message above the form -->
             <?php if (isset($error)): ?>
                 <div class="alert alert-danger" role="alert">
@@ -102,7 +103,7 @@ if (isset($_POST["logout"])) {
             <?php endif; ?>
 
             <!-- Wachtwoord wijzigen -->
-            <form action="profile.php" method="POST" class="change-password-form">
+            <form action="profile.php" method="POST" class="change-password-form ">
                 <h2>Wachtwoord wijzigen</h2>
                 <div class="form-group">
                     <label for="current_password">Huidig wachtwoord:</label>
@@ -120,14 +121,21 @@ if (isset($_POST["logout"])) {
             </form>
 
             <!-- Uitloggen -->
-            <form action="profile.php" method="POST" class="logout-form">
-                <br>
+            <form action="profile.php" method="POST" class="logout-form padding ">
+                <h2>Uitloggen</h2>
+    <script>
+        document.querySelector('.logout-form').addEventListener('submit', function(event) {
+            if (!confirm('Weet je zeker dat je wilt uitloggen?')) {
+                event.preventDefault();
+            }
+        });
+    </script>
                 <button type="submit" name="logout" class="logout-btn btn">Uitloggen</button>
             </form>
         </section>
 
         <!-- Bestellingen -->
-        <section class="profile-orders">
+        <section class="profile-orders padding">
             <h2>Bestellingen</h2>
             <p>Er zijn geen bestellingen gevonden.</p>
         </section>
