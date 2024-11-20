@@ -115,16 +115,18 @@ class User
         return false; // No user found with this email
     }
 
-
     // Verify the password
     if (password_verify($password, $user['password'])) {
-        $_SESSION['user'] = $user;
+        // Set session with user data (including role)
+        $_SESSION['user'] = $user; // Store user info in session
+        $_SESSION['role'] = $user['role']; // Store role in session
         return true; // Login successful
     }
 
     return false; // Incorrect password
-    //logic to check if account exists
 }
+
+
 public static function exists($email)
 {
     $conn = Db::getConnection();
