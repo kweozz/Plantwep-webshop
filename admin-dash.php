@@ -1,54 +1,12 @@
 <?php
 // admin-dash.php
-
+include_once(__DIR__ . '/classes/Db.php');
+include_once(__DIR__ . '/classes/User.php');
+include_once(__DIR__ . '/classes/Admin.php');
+include_once(__DIR__ . '/classes/Category.php');
 session_start();
 
-// Check if the user is logged in as admin
-if (!isset($_SESSION['admin_logged_in'])) {
-    header('Location: login.php');
-    exit();
-}
 
-// Database connection
-$servername = "localhost";
-$username = "root";
-$password = "";
-$dbname = "plantwep_webshop";
-
-$conn = new mysqli($servername, $username, $password, $dbname);
-
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
-
-// Add Category
-if (isset($_POST['add_category'])) {
-    $category_name = $_POST['category_name'];
-    $sql = "INSERT INTO categories (name) VALUES ('$category_name')";
-    if ($conn->query($sql) === TRUE) {
-        echo "New category added successfully";
-    } else {
-        echo "Error: " . $sql . "<br>" . $conn->error;
-    }
-}
-
-// Add Product
-if (isset($_POST['add_product'])) {
-    $product_name = $_POST['product_name'];
-    $product_price = $_POST['product_price'];
-    $category_id = $_POST['category_id'];
-    $sql = "INSERT INTO products (name, price, category_id) VALUES ('$product_name', '$product_price', '$category_id')";
-    if ($conn->query($sql) === TRUE) {
-        echo "New product added successfully";
-    } else {
-        echo "Error: " . $sql . "<br>" . $conn->error;
-    }
-}
-
-// Fetch categories for the dropdown
-$categories_result = $conn->query("SELECT * FROM categories");
-
-$conn->close();
 ?>
 
 <!DOCTYPE html>

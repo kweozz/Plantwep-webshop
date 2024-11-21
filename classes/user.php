@@ -76,35 +76,36 @@ class User
          return $this->role;
      }
 
-    //save function
-    public function save()
-    {
-        //connect to the database
-        $conn = Db::getConnection();
-        //insert query into user table (firstname, lastname, email, password)
-        $statement = $conn->prepare("INSERT INTO users (firstname, lastname, email, password) VALUES (:firstname, :lastname, :email, :password)");
-
-        //bind the parameters
-        $firstname = $this->getFirstname();
-        $lastname = $this->getLastname();
-        $email = $this->getEmail();
-        $password = $this->getPassword();
-        $role = $this->getRole();
-        //bind the parameters
-        $statement->bindValue(':firstname', $firstname);
-        $statement->bindValue(':lastname', $lastname);
-        $statement->bindValue(':email', $email);
-        $statement->bindValue(':password', $password);
-        $statement->bindValue(':role', $role);
-
-        $result = $statement->execute();
-
-        return $result;
-
-    }
+     public function save()
+     {
+         // Set the default role to 0 if not already set
+         if (empty($this->role)) {
+             $this->role = 0; // Default to customer role
+         }
+     
+         // Connect to the database
+         $conn = Db::getConnection();
+     
+         // Prepare the SQL query, including the `role` column
+         $statement = $conn->prepare("INSERT INTO users (firstname, lastname, email, password, role) VALUES (:firstname, :lastname, :email, :password, :role)");
+     
+         // Bind the parameters
+         $statement->bindValue(':firstname', $this->getFirstname());
+         $statement->bindValue(':lastname', $this->getLastname());
+         $statement->bindValue(':email', $this->getEmail());
+         $statement->bindValue(':password', $this->getPassword());
+         $statement->bindValue(':role', $this->getRole()); // Bind the role
+     
+         // Execute the query
+         $result = $statement->execute();
+     
+         return $result;
+     }
+     
     //public static function login
     public static function login($email, $password)
 {
+    
     $conn = Db::getConnection();
     $statement = $conn->prepare("SELECT * FROM users WHERE email = :email");
     $statement->bindValue(':email', $email);

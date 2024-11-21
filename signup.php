@@ -8,7 +8,7 @@ if (!empty($_POST)) {
         if (User::exists($_POST['email'])) {
             // If the account exists, show the feedback message
             $error = 'Account with this email already exists!';
-      
+
         } else {
             // Create a new User instance
             $user = new User();
@@ -36,12 +36,14 @@ if (!empty($_POST)) {
 ?>
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Signup - Plantwerp</title>
     <link rel="stylesheet" href="form.css">
 </head>
+
 <body>
     <div class="signup-container">
         <a href="index.html"><img class="logo" src="images/logo-plantwerp.png" alt="Plantwerp Logo"></a>
@@ -82,4 +84,5 @@ if (!empty($_POST)) {
         <p>Already have an account? <a href="login.php">Login</a></p>
     </div>
 </body>
+
 </html>

@@ -7,6 +7,9 @@ $error = ''; // Variable to hold error message
 
 // Check if the form is submitted
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // Start the session
+    session_start();
+
     // Get the form data (sanitize and escape)
     $email = filter_var($_POST['email'], FILTER_SANITIZE_EMAIL);
     $password = htmlspecialchars($_POST['password'], ENT_QUOTES, 'UTF-8');
@@ -16,23 +19,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $loginSuccess = User::login($email, $password);
 
         if ($loginSuccess) {
-            // Check user role and redirect accordingly
-            if ($_SESSION['role'] == 'admin') {
-                header('Location: admin-dash.php');
+          
+            // Redirect based on role
+            if ($_SESSION['role'] == 1) {
+                header('Location: admin-dash.php'); // Admin dashboard
+                exit();
+            } elseif ($_SESSION['role'] == 0) {
+                header('Location: index.php'); // Customer landing page
                 exit();
             } else {
-                // Customer role
-                header('Location: index.php');
-                exit();
+                // Optional: Handle unexpected role values
+                throw new Exception('Invalid role detected');
             }
         } else {
             $error = 'Invalid email or password';
         }
     } catch (Exception $e) {
-        error_log($e->getMessage()); // Log the error for debugging purposes
         $error = $e->getMessage(); // Display any error message
     }
 }
+
+
 ?>
 
 <!DOCTYPE html>
@@ -49,7 +56,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <h2>Login to Your Account</h2>
         <form action="login.php" method="POST" class="signup-form">
             <?php if (!empty($error)): ?>
-                <p class="error"><?php echo htmlspecialchars($error); ?></p>
+                <p class="alert-danger"><?php echo htmlspecialchars($error); ?></p>
             <?php endif; ?>
             <div class="form-group">
                 <label for="email">Email</label>
