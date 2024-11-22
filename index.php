@@ -16,10 +16,10 @@
         <div class="nav-items">
             <input type="text" placeholder=" Search for plants..." class="search-bar">
             <a href="profile.php" class="icon profile-icon" aria-label="Profile">
-                <i class="fas fa-user"></i> <!-- Profile Icon -->
+                <i class="fas fa-user"></i> 
             </a>
             <a href="#" class="icon basket-icon" aria-label="Basket">
-                <i class="fas fa-shopping-basket"></i> <!-- Basket Icon -->
+                <i class="fas fa-shopping-basket"></i> 
             </a>
         </div>
     </nav>
@@ -30,9 +30,9 @@
     <h2>Categories</h2>
     <section class="category-section">
         <div class="categories-wrapper">
-            <!-- Left arrow button -->
+    
             <button class="scroll-btn left-btn">
-                &#8592; <!-- Left arrow symbol -->
+                &#8592; 
             </button>
 
             <div class="categories">
@@ -58,9 +58,9 @@
                 </a>
             </div>
 
-            <!-- Right arrow button -->
+   
             <button class="scroll-btn right-btn">
-                &#8594; <!-- Right arrow symbol -->
+                &#8594; 
             </button>
         </div>
     </section>
