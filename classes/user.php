@@ -6,8 +6,8 @@ class User
     private $lastname;
     private $email;
     private $password;
-
     private $role;
+ 
 
     public function setFirstname($firstname)
     {
