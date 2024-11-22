@@ -1,11 +1,12 @@
 <?php
+include_once(__DIR__ . "/Db.php");
+
 class Product {
     private $id;
     private $name;
     private $price;
     private $description;
     private $category_id;
-
 
     public function setId($id) {
         $this->id = $id;
@@ -45,6 +46,13 @@ class Product {
 
     public function getCategory() {
         return $this->category_id;
+    }
+
+    public static function getAll() {
+        $conn = Db::getConnection();
+        $statement = $conn->prepare("SELECT * FROM products");
+        $statement->execute();
+        return $statement->fetchAll(PDO::FETCH_ASSOC);
     }
 }
 ?>

@@ -20,7 +20,6 @@ $errorMessage = '';
 
 if (isset($_POST['add_category'])) {
     $categoryName = htmlspecialchars(trim($_POST['category_name']), ENT_QUOTES, 'UTF-8');
-
     // Controleer of er een bestand is geüpload
     if (isset($_FILES['category_image']) && $_FILES['category_image']['error'] === 0) {
 
