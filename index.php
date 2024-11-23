@@ -62,7 +62,7 @@ $products = Product::getAll();
         <div class="products">
             <?php foreach ($products as $product): ?>
                 <a href="product.php?id=<?php echo $product['id']; ?>" class="product-card">
-                    <img src="images/product-placeholder.png" alt="<?php echo htmlspecialchars($product['name']); ?>">
+                    <img src="<?php echo htmlspecialchars($product['image']); ?>" alt="<?php echo htmlspecialchars($product['name']); ?>">
                     <p><?php echo htmlspecialchars($product['name']); ?></p>
                     <p>$<?php echo htmlspecialchars(number_format($product['price'], 2)); ?></p>
                 </a>

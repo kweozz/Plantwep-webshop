@@ -7,7 +7,7 @@ class User
     private $email;
     private $password;
     private $role;
- 
+    private $id;
 
     public function setFirstname($firstname)
     {
