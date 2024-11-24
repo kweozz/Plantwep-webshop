@@ -99,7 +99,7 @@ if (isset($_POST['add_product'])) {
         <h2>Add Category</h2>
 
         <?php if (!empty($categorySuccessMessage)): ?>
-            <div class="success-message"><?= htmlspecialchars($categorySuccessMessage); ?></div>
+            <div class="alert alert-success"><?= htmlspecialchars($categorySuccessMessage); ?></div>
         <?php endif; ?>
 
         <?php if (!empty($categoryErrorMessage)): ?>

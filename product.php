@@ -6,7 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Calathea Orbifolia - Pauwenplant</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-
     <link rel="stylesheet" href="style.css">
 </head>
 
@@ -61,30 +60,27 @@
                 <a class="btn" href="#">Add to Cart</a>
             </div>
         </div>
-
-
     </div>
+
     <h2>You might also like</h2>
     <div class="related-products">
+        <?php
+        // Sample related products array
+        $relatedProducts = [
+            ["image" => "images/groenekamerplant.png", "name" => "Calathea Orbifolia", "price" => "€39.00"],
+            ["image" => "images/groenekamerplant.png", "name" => "Calathea Orbifolia", "price" => "€39.00"],
+            ["image" => "images/groenekamerplant.png", "name" => "Calathea Orbifolia", "price" => "€39.00"]
+        ];
 
-        <div class="product-card">
-            <img src="images/groenekamerplant.png" alt="Calathea Orbifolia Plant">
-            <p>Calathea Orbifolia</p>
-            <p>€39.00</p>
-        </div>
-        <div class="product-card">
-            <img src="images/groenekamerplant.png" alt="Calathea Orbifolia Plant">
-            <p>Calathea Orbifolia</p>
-            <p>€39.00</p>
-        </div>
-        <div class="product-card">
-            <img src="images/groenekamerplant.png" alt="Calathea Orbifolia Plant">
-            <p>Calathea Orbifolia</p>
-            <p>€39.00</p>
-        </div>
+        foreach ($relatedProducts as $product) {
+            echo '<div class="product-card">';
+            echo '<img src="' . $product["image"] . '" alt="' . $product["name"] . '">';
+            echo '<p>' . $product["name"] . '</p>';
+            echo '<p>' . $product["price"] . '</p>';
+            echo '</div>';
+        }
+        ?>
     </div>
-
-
 </body>
 
 </html>

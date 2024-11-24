@@ -126,4 +126,5 @@ class Admin extends User
         return basename($file["name"]);
     }
 }
+
 ?>
