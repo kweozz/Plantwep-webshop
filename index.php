@@ -4,7 +4,7 @@ if (!isset($_SESSION['user'])) {
     header('Location: login.php');
     exit();
 }
-
+include_once('/classes/Db.php');
 include_once(__DIR__ . '/classes/Category.php');
 include_once(__DIR__ . '/classes/Product.php');
 
@@ -47,7 +47,7 @@ $products = Product::getAll();
             <button class="scroll-btn left-btn">&#8592;</button>
             <div class="categories">
                 <?php foreach ($categories as $category): ?>
-                    <a href="#<?php echo strtolower($category['name']); ?>" class="category-card">
+                    <a href="#<?php echo htmlspecialchars($category['name']); ?>" class="category-card">
                         <img src="<?php echo htmlspecialchars($category['image']); ?>" alt="<?php echo htmlspecialchars($category['name']); ?>">
                         <p><?php echo htmlspecialchars($category['name']); ?></p>
                     </a>
@@ -61,7 +61,7 @@ $products = Product::getAll();
         <h2>Products</h2>
         <div class="products">
             <?php foreach ($products as $product): ?>
-                <a href="product.php?id=<?php echo $product['id']; ?>" class="product-card">
+                <a href="product-page.php?id=<?php echo $product['id']; ?>" class="product-card">
                     <img src="<?php echo htmlspecialchars($product['image']); ?>" alt="<?php echo htmlspecialchars($product['name']); ?>">
                     <p><?php echo htmlspecialchars($product['name']); ?></p>
                     <p>€<?php echo htmlspecialchars(number_format($product['price'], 2)); ?></p>

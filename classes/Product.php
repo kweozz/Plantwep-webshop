@@ -158,5 +158,40 @@ class Product
         $statement->execute();
         return $statement->fetchAll(PDO::FETCH_ASSOC);
     }
+
+// product opties 
+public function getOptions()
+{
+    $conn = Db::getConnection();
+    $stmt = $conn->prepare("
+        SELECT * 
+        FROM product_options 
+        WHERE product_id = :product_id
+    ");
+    $stmt->bindValue(":product_id", $this->getId(), PDO::PARAM_INT);
+    $stmt->execute();
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
+public function addOption($optionName, $optionValue, $extraPrice = 0)
+{
+    $conn = Db::getConnection();
+    $stmt = $conn->prepare("
+        INSERT INTO product_options (product_id, option_name, option_value, extra_price) 
+        VALUES (:product_id, :option_name, :option_value, :extra_price)
+    ");
+    $stmt->bindValue(":product_id", $this->getId(), PDO::PARAM_INT);
+    $stmt->bindValue(":option_name", $optionName);
+    $stmt->bindValue(":option_value", $optionValue);
+    $stmt->bindValue(":extra_price", $extraPrice, PDO::PARAM_STR);
+    return $stmt->execute();
+}
+public function deleteOption($optionId)
+{
+    $conn = Db::getConnection();
+    $stmt = $conn->prepare("DELETE FROM product_options WHERE id = :id");
+    $stmt->bindValue(":id", $optionId, PDO::PARAM_INT);
+    return $stmt->execute();
+}
+
 }
 ?>
