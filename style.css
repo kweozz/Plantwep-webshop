@@ -209,7 +209,9 @@ h2 {
 }
 
 /* Product Page */
-
+.h3{
+    margin: 0%;
+}
 .product-container {
     display: flex;
     flex-direction: column;
@@ -403,6 +405,13 @@ input[type="number"] {
 }
 .alert-danger{
     color: red;
+    font-size: 0.8em;
+    text-align: left;
+    width: 100%;
+    padding-top: 5px;
+}
+.alert-success{
+    color: green;
     font-size: 0.8em;
     text-align: left;
     width: 100%;

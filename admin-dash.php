@@ -88,11 +88,24 @@ if (isset($_POST['add_product'])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="style.css">
     <title>Admin Dashboard</title>
 </head>
 
 <body>
+<nav>
+        <a href="index.php"><img class="logo" src="images/logo-plantwerp.png" alt="Plantwerp Logo"></a>
+        <input type="text" placeholder="Search for plants..." class="search-bar">
+        <div class="nav-items">
+            <a href="admin-dash.php" class="icon profile-icon" aria-label="Profile">
+                <i class="fas fa-user"></i>
+            </a>
+            <a href="#" class="icon basket-icon" aria-label="Basket">
+                <i class="fas fa-shopping-basket"></i>
+            </a>
+        </div>
+    </nav>
     <h1>Admin Dashboard</h1>
 
     <section class="category">
