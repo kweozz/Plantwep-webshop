@@ -18,10 +18,13 @@ $categorySuccessMessage = '';
 $categoryErrorMessage = '';
 $productSuccessMessage = '';
 $productErrorMessage = '';
+$deleteErrorMessage = '';
+$deleteSuccessMessage = '';
 
 $category = new Category();
 $categories = $category->getAll();
 $product = new Product();
+$products = $product->getAll();
 
 if (isset($_POST['add_category'])) {
     $categoryName = htmlspecialchars(trim($_POST['category_name']), ENT_QUOTES, 'UTF-8');
@@ -45,6 +48,18 @@ if (isset($_POST['add_category'])) {
         }
     } else {
         $categoryErrorMessage = 'Please choose an image.';
+    }
+}
+if (isset($_POST['delete_product'])) {
+    $productId = htmlspecialchars(trim($_POST['product_id']), ENT_QUOTES, 'UTF-8');
+    try {
+        if (Admin::deleteProduct($productId)) {
+            $deleteSuccessMessage = 'Product deleted successfully!';
+        } else {
+            $deleteErrorMessage = 'Failed to delete product.';
+        }
+    } catch (Exception $e) {
+        $productErrorMessage = 'Error: ' . $e->getMessage();
     }
 }
 
@@ -94,24 +109,24 @@ if (isset($_POST['add_product'])) {
 </head>
 
 <body>
-<nav>
-    <a href="index.php"><img class="logo" src="images/logo-plantwerp.png" alt="Plantwerp Logo"></a>
-    <input type="text" placeholder="Zoek naar planten..." class="search-bar">
-    <div class="nav-items">
-        <a href="profile.php" class="icon profile-icon" aria-label="Profiel">
-            <i class="fas fa-user"></i> 
-        </a>
-        <a href="#" class="icon basket-icon" aria-label="Winkelmand">
-            <i class="fas fa-shopping-basket"></i> 
-        </a>
-        
-        <?php if (isset($_SESSION['role']) && $_SESSION['role'] == 1): ?>
-            <a href="admin-dash.php" class="icon admin-icon" aria-label="Admin Dashboard">
-                <i class="fas fa-tools"></i>
+    <nav>
+        <a href="index.php"><img class="logo" src="images/logo-plantwerp.png" alt="Plantwerp Logo"></a>
+        <input type="text" placeholder="Zoek naar planten..." class="search-bar">
+        <div class="nav-items">
+            <a href="profile.php" class="icon profile-icon" aria-label="Profiel">
+                <i class="fas fa-user"></i>
             </a>
-        <?php endif; ?>
-    </div>
-</nav>
+            <a href="#" class="icon basket-icon" aria-label="Winkelmand">
+                <i class="fas fa-shopping-basket"></i>
+            </a>
+
+            <?php if (isset($_SESSION['role']) && $_SESSION['role'] == 1): ?>
+                <a href="admin-dash.php" class="icon admin-icon" aria-label="Admin Dashboard">
+                    <i class="fas fa-tools"></i>
+                </a>
+            <?php endif; ?>
+        </div>
+    </nav>
 
     <h1>Admin Dashboard</h1>
 
@@ -166,7 +181,8 @@ if (isset($_POST['add_product'])) {
             <select name="category" id="category">
                 <?php if (!empty($categories)): ?>
                     <?php foreach ($categories as $category): ?>
-                        <option value="<?= htmlspecialchars($category['id']); ?>"><?= htmlspecialchars($category['name']); ?></option>
+                        <option value="<?= htmlspecialchars($category['id']); ?>"><?= htmlspecialchars($category['name']); ?>
+                        </option>
                     <?php endforeach; ?>
                 <?php else: ?>
                     <option value="">No categories available</option>
@@ -178,6 +194,28 @@ if (isset($_POST['add_product'])) {
             <input type="number" id="product_stock" name="product_stock" required>
             <br>
             <button class="btn" type="submit" name="add_product">Add Product</button>
+        </form>
+
+        <h2>Delete Product</h2>
+        <?php if (!empty($deleteSuccessMessage)): ?>
+            <div class="success-message"><?= htmlspecialchars($productSuccessMessage); ?></div>
+        <?php endif; ?>
+
+        <?php if (!empty($deleteErrorMessage)): ?>
+            <div class="alert-danger"><?= htmlspecialchars($productErrorMessage); ?></div>
+        <?php endif; ?>
+        <form class="form-group" method="post" action="">
+            <label for="product_id">Select Product:</label>
+            <select id="product_id" name="product_id" required>
+
+                <?php foreach ($products as $product): ?>
+                    <option value="<?= htmlspecialchars($product['id']); ?>">
+                        <?= htmlspecialchars($product['name']); ?> (ID: <?= $product['id']; ?>)
+                    </option>
+                <?php endforeach; ?>
+            </select>
+            <br>
+            <button class="btn" type="submit" name="delete_product">Delete Product</button>
         </form>
     </section>
 
