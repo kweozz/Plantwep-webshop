@@ -108,7 +108,7 @@ class Admin extends User
     }
 
     // Categorie verwijderen
-    public function deleteCategory($categoryId)
+    public static function deleteCategory($categoryId)
     {
         if ($_SESSION['role'] !== 1) {
             throw new Exception('Geen toestemming om categorie te verwijderen');

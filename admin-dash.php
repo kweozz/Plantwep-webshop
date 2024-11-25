@@ -50,6 +50,20 @@ if (isset($_POST['add_category'])) {
         $categoryErrorMessage = 'Please choose an image.';
     }
 }
+//delete category
+if (isset($_POST['delete_category'])) {
+    $categoryId = htmlspecialchars(trim($_POST['category_id']), ENT_QUOTES, 'UTF-8');
+    try {
+        if (Admin::deleteCategory($categoryId)) {
+            $deleteSuccessMessage = 'Category deleted successfully!';
+        } else {
+            $deleteErrorMessage = 'Failed to delete category.';
+        }
+    } catch (Exception $e) {
+        $categoryErrorMessage = 'Error: ' . $e->getMessage();
+    }
+}
+
 if (isset($_POST['delete_product'])) {
     $productId = htmlspecialchars(trim($_POST['product_id']), ENT_QUOTES, 'UTF-8');
     try {
@@ -82,18 +96,18 @@ if (isset($_POST['add_product'])) {
                 $product->setCategory($categoryId);
                 $product->setImage("images/uploads/{$uploadResult}");
                 if ($product->create()) {
-                    $productSuccessMessage = 'Product added successfully!';
+                    $productSuccessMessage = 'Product succesvol toegevoegd!';
                 } else {
-                    $productErrorMessage = 'Failed to add product.';
+                    $productErrorMessage = 'Product toevoegen mislukt.';
                 }
             } else {
-                $productErrorMessage = 'Image upload failed.';
+                $productErrorMessage = 'Afbeelding uploaden mislukt.';
             }
         } catch (Exception $e) {
             $productErrorMessage = 'Error: ' . $e->getMessage();
         }
     } else {
-        $productErrorMessage = 'Please choose an image.';
+        $productErrorMessage = 'Kies een afbeelding.';
     }
 }
 ?>
@@ -151,6 +165,29 @@ if (isset($_POST['add_product'])) {
             <br>
             <button class="btn" type="submit" name="add_category">Add Category</button>
         </form>
+        <h2>Delete Category</h2>
+        <?php if (!empty($deleteSuccessMessage)): ?>
+            <div class="success-message"><?= htmlspecialchars($deleteSuccessMessage); ?></div>
+        <?php endif; ?>
+
+        <?php if (!empty($deleteErrorMessage)): ?>
+            <div class="alert-danger"><?= htmlspecialchars($deleteErrorMessage); ?></div>
+        <?php endif; ?>
+        <form class="form-group" method="post" action="">
+            <label for="category_id">Select Category:</label>
+            <select id="category_id" name="category_id" required>
+                <?php foreach ($categories as $category): ?>
+                    <option value="<?= htmlspecialchars($category['id']); ?>">
+                        <?= htmlspecialchars($category['name']); ?> (ID: <?= $category['id']; ?>)
+                    </option>
+                <?php endforeach; ?>
+            </select>
+            <br>
+            <button class="btn" type="submit" name="delete_category">Delete Category</button>
+        </form>
+
+
+
     </section>
 
     <section class="product">
