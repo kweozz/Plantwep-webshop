@@ -31,18 +31,26 @@ if (!$product) {
 </head>
 
 <body>
-    <nav>
-        <a href="index.php"><img class="logo" src="images/logo-plantwerp.png" alt="Plantwerp Logo"></a>
-        <input type="text" placeholder="Search for plants..." class="search-bar">
-        <div class="nav-items">
-            <a href="#" class="icon profile-icon" aria-label="Profile">
-                <i class="fas fa-user"></i>
+<nav>
+    <a href="index.php"><img class="logo" src="images/logo-plantwerp.png" alt="Plantwerp Logo"></a>
+    <input type="text" placeholder="Zoek naar planten..." class="search-bar">
+    <div class="nav-items">
+        <a href="profile.php" class="icon profile-icon" aria-label="Profiel">
+            <i class="fas fa-user"></i>
+        </a>
+        <a href="#" class="icon basket-icon" aria-label="Winkelmand">
+            <i class="fas fa-shopping-basket"></i> 
+        </a>
+        
+        <?php if (isset($_SESSION['role']) && $_SESSION['role'] == 1): ?>
+            <!-- Alleen zichtbaar voor admins -->
+            <a href="admin-dash.php" class="icon admin-icon" aria-label="Admin Dashboard">
+                <i class="fas fa-tools"></i> 
             </a>
-            <a href="#" class="icon basket-icon" aria-label="Basket">
-                <i class="fas fa-shopping-basket"></i>
-            </a>
-        </div>
-    </nav>
+        <?php endif; ?>
+    </div>
+</nav>
+
 
     <div class="product-container">
         <div class="product-image">

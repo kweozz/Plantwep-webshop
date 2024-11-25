@@ -59,22 +59,31 @@ if (isset($_POST["logout"])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Profiel - Plantwerp</title>
     <link rel="stylesheet" href="style.css">
+     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 
 <body>
 
-<nav> 
-        <a href="index.html"><img class="logo" src="images/logo-plantwerp.png" alt="Plantwerp Logo"></a>
-        <div class="nav-items">
-            <input type="text" placeholder="Zoek naar planten..." class="search-bar">
-            <a href="profile.php" class="icon profile-icon" aria-label="Profiel">
-                <i class="fas fa-user"></i> <!-- Profiel icoon -->
+<nav>
+    <a href="index.php"><img class="logo" src="images/logo-plantwerp.png" alt="Plantwerp Logo"></a>
+    <input type="text" placeholder="Zoek naar planten..." class="search-bar">
+    <div class="nav-items">
+        <a href="profile.php" class="icon profile-icon" aria-label="Profiel">
+            <i class="fas fa-user"></i> <!-- Profiel icoon -->
+        </a>
+        <a href="#" class="icon basket-icon" aria-label="Winkelmand">
+            <i class="fas fa-shopping-basket"></i> <!-- Winkelmand icoon -->
+        </a>
+        
+        <?php if (isset($_SESSION['role']) && $_SESSION['role'] == 1): ?>
+            <!-- Alleen zichtbaar voor admins -->
+            <a href="admin-dash.php" class="icon admin-icon" aria-label="Admin Dashboard">
+                <i class="fas fa-tools"></i> <!-- Admin icoon -->
             </a>
-            <a href="#" class="icon basket-icon" aria-label="Winkelmand">
-                <i class="fas fa-shopping-basket"></i> <!-- Winkelmand icoon -->
-            </a>
-        </div>
+        <?php endif; ?>
+    </div>
 </nav>
+
 
     <div class="profile-container">
         <h1>Welkom, <?php echo htmlspecialchars($user->getFirstname()); ?>!</h1>
