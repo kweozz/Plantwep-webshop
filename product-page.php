@@ -32,7 +32,7 @@ if (!$product) {
 
 <body>
     <nav>
-        <a href="index.html"><img class="logo" src="images/logo-plantwerp.png" alt="Plantwerp Logo"></a>
+        <a href="index.php"><img class="logo" src="images/logo-plantwerp.png" alt="Plantwerp Logo"></a>
         <input type="text" placeholder="Search for plants..." class="search-bar">
         <div class="nav-items">
             <a href="#" class="icon profile-icon" aria-label="Profile">

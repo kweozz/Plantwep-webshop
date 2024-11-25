@@ -1,5 +1,5 @@
 <?php
-session_start(); // Start the session
+session_start(); // Start the session only once at the top
 include_once(__DIR__ . '/classes/Db.php');
 include_once(__DIR__ . '/classes/User.php');
 
@@ -7,9 +7,6 @@ $error = ''; // Variable to hold error message
 
 // Check if the form is submitted
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // Start the session
-    session_start();
-
     // Get the form data (sanitize and escape)
     $email = filter_var($_POST['email'], FILTER_SANITIZE_EMAIL);
     $password = htmlspecialchars($_POST['password'], ENT_QUOTES, 'UTF-8');
@@ -19,7 +16,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $loginSuccess = User::login($email, $password);
 
         if ($loginSuccess) {
-          
             // Redirect based on role
             if ($_SESSION['role'] == 1) {
                 header('Location: admin-dash.php'); // Admin dashboard
@@ -38,9 +34,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $error = $e->getMessage(); // Display any error message
     }
 }
-
-
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
