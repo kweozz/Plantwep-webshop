@@ -20,6 +20,8 @@ if ($selectedCategoryId) {
 } else {
     $products = Product::getAll(); // Show all products if no category is selected
 }
+
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -38,10 +40,10 @@ if ($selectedCategoryId) {
         <div class="nav-items">
             <input type="text" placeholder="Search for plants..." class="search-bar">
             <a href="profile.php" class="icon profile-icon" aria-label="Profile">
-                <i class="fas fa-user"></i> 
+                <i class="fas fa-user"></i>
             </a>
             <a href="#" class="icon basket-icon" aria-label="Basket">
-                <i class="fas fa-shopping-basket"></i> 
+                <i class="fas fa-shopping-basket"></i>
             </a>
         </div>
     </nav>
@@ -60,9 +62,10 @@ if ($selectedCategoryId) {
                     <p>All</p>
                 </a>
                 <?php foreach ($categories as $category): ?>
-                    <a href="index.php?category_id=<?php echo $category['id']; ?>" 
-                       class="category-card <?= $selectedCategoryId == $category['id'] ? 'active' : ''; ?>">
-                        <img src="<?php echo htmlspecialchars($category['image']); ?>" alt="<?php echo htmlspecialchars($category['name']); ?>">
+                    <a href="index.php?category_id=<?php echo $category['id']; ?>"
+                        class="category-card <?= $selectedCategoryId == $category['id'] ? 'active' : ''; ?>">
+                        <img src="<?php echo htmlspecialchars($category['image']); ?>"
+                            alt="<?php echo htmlspecialchars($category['name']); ?>">
                         <p><?php echo htmlspecialchars($category['name']); ?></p>
                     </a>
                 <?php endforeach; ?>
@@ -80,7 +83,8 @@ if ($selectedCategoryId) {
             <?php else: ?>
                 <?php foreach ($products as $product): ?>
                     <a href="product-page.php?id=<?php echo $product['id']; ?>" class="product-card">
-                        <img src="<?php echo htmlspecialchars($product['image']); ?>" alt="<?php echo htmlspecialchars($product['name']); ?>">
+                        <img src="<?php echo htmlspecialchars($product['image']); ?>"
+                            alt="<?php echo htmlspecialchars($product['name']); ?>">
                         <p><?php echo htmlspecialchars($product['name']); ?></p>
                         <p>€<?php echo htmlspecialchars(number_format($product['price'], 2)); ?></p>
                     </a>
@@ -89,7 +93,48 @@ if ($selectedCategoryId) {
         </div>
     </section>
 
-   
+    <script>
+
+        const categories = document.querySelector('.categories');
+        const leftBtn = document.querySelector('.left-btn');
+        const rightBtn = document.querySelector('.right-btn');
+
+        // Function to check if the categories are overflowing
+        function checkOverflow() {
+            const isOverflowing = categories.scrollWidth > categories.clientWidth;
+            if (isOverflowing) {
+                leftBtn.style.display = 'block';
+                rightBtn.style.display = 'block';
+            } else {
+                leftBtn.style.display = 'none';
+                rightBtn.style.display = 'none';
+            }
+        }
+
+        // Initial check for overflow when the page loads
+        checkOverflow();
+
+        // Optionally, recheck overflow when the window is resized
+        window.addEventListener('resize', checkOverflow);
+
+        // Add event listeners for scroll buttons
+        leftBtn.addEventListener('click', () => {
+            categories.scrollBy({
+                left: -200,
+                behavior: 'smooth',
+            });
+        });
+
+        rightBtn.addEventListener('click', () => {
+            categories.scrollBy({
+                left: 200,
+                behavior: 'smooth',
+            });
+        });
+
+
+    </script>
+
 </body>
 
 </html>
