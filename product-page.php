@@ -1,6 +1,7 @@
 <?php
 include_once(__DIR__ . '/classes/Db.php');
 include_once(__DIR__ . '/classes/Product.php');
+include_once(__DIR__ . '/classes/Category.php');
 
 // Start session
 session_start();
@@ -13,6 +14,10 @@ if (!isset($_GET['id']) || !is_numeric($_GET['id'])) {
 // Haal het specifieke product op
 $productId = intval($_GET['id']);
 $product = Product::getById($productId);
+
+//haal de categorie op van het product
+$category = Category::getById($product['category_id']);
+$product['category_name'] = $category['name'];
 
 if (!$product) {
     die('Product not found.');
@@ -127,7 +132,7 @@ if (!$product) {
 
     </div>
 
-    <h2>You might also like</h2>
+    <h2  >Meer van de categorie <span style="color:green;"><?php echo htmlspecialchars($product['category_name']); ?></span></h2>
     <div class="related-products">
         <div class="products">
             <?php 
@@ -144,6 +149,6 @@ if (!$product) {
             <?php endforeach; ?>
         </div>
     </div>
-</body>
+
 
 </html>

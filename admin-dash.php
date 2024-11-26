@@ -144,118 +144,166 @@ if (isset($_POST['add_product'])) {
 
     <h1>Admin Dashboard</h1>
 
-    <section class="category">
-        <h2>Add Category</h2>
+    <section class="category admin-section padding">
+        <h2>Categories</h2>
+        <div class="admin-options">
+            <div>
+                <h3>Add Category</h3>
 
-        <?php if (!empty($categorySuccessMessage)): ?>
-            <div class="alert alert-success"><?= htmlspecialchars($categorySuccessMessage); ?></div>
-        <?php endif; ?>
+                <h3>Add Category</h3>
 
-        <?php if (!empty($categoryErrorMessage)): ?>
-            <div class="alert-danger"><?= htmlspecialchars($categoryErrorMessage); ?></div>
-        <?php endif; ?>
-
-        <form class="form-group" method="post" action="" enctype="multipart/form-data">
-            <label for="category_name">Category Name:</label>
-            <input type="text" id="category_name" name="category_name" required pattern="[A-Za-z0-9\s]+"
-                title="Only letters, numbers, and spaces are allowed">
-            <br>
-            <label for="category_image">Category Picture:</label>
-            <input type="file" id="category_image" name="category_image" required>
-            <br>
-            <button class="btn" type="submit" name="add_category">Add Category</button>
-        </form>
-        <h2>Delete Category</h2>
-        <?php if (!empty($deleteSuccessMessage)): ?>
-            <div class="success-message"><?= htmlspecialchars($deleteSuccessMessage); ?></div>
-        <?php endif; ?>
-
-        <?php if (!empty($deleteErrorMessage)): ?>
-            <div class="alert-danger"><?= htmlspecialchars($deleteErrorMessage); ?></div>
-        <?php endif; ?>
-        <form class="form-group" method="post" action="">
-            <label for="category_id">Select Category:</label>
-            <select id="category_id" name="category_id" required>
-                <?php foreach ($categories as $category): ?>
-                    <option value="<?= htmlspecialchars($category['id']); ?>">
-                        <?= htmlspecialchars($category['name']); ?> (ID: <?= $category['id']; ?>)
-                    </option>
-                <?php endforeach; ?>
-            </select>
-            <br>
-            <button class="btn" type="submit" name="delete_category">Delete Category</button>
-        </form>
-
-
-
-    </section>
-
-    <section class="product">
-        <h2>Add Product</h2>
-
-        <?php if (!empty($productSuccessMessage)): ?>
-            <div class="success-message"><?= htmlspecialchars($productSuccessMessage); ?></div>
-        <?php endif; ?>
-
-        <?php if (!empty($productErrorMessage)): ?>
-            <div class="alert-danger"><?= htmlspecialchars($productErrorMessage); ?></div>
-        <?php endif; ?>
-
-        <form class="form-group" method="post" action="" enctype="multipart/form-data">
-            <label for="product_name">Product Name:</label>
-            <input type="text" id="product_name" name="product_name" required>
-            <br>
-            <label for="product_price">Product Price:</label>
-            <input type="number" id="product_price" name="product_price" required>
-            <br>
-            <label for="product_image">Product Picture:</label>
-            <input type="file" id="product_image" name="product_image" required>
-            <br>
-            <label for="product_description">Product Description:</label>
-            <textarea id="product_description" name="product_description" required></textarea>
-            <br>
-            <label for="category">Category:</label>
-            <select name="category" id="category">
-                <?php if (!empty($categories)): ?>
-                    <?php foreach ($categories as $category): ?>
-                        <option value="<?= htmlspecialchars($category['id']); ?>"><?= htmlspecialchars($category['name']); ?>
-                        </option>
-                    <?php endforeach; ?>
-                <?php else: ?>
-                    <option value="">No categories available</option>
+                <?php if (!empty($categorySuccessMessage)): ?>
+                    <div class="alert alert-success"><?= htmlspecialchars($categorySuccessMessage); ?></div>
                 <?php endif; ?>
-            </select>
-            <br>
 
-            <label for="product_stock">Product Stock:</label>
-            <input type="number" id="product_stock" name="product_stock" required>
-            <br>
-            <button class="btn" type="submit" name="add_product">Add Product</button>
-        </form>
+                <?php if (!empty($categoryErrorMessage)): ?>
+                    <div class="alert-danger"><?= htmlspecialchars($categoryErrorMessage); ?></div>
+                <?php endif; ?>
 
-        <h2>Delete Product</h2>
-        <?php if (!empty($deleteSuccessMessage)): ?>
-            <div class="success-message"><?= htmlspecialchars($productSuccessMessage); ?></div>
-        <?php endif; ?>
+                <form class="form-group" method="post" action="" enctype="multipart/form-data">
+                    <label for="category_name">Category Name:</label>
+                    <input type="text" id="category_name" name="category_name" required pattern="[A-Za-z0-9\s]+"
+                        title="Only letters, numbers, and spaces are allowed">
+                    <br>
+                    <label for="category_image">Category Picture:</label>
+                    <input type="file" id="category_image" name="category_image" accept="image/*" required
+                        onchange="previewImage(event, 'category_image_preview')">
+                    <br>
+                    <!-- Image Preview -->
+                    <div>
+                        <h3>Preview</h3>
+                        <img id="category_image_preview" src="" alt="Category Image Preview"
+                            style="max-width: 200px; max-height: 200px; display: none;">
+                    </div>
+                    <br>
+                    <button class="btn btn-admin" type="submit" name="add_category">Add Category</button>
+                </form>
 
-        <?php if (!empty($deleteErrorMessage)): ?>
-            <div class="alert-danger"><?= htmlspecialchars($productErrorMessage); ?></div>
-        <?php endif; ?>
-        <form class="form-group" method="post" action="">
-            <label for="product_id">Select Product:</label>
-            <select id="product_id" name="product_id" required>
+            </div>
+            <div>
+                <h3>Delete Category</h3>
+                <?php if (!empty($deleteSuccessMessage)): ?>
+                    <div class=" alert-succes"><?= htmlspecialchars($deleteSuccessMessage); ?></div>
+                <?php endif; ?>
 
-                <?php foreach ($products as $product): ?>
-                    <option value="<?= htmlspecialchars($product['id']); ?>">
-                        <?= htmlspecialchars($product['name']); ?> (ID: <?= $product['id']; ?>)
-                    </option>
-                <?php endforeach; ?>
-            </select>
-            <br>
-            <button class="btn" type="submit" name="delete_product">Delete Product</button>
-        </form>
+                <?php if (!empty($deleteErrorMessage)): ?>
+                    <div class="alert-danger"><?= htmlspecialchars($deleteErrorMessage); ?></div>
+                <?php endif; ?>
+                <form class="form-group" method="post" action="">
+                    <label for="category_id">Select Category:</label>
+                    <select id="category_id" name="category_id" required>
+                        <?php foreach ($categories as $category): ?>
+                            <option value="<?= htmlspecialchars($category['id']); ?>">
+                                <?= htmlspecialchars($category['name']); ?> (ID: <?= $category['id']; ?>)
+                            </option>
+                        <?php endforeach; ?>
+                    </select>
+                    <br>
+                    <button class="btn btn-admin" type="submit" name="delete_category">Delete Category</button>
+                </form>
+
+            </div>
+
     </section>
 
+    <section class="admin-section product padding">
+        <h2>Products</h2>
+        <div class="admin-options">
+            <div>
+                <h3>Add Product</h3>
+
+                <?php if (!empty($productSuccessMessage)): ?>
+                    <div class="alert-succes"><?= htmlspecialchars($productSuccessMessage); ?></div>
+                <?php endif; ?>
+
+                <?php if (!empty($productErrorMessage)): ?>
+                    <div class="alert-danger"><?= htmlspecialchars($productErrorMessage); ?></div>
+                <?php endif; ?>
+
+                <form class="form-group" method="post" action="" enctype="multipart/form-data">
+                    <label for="product_name">Product Name:</label>
+                    <input type="text" id="product_name" name="product_name" required>
+                    <br>
+                    <label for="product_price">Product Price:</label>
+                    <input type="number" id="product_price" name="product_price" required>
+                    <br>
+                    <label for="product_image">Product Picture:</label>
+                    <input type="file" id="product_image" name="product_image" required
+                        onchange="previewImage(event, 'preview_img')">
+                    <br>
+                    <div id="product_image_preview" style="margin-top: 10px;">
+                        <img id="preview_img" src="" alt="Preview" style="max-width: 200px; display: none;">
+                    </div>
+                    <label for="product_description">Product Description:</label>
+                    <textarea id="product_description" name="product_description" required></textarea>
+                    <br>
+                    <label for="category">Category:</label>
+                    <select name="category" id="category">
+                        <?php if (!empty($categories)): ?>
+                            <?php foreach ($categories as $category): ?>
+                                <option value="<?= htmlspecialchars($category['id']); ?>">
+                                    <?= htmlspecialchars($category['name']); ?>
+                                </option>
+                            <?php endforeach; ?>
+                        <?php else: ?>
+                            <option value="">No categories available</option>
+                        <?php endif; ?>
+                    </select>
+                    <br>
+
+                    <label for="product_stock">Product Stock:</label>
+                    <input type="number" id="product_stock" name="product_stock" required>
+                    <br>
+                    <button class="btn btn-admin" type="submit" name="add_product">Add Product</button>
+                </form>
+            </div>
+            <div>
+                <h3>Delete Product</h3>
+                <?php if (!empty($deleteSuccessMessage)): ?>
+                    <div class="alert-success"><?= htmlspecialchars($deleteSuccessMessage); ?></div>
+                <?php endif; ?>
+
+                <?php if (!empty($deleteErrorMessage)): ?>
+                    <div class="alert-danger"><?= htmlspecialchars($deleteErrorMessage); ?></div>
+                <?php endif; ?>
+                <form class="form-group" method="post" action="">
+                    <label for="product_id">Select Product:</label>
+                    <select id="product_id" name="product_id" required>
+
+                        <?php foreach ($products as $product): ?>
+                            <option value="<?= htmlspecialchars($product['id']); ?>">
+                                <?= htmlspecialchars($product['name']); ?> (ID: <?= $product['id']; ?>)
+                            </option>
+                        <?php endforeach; ?>
+                    </select>
+                    <br>
+                    <button class="btn btn-admin" type="submit" name="delete_product">Delete Product</button>
+                </form>
+            </div>
+        </div>
+    </section>
+    </div>
+    <script>
+
+        // Image previewer
+        function previewImage(event, previewId) {
+            // Maak een nieuwe FileReader aan, js object dat bestanden kan lezen
+            const reader = new FileReader();
+            //als het geladen is dan wordt de functie uitgevoerd
+            reader.onload = function () {
+                // Zoek het <img> element op de pagina met het meegegeven id (previewId)
+                const preview = document.getElementById(previewId);
+                // zet de src (bron) van img naar de gelezen data 
+                preview.src = reader.result;
+                // maakt de afbeelding zichtbaar
+                preview.style.display = 'block';
+            };
+            // Lees het bestand als een data URL (base64 encoded image) --> voor mijzelf een data url is een url waarin de afbeelding is opgeslagen --> vragen aan joris
+            reader.readAsDataURL(event.target.files[0]);
+        }
+
+
+    </script>
 </body>
 
 </html>
