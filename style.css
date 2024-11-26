@@ -310,11 +310,16 @@ label {
     background-color: #267b3a;
 }
 
+
 /* related products */
 .related-products {
     padding: 5% 0%;
     display: flex;
+   
     gap: 5%;
+}
+.related-products .products{
+    width: 100%;
 }
 /* Profile & Signup Form */
 .signup-container {
@@ -333,6 +338,9 @@ label {
     color: #333;
     margin-bottom: 0%;
    
+}
+.profile-info p span {
+    font-weight: bold;
 }
 .signup-container h2 {
     font-size: 24px;

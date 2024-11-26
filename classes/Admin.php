@@ -43,7 +43,20 @@ class Admin extends User
         $product->setImage($image);
         return $product;
     }
+    public function updateProduct($productId, $name, $price, $description, $category_id, $image, $stock)
+    {
+        if ($_SESSION['role'] !== 1) {
+            throw new Exception('Geen toestemming om het product bij te werken');
+        }
 
+        $product = $this->initializeProduct($productId, $name, $price, $description, $category_id, $image, $stock);
+
+        try {
+            return $product->update() ? "Product succesvol bijgewerkt" : "Het is niet gelukt om het product bij te werken";
+        } catch (Exception $e) {
+            return "Fout: " . $e->getMessage();
+        }
+    }
     public static function deleteProduct($productId)
     {
         if ($_SESSION['role'] !== 1) {
@@ -83,10 +96,6 @@ class Admin extends User
         }
     }
 
-    private function saveProduct($product)
-    {
-        return $product->create();
-    }
 
     // Categorie bijwerken
     public function updateCategory($categoryId, $name, $image)

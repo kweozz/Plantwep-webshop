@@ -110,6 +110,41 @@ if (isset($_POST['add_product'])) {
         $productErrorMessage = 'Kies een afbeelding.';
     }
 }
+//updatee product
+if (isset($_POST['update_product'])){
+    $productId = htmlspecialchars(trim($_POST['product_id']), ENT_QUOTES, 'UTF-8');
+    $productName = htmlspecialchars(trim($_POST['product_name']), ENT_QUOTES, 'UTF-8');
+    $productPrice = htmlspecialchars(trim($_POST['product_price']), ENT_QUOTES, 'UTF-8');
+    $productDescription = htmlspecialchars(trim($_POST['product_description']), ENT_QUOTES, 'UTF-8');
+    $productStock = htmlspecialchars(trim($_POST['product_stock']), ENT_QUOTES, 'UTF-8');
+    $categoryId = htmlspecialchars(trim($_POST['category']), ENT_QUOTES, 'UTF-8');
+
+    if (isset($_FILES['product_image']) && $_FILES['product_image']['error'] === 0) {
+        try {
+            $uploadResult = $admin->uploadImage($_FILES['product_image']);
+            if ($uploadResult) {
+                $productImage = "images/uploads/{$uploadResult}";
+            } else {
+                $productErrorMessage = 'Image upload failed.';
+            }
+        } catch (Exception $e) {
+            $productErrorMessage = 'Error: ' . $e->getMessage();
+        }
+    } else {
+        $productImage = null; // No new image uploaded
+    }
+
+    try {
+        if ($admin->updateProduct($productId, $productName, $productPrice, $productDescription, $productStock, $categoryId, $productImage)) {
+            $productSuccessMessage = 'Product updated successfully!';
+        } else {
+            $productErrorMessage = 'Failed to update product.';
+        }
+    } catch (Exception $e) {
+        $productErrorMessage = 'Error: ' . $e->getMessage();
+    }
+}
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -123,24 +158,38 @@ if (isset($_POST['add_product'])) {
 </head>
 
 <body>
-    <nav>
-        <a href="index.php"><img class="logo" src="images/logo-plantwerp.png" alt="Plantwerp Logo"></a>
-        <input type="text" placeholder="Zoek naar planten..." class="search-bar">
-        <div class="nav-items">
-            <a href="profile.php" class="icon profile-icon" aria-label="Profiel">
-                <i class="fas fa-user"></i>
-            </a>
-            <a href="#" class="icon basket-icon" aria-label="Winkelmand">
-                <i class="fas fa-shopping-basket"></i>
-            </a>
+<nav>
+    <a href="index.php"><img class="logo" src="images/logo-plantwerp.png" alt="Plantwerp Logo"></a>
+    <input type="text" placeholder="Zoek naar planten..." class="search-bar">
+    <div class="nav-items">
+        <!-- Profiel -->
+        <a href="profile.php" class="icon profile-icon" aria-label="Profiel">
+            <i class="fas fa-user"></i>
+        </a>
 
-            <?php if (isset($_SESSION['role']) && $_SESSION['role'] == 1): ?>
-                <a href="admin-dash.php" class="icon admin-icon" aria-label="Admin Dashboard">
-                    <i class="fas fa-tools"></i>
-                </a>
-            <?php endif; ?>
-        </div>
-    </nav>
+        <!-- Winkelmand -->
+        <a href="#" class="icon basket-icon" aria-label="Winkelmand">
+            <i class="fas fa-shopping-basket"></i>
+        </a>
+
+        <!-- Admin Dashboard (zichtbaar alleen voor admins) -->
+        <?php if (isset($_SESSION['role']) && $_SESSION['role'] == 1): ?>
+            <a href="admin-dash.php" class="icon admin-icon" aria-label="Admin Dashboard">
+                <i class="fas fa-tools"></i>
+            </a>
+        <?php endif; ?>
+
+        <!-- Currency -->
+        <?php if (isset($_SESSION['user']['currency'])): ?>
+            <span class="currency-display">
+                <i class="fas fa-coins"></i> <!-- Icoon voor currency -->
+                <?php echo htmlspecialchars($_SESSION['user']['currency']); ?> 
+            </span>
+        <?php endif; ?>
+    </div>
+</nav>
+
+    
 
     <h1>Admin Dashboard</h1>
 
@@ -148,8 +197,6 @@ if (isset($_POST['add_product'])) {
         <h2>Categories</h2>
         <div class="admin-options">
             <div>
-                <h3>Add Category</h3>
-
                 <h3>Add Category</h3>
 
                 <?php if (!empty($categorySuccessMessage)): ?>
@@ -169,11 +216,10 @@ if (isset($_POST['add_product'])) {
                     <input type="file" id="category_image" name="category_image" accept="image/*" required
                         onchange="previewImage(event, 'category_image_preview')">
                     <br>
-                    <!-- Image Preview -->
                     <div>
                         <h3>Preview</h3>
                         <img id="category_image_preview" src="" alt="Category Image Preview"
-                            style="max-width: 200px; max-height: 200px; display: none;">
+                            style="max-width: 200px; max-height: 200px; display: none;border-radius:16px">
                     </div>
                     <br>
                     <button class="btn btn-admin" type="submit" name="add_category">Add Category</button>
@@ -183,7 +229,7 @@ if (isset($_POST['add_product'])) {
             <div>
                 <h3>Delete Category</h3>
                 <?php if (!empty($deleteSuccessMessage)): ?>
-                    <div class=" alert-succes"><?= htmlspecialchars($deleteSuccessMessage); ?></div>
+                    <div class=" alert-succes"><?= htmlspecialchars($categorySuccessMessage); ?></div>
                 <?php endif; ?>
 
                 <?php if (!empty($deleteErrorMessage)): ?>
@@ -232,7 +278,7 @@ if (isset($_POST['add_product'])) {
                         onchange="previewImage(event, 'preview_img')">
                     <br>
                     <div id="product_image_preview" style="margin-top: 10px;">
-                        <img id="preview_img" src="" alt="Preview" style="max-width: 200px; display: none;">
+                        <img id="preview_img" src="" alt="Preview" style="max-width: 200px; display: none; border-radius:16px">
                     </div>
                     <label for="product_description">Product Description:</label>
                     <textarea id="product_description" name="product_description" required></textarea>
@@ -280,7 +326,7 @@ if (isset($_POST['add_product'])) {
                     <button class="btn btn-admin" type="submit" name="delete_product">Delete Product</button>
                 </form>
             </div>
-        </div>
+        </d>
     </section>
     </div>
     <script>

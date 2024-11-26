@@ -39,21 +39,34 @@ if ($selectedCategoryId) {
     <a href="index.php"><img class="logo" src="images/logo-plantwerp.png" alt="Plantwerp Logo"></a>
     <input type="text" placeholder="Zoek naar planten..." class="search-bar">
     <div class="nav-items">
+        <!-- Profiel -->
         <a href="profile.php" class="icon profile-icon" aria-label="Profiel">
             <i class="fas fa-user"></i>
         </a>
+
+        <!-- Winkelmand -->
         <a href="#" class="icon basket-icon" aria-label="Winkelmand">
-            <i class="fas fa-shopping-basket"></i> 
+            <i class="fas fa-shopping-basket"></i>
         </a>
-        
+
+        <!-- Admin Dashboard (zichtbaar alleen voor admins) -->
         <?php if (isset($_SESSION['role']) && $_SESSION['role'] == 1): ?>
-            <!-- Alleen zichtbaar voor admins -->
             <a href="admin-dash.php" class="icon admin-icon" aria-label="Admin Dashboard">
-                <i class="fas fa-tools"></i> 
+                <i class="fas fa-tools"></i>
             </a>
+        <?php endif; ?>
+
+        <!-- Currency -->
+        <?php if (isset($_SESSION['user']['currency'])): ?>
+            <span class="currency-display">
+                <i class="fas fa-coins"></i> <!-- Icoon voor currency -->
+                <?php echo htmlspecialchars($_SESSION['user']['currency']); ?> 
+            </span>
         <?php endif; ?>
     </div>
 </nav>
+
+
 
 
     <h1>Plantwerp</h1>

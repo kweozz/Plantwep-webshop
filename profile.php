@@ -68,21 +68,34 @@ if (isset($_POST["logout"])) {
     <a href="index.php"><img class="logo" src="images/logo-plantwerp.png" alt="Plantwerp Logo"></a>
     <input type="text" placeholder="Zoek naar planten..." class="search-bar">
     <div class="nav-items">
+        <!-- Profiel -->
         <a href="profile.php" class="icon profile-icon" aria-label="Profiel">
-            <i class="fas fa-user"></i> <!-- Profiel icoon -->
+            <i class="fas fa-user"></i>
         </a>
+
+        <!-- Winkelmand -->
         <a href="#" class="icon basket-icon" aria-label="Winkelmand">
-            <i class="fas fa-shopping-basket"></i> <!-- Winkelmand icoon -->
+            <i class="fas fa-shopping-basket"></i>
         </a>
-        
+
+        <!-- Admin Dashboard (zichtbaar alleen voor admins) -->
         <?php if (isset($_SESSION['role']) && $_SESSION['role'] == 1): ?>
-            <!-- Alleen zichtbaar voor admins -->
             <a href="admin-dash.php" class="icon admin-icon" aria-label="Admin Dashboard">
-                <i class="fas fa-tools"></i> <!-- Admin icoon -->
+                <i class="fas fa-tools"></i>
             </a>
+        <?php endif; ?>
+
+        <!-- Currency -->
+        <?php if (isset($_SESSION['user']['currency'])): ?>
+            <span class="currency-display">
+                <i class="fas fa-coins"></i> <!-- Icoon voor currency -->
+                <?php echo htmlspecialchars($_SESSION['user']['currency']); ?> 
+            </span>
         <?php endif; ?>
     </div>
 </nav>
+
+
 
 
     <div class="profile-container">
@@ -90,12 +103,14 @@ if (isset($_POST["logout"])) {
     </div>
 
     <div class="profile-info padding">
-        <div class="profile-details">
-            <h2>Profielgegevens</h2>
-            <p>Voornaam: <?php echo htmlspecialchars($user->getFirstname()); ?></p>
-            <p>Achternaam: <?php echo htmlspecialchars($user->getLastname()); ?></p>
-            <p>Email: <?php echo htmlspecialchars($user->getEmail()); ?></p>
-        </div>
+    <div class="profile-details">
+    <h2>Profielgegevens</h2>
+    <p><span>Voornaam:</span> <?php echo htmlspecialchars($user->getFirstname()); ?></p>
+    <p><span>Achternaam:</span>  <?php echo htmlspecialchars($user->getLastname()); ?></p>
+    <p><span> Email:</span> <?php echo htmlspecialchars($user->getEmail()); ?></p>
+    <p> <span>Saldo:</span>  <?php echo htmlspecialchars($_SESSION['currency']); ?> units</p> 
+</div>
+</div>
 
         <section class="profile-actions padding">
             <!-- Display error or success message above the form -->
