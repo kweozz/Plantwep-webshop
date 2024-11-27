@@ -44,19 +44,16 @@ if (!$product) {
         <a href="profile.php" class="icon profile-icon" aria-label="Profiel">
             <i class="fas fa-user"></i>
         </a>
-
         <!-- Winkelmand -->
         <a href="#" class="icon basket-icon" aria-label="Winkelmand">
             <i class="fas fa-shopping-basket"></i>
         </a>
-
         <!-- Admin Dashboard (zichtbaar alleen voor admins) -->
         <?php if (isset($_SESSION['role']) && $_SESSION['role'] == 1): ?>
             <a href="admin-dash.php" class="icon admin-icon" aria-label="Admin Dashboard">
                 <i class="fas fa-tools"></i>
             </a>
         <?php endif; ?>
-
         <!-- Currency -->
         <?php if (isset($_SESSION['user']['currency'])): ?>
             <span class="currency-display">
@@ -102,7 +99,6 @@ if (!$product) {
         </div>
     </div>
 
-    <!-- Calculate final price based on options -->
     <h3 class="final-price">Final Price: €<span id="finalPrice"><?php echo htmlspecialchars(number_format($product['price'], 2)); ?></span></>
     
     <button class="btn" type="submit">Add to Cart</button>
@@ -133,7 +129,7 @@ if (!$product) {
         if (pot === 'with') {
             potPrice = 5;
         }
-        // if Quantity rises above 1, the price will be multiplied by the quantity
+// als
         const quantity = document.getElementById('quantity').value;
         const finalPrice = (basePrice + sizePrice + potPrice) * quantity;
         document.getElementById('finalPrice').textContent = finalPrice.toFixed(2);
@@ -143,7 +139,6 @@ if (!$product) {
 </script>
 
     </div>
-
     <h2  >Meer van de categorie <span style="color:green;"><?php echo htmlspecialchars($product['category_name']); ?></span></h2>
     <div class="related-products">
         <div class="products">

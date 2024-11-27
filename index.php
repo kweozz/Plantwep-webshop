@@ -106,7 +106,7 @@ if ($selectedCategoryId) {
                     <a href="product-page.php?id=<?php echo $product['id']; ?>" class="product-card">
                         <img src="<?php echo htmlspecialchars($product['image']); ?>"
                             alt="<?php echo htmlspecialchars($product['name']); ?>">
-                        <p><?php echo htmlspecialchars($product['name']); ?></p>
+                        <h4><?php echo htmlspecialchars($product['name']); ?></h4>
                         <p>€<?php echo htmlspecialchars(number_format($product['price'], 2)); ?></p>
                     </a>
                 <?php endforeach; ?>

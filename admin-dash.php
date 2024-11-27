@@ -2,7 +2,6 @@
 // admin-dash.php
 include_once __DIR__ . '/classes/Db.php';
 include_once __DIR__ . '/classes/User.php';
-include_once __DIR__ . '/classes/Admin.php';
 include_once __DIR__ . '/classes/Category.php';
 include_once __DIR__ . '/classes/Product.php';
 session_start();
@@ -13,7 +12,6 @@ if ($_SESSION['role'] !== 1) {
     exit();
 }
 
-$admin = new Admin();
 $categorySuccessMessage = '';
 $categoryErrorMessage = '';
 $productSuccessMessage = '';
@@ -26,11 +24,12 @@ $categories = $category->getAll();
 $product = new Product();
 $products = $product->getAll();
 
+// Add Category
 if (isset($_POST['add_category'])) {
     $categoryName = htmlspecialchars(trim($_POST['category_name']), ENT_QUOTES, 'UTF-8');
     if (isset($_FILES['category_image']) && $_FILES['category_image']['error'] === 0) {
         try {
-            $uploadResult = $admin->uploadImage($_FILES['category_image']);
+            $uploadResult = uploadImage($_FILES['category_image']);
             if ($uploadResult) {
                 $category = new Category();
                 $category->setName($categoryName);
@@ -50,33 +49,23 @@ if (isset($_POST['add_category'])) {
         $categoryErrorMessage = 'Please choose an image.';
     }
 }
-//delete category
+
+// Delete Category
 if (isset($_POST['delete_category'])) {
     $categoryId = htmlspecialchars(trim($_POST['category_id']), ENT_QUOTES, 'UTF-8');
     try {
-        if (Admin::deleteCategory($categoryId)) {
+        $category = new Category();
+        if ($category->delete($categoryId)) {
             $deleteSuccessMessage = 'Category deleted successfully!';
         } else {
             $deleteErrorMessage = 'Failed to delete category.';
         }
     } catch (Exception $e) {
-        $categoryErrorMessage = 'Error: ' . $e->getMessage();
+        $deleteErrorMessage = 'Error: ' . $e->getMessage();
     }
 }
 
-if (isset($_POST['delete_product'])) {
-    $productId = htmlspecialchars(trim($_POST['product_id']), ENT_QUOTES, 'UTF-8');
-    try {
-        if (Admin::deleteProduct($productId)) {
-            $deleteSuccessMessage = 'Product deleted successfully!';
-        } else {
-            $deleteErrorMessage = 'Failed to delete product.';
-        }
-    } catch (Exception $e) {
-        $productErrorMessage = 'Error: ' . $e->getMessage();
-    }
-}
-
+// Add Product
 if (isset($_POST['add_product'])) {
     $productName = htmlspecialchars(trim($_POST['product_name']), ENT_QUOTES, 'UTF-8');
     $productPrice = htmlspecialchars(trim($_POST['product_price']), ENT_QUOTES, 'UTF-8');
@@ -86,7 +75,7 @@ if (isset($_POST['add_product'])) {
 
     if (isset($_FILES['product_image']) && $_FILES['product_image']['error'] === 0) {
         try {
-            $uploadResult = $admin->uploadImage($_FILES['product_image']);
+            $uploadResult = uploadImage($_FILES['product_image']);
             if ($uploadResult) {
                 $product = new Product();
                 $product->setName($productName);
@@ -96,22 +85,23 @@ if (isset($_POST['add_product'])) {
                 $product->setCategory($categoryId);
                 $product->setImage("images/uploads/{$uploadResult}");
                 if ($product->create()) {
-                    $productSuccessMessage = 'Product succesvol toegevoegd!';
+                    $productSuccessMessage = 'Product added successfully!';
                 } else {
-                    $productErrorMessage = 'Product toevoegen mislukt.';
+                    $productErrorMessage = 'Failed to add product.';
                 }
             } else {
-                $productErrorMessage = 'Afbeelding uploaden mislukt.';
+                $productErrorMessage = 'Image upload failed.';
             }
         } catch (Exception $e) {
             $productErrorMessage = 'Error: ' . $e->getMessage();
         }
     } else {
-        $productErrorMessage = 'Kies een afbeelding.';
+        $productErrorMessage = 'Please choose an image.';
     }
 }
-//updatee product
-if (isset($_POST['update_product'])){
+
+// Update Product
+if (isset($_POST['update_product'])) {
     $productId = htmlspecialchars(trim($_POST['product_id']), ENT_QUOTES, 'UTF-8');
     $productName = htmlspecialchars(trim($_POST['product_name']), ENT_QUOTES, 'UTF-8');
     $productPrice = htmlspecialchars(trim($_POST['product_price']), ENT_QUOTES, 'UTF-8');
@@ -121,7 +111,7 @@ if (isset($_POST['update_product'])){
 
     if (isset($_FILES['product_image']) && $_FILES['product_image']['error'] === 0) {
         try {
-            $uploadResult = $admin->uploadImage($_FILES['product_image']);
+            $uploadResult = uploadImage($_FILES['product_image']);
             if ($uploadResult) {
                 $productImage = "images/uploads/{$uploadResult}";
             } else {
@@ -135,7 +125,8 @@ if (isset($_POST['update_product'])){
     }
 
     try {
-        if ($admin->updateProduct($productId, $productName, $productPrice, $productDescription, $productStock, $categoryId, $productImage)) {
+        $product = new Product();
+        if ($product->update($productId, $productName, $productPrice, $productDescription, $productStock, $categoryId, $productImage)) {
             $productSuccessMessage = 'Product updated successfully!';
         } else {
             $productErrorMessage = 'Failed to update product.';
@@ -145,7 +136,37 @@ if (isset($_POST['update_product'])){
     }
 }
 
+// Delete Product
+if (isset($_POST['delete_product'])) {
+    $productId = htmlspecialchars(trim($_POST['product_id']), ENT_QUOTES, 'UTF-8');
+    try {
+        $product = new Product();
+        if ($product->delete($productId)) {
+            $deleteSuccessMessage = 'Product deleted successfully!';
+        } else {
+            $deleteErrorMessage = 'Failed to delete product.';
+        }
+    } catch (Exception $e) {
+        $deleteErrorMessage = 'Error: ' . $e->getMessage();
+    }
+}
+
+// Upload Image Function (From Admin Class)
+function uploadImage($file) {
+    // File upload logic goes here, e.g., move file to a directory
+    $targetDirectory = 'images/uploads/';
+    $targetFile = $targetDirectory . basename($file['name']);
+    if (move_uploaded_file($file['tmp_name'], $targetFile)) {
+        return basename($file['name']);
+    } else {
+        return false;
+    }
+}
 ?>
+
+
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -162,17 +183,17 @@ if (isset($_POST['update_product'])){
     <a href="index.php"><img class="logo" src="images/logo-plantwerp.png" alt="Plantwerp Logo"></a>
     <input type="text" placeholder="Zoek naar planten..." class="search-bar">
     <div class="nav-items">
-        <!-- Profiel -->
+    
         <a href="profile.php" class="icon profile-icon" aria-label="Profiel">
             <i class="fas fa-user"></i>
         </a>
 
-        <!-- Winkelmand -->
+      
         <a href="#" class="icon basket-icon" aria-label="Winkelmand">
             <i class="fas fa-shopping-basket"></i>
         </a>
 
-        <!-- Admin Dashboard (zichtbaar alleen voor admins) -->
+      
         <?php if (isset($_SESSION['role']) && $_SESSION['role'] == 1): ?>
             <a href="admin-dash.php" class="icon admin-icon" aria-label="Admin Dashboard">
                 <i class="fas fa-tools"></i>
@@ -182,7 +203,7 @@ if (isset($_POST['update_product'])){
         <!-- Currency -->
         <?php if (isset($_SESSION['user']['currency'])): ?>
             <span class="currency-display">
-                <i class="fas fa-coins"></i> <!-- Icoon voor currency -->
+                <i class="fas fa-coins"></i> 
                 <?php echo htmlspecialchars($_SESSION['user']['currency']); ?> 
             </span>
         <?php endif; ?>

@@ -158,7 +158,62 @@ class Product
         $statement->execute();
         return $statement->fetchAll(PDO::FETCH_ASSOC);
     }
-}
-// product opties 
 
+    // Method to create a new product (alternative way)
+    public static function createProduct($name, $price, $description, $category_id, $image, $stock)
+    {
+        // Maak een nieuw productobject
+        $product = new Product();
+        $product->setName($name);
+        $product->setPrice($price);
+        $product->setDescription($description);
+        $product->setCategory($category_id);
+        $product->setImage($image);
+        $product->setStock($stock);
+
+        // Sla het product op in de database
+        if ($product->create()) {
+            return "Product succesvol aangemaakt";
+        } else {
+            return "Het is niet gelukt om het product aan te maken";
+        }
+    }
+
+    // Method to update an existing product (alternative way)
+    public static function updateProduct($productId, $name, $price, $description, $category_id, $image, $stock)
+    {
+        // Haal het product op en stel de nieuwe waarden in
+        $product = new Product();
+        $product->setId($productId);
+        $product->setName($name);
+        $product->setPrice($price);
+        $product->setDescription($description);
+        $product->setCategory($category_id);
+        $product->setImage($image);
+        $product->setStock($stock);
+
+        // Werk het product bij
+        if ($product->update()) {
+            return "Product succesvol bijgewerkt";
+        } else {
+            return "Het is niet gelukt om het product bij te werken";
+        }
+    }
+
+    // Method to delete a product (alternative way)
+    public static function deleteProduct($productId)
+    {
+        // Haal het product op via ID
+        $product = new Product();
+        $product->setId($productId);
+
+        // Verwijder het product
+        if ($product->delete()) {
+            return "Product succesvol verwijderd";
+        } else {
+            return "Het is niet gelukt om het product te verwijderen";
+        }
+    }
+
+}
 ?>

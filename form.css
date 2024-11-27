@@ -113,3 +113,25 @@ a {
     width: 100%;
     padding: 10px;
 }
+.form-group input,
+textarea,
+.form-group select {
+    width: 100%;
+    /* Make the input, textarea, and select take up 100% of the container */
+    padding: 10px;
+    /* Padding inside the elements */
+    max-width: 100%;
+    /* Ensure they don't exceed the container's width */
+    margin-bottom: 10px;
+    /* Add some space below each element */
+
+    border: 0px solid #ddd;
+    /* Define border color */
+    border-radius: 12px;
+    /* Rounded corners */
+    background-color: #f6f6f6;
+    /* Light background color */
+
+    box-sizing: border-box;
+    /* Include padding and border in the element's total width */
+}
