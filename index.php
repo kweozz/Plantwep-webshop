@@ -65,10 +65,6 @@ if ($selectedCategoryId) {
         <?php endif; ?>
     </div>
 </nav>
-
-
-
-
     <h1>Plantwerp</h1>
     <div class="hero">
     </div>
