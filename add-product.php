@@ -93,7 +93,7 @@ function uploadImage($file)
 
     <section class="product padding">
         <h2>Add products</h2>
-        <div class="product-container ">
+        <div class="add-product-container ">
 
             <?php if (!empty($productSuccessMessage)): ?>
                 <div class="alert-succes alert"><?= htmlspecialchars($productSuccessMessage); ?></div>
