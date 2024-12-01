@@ -141,7 +141,8 @@ if (isset($_POST['delete_product'])) {
     $productId = htmlspecialchars(trim($_POST['product_id']), ENT_QUOTES, 'UTF-8');
     try {
         $product = new Product();
-        if ($product->delete($productId)) {
+        $product->setId($productId); // Ensure this is correctly setting the ID
+        if ($product->delete()) {
             $deleteSuccessMessage = 'Product deleted successfully!';
         } else {
             $deleteErrorMessage = 'Failed to delete product.';

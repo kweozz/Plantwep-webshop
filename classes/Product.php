@@ -199,21 +199,5 @@ class Product
             return "Het is niet gelukt om het product bij te werken";
         }
     }
-
-    // Method to delete a product (alternative way)
-    public static function deleteProduct($productId)
-    {
-        // Haal het product op via ID
-        $product = new Product();
-        $product->setId($productId);
-
-        // Verwijder het product
-        if ($product->delete()) {
-            return "Product succesvol verwijderd";
-        } else {
-            return "Het is niet gelukt om het product te verwijderen";
-        }
-    }
-
 }
 ?>

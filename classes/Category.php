@@ -62,14 +62,14 @@ class Category
     }
 
     // Delete a category
-    public function delete()
+    public function delete($categoryId)
     {
         $conn = Db::getConnection();
         $statement = $conn->prepare("DELETE FROM category WHERE id = :id");
-        $statement->bindValue(':id', $this->getId());
+        $statement->bindValue(':id', $categoryId);
         return $statement->execute();
     }
-
+    
     // Retrieve all categories
     public static function getAll()
     {
