@@ -243,8 +243,9 @@ if (isset($_POST['delete_product'])) {
             <div>
                 <h3>Delete Category</h3>
                 <?php if (!empty($deleteSuccessMessage)): ?>
-                    <div class=" alert-succes"><?= htmlspecialchars($categorySuccessMessage); ?></div>
+                    <div class="alert-success"><?= htmlspecialchars($deleteSuccessMessage); ?></div>
                 <?php endif; ?>
+
 
                 <?php if (!empty($deleteErrorMessage)): ?>
                     <div class="alert-danger"><?= htmlspecialchars($deleteErrorMessage); ?></div>
