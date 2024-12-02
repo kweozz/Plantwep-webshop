@@ -62,6 +62,8 @@ if (isset($_POST['add_product'])) {
         $productErrorMessage = 'Please choose an image.';
     }
 }
+
+
 ?>
 
 <!DOCTYPE html>
@@ -83,7 +85,7 @@ if (isset($_POST['add_product'])) {
 
         <!-- Success or error messages -->
         <?php if (!empty($productSuccessMessage)): ?>
-            <div class="alert-succes alert"><?= htmlspecialchars($productSuccessMessage); ?></div>
+            <div class="alert-success"><?= htmlspecialchars($productSuccessMessage); ?></div>
         <?php endif; ?>
 
         <?php if (!empty($productErrorMessage)): ?>

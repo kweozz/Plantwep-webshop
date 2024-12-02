@@ -407,6 +407,7 @@ textarea,
     text-align: left;
     width: 100%;
     padding-top: 5px;
+    padding-bottom: 2%;
 }
 
 .alert-success {
@@ -415,6 +416,7 @@ textarea,
     text-align: left;
     width: 100%;
     padding-top: 5px;
+    padding-bottom: 2%;
 }
 
 .padding {
