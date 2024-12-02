@@ -76,12 +76,12 @@ if (isset($_POST['delete_product'])) {
             <div class="categories-wrapper">
                 <button class="scroll-btn left-btn">&#8592;</button>
                 <div class="categories">
-                    <a href="delete-product.php"
+                    <a href="manage-products.php"
                         class="category-card <?= $selectedCategoryId === null ? 'active' : ''; ?>">
                         <p>All</p>
                     </a>
                     <?php foreach ($categories as $category): ?>
-                        <a href="delete-product.php?category_id=<?php echo $category['id']; ?>"
+                        <a href="manage-products.php?category_id=<?php echo $category['id']; ?>"
                             class="category-card <?= $selectedCategoryId == $category['id'] ? 'active' : ''; ?>">
                             <p><?php echo htmlspecialchars($category['name']); ?></p>
                         </a>

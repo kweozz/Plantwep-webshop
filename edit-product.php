@@ -85,7 +85,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <?= $message; ?>
 
         <form class="form-group add-product-container" method="post" action="" enctype="multipart/form-data">
-            <a class="back-icon" href="delete-product.php">
+            <a class="back-icon" href="manage-products.php">
                 <i class="fa fa-arrow-left" aria-hidden="true"></i>
             </a>
             <!-- Afbeelding upload -->
