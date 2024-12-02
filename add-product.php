@@ -78,7 +78,7 @@ if (isset($_POST['add_product'])) {
 </head>
 
 <body>
-    <nav>
+<nav>
         <a href="index.php"><img class="logo" src="images/logo-plantwerp.png" alt="Plantwerp Logo"></a>
         <input type="text" placeholder="Zoek naar planten..." class="search-bar">
         <div class="nav-items">
@@ -162,7 +162,7 @@ if (isset($_POST['add_product'])) {
                 <input type="number" id="product_stock" name="product_stock" required>
                 <button class="btn btn-admin" type="submit" name="add_product">Add Product</button>
             </div>
-
+           
         </form>
 
     </section>

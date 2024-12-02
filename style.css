@@ -525,6 +525,27 @@ textarea,
     pointer-events: none;
     z-index: 1;
 }
+.delete-form {
+    display: inline-block;
+    margin-left: 10px;
+}
+
+.delete-btn {
+    background: transparent;
+    border: none;
+    color: red;
+    font-size: 1.5em;
+    cursor: pointer;
+    transition: color 0.3s;
+}
+
+.delete-btn:hover {
+    color: darkred;
+}
+
+.delete-btn i {
+    pointer-events: none; /* Ensure icon doesn't block button functionality */
+}
 
 
 /* Responsive */

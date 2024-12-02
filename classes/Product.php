@@ -144,10 +144,24 @@ class Product
     {
         $conn = Db::getConnection();
         $statement = $conn->prepare("SELECT * FROM products WHERE id = :id");
-        $statement->bindValue(":id", $id);
+        $statement->bindValue(":id", $id, PDO::PARAM_INT);
         $statement->execute();
-        return $statement->fetch(PDO::FETCH_ASSOC);
+        $result = $statement->fetch(PDO::FETCH_ASSOC);
+    
+        if ($result) {
+            $product = new Product();
+            $product->setId($result['id']);
+            $product->setName($result['name']);
+            $product->setDescription($result['description']);
+            $product->setPrice($result['price']);
+            $product->setStock($result['stock']);
+            $product->setImage($result['image']);
+            return $product;
+        }
+    
+        return null; // Return null if no product is found
     }
+    
 
     // Retrieve products by category
     public static function getByCategory($category_id)
@@ -199,5 +213,7 @@ class Product
             return "Het is niet gelukt om het product bij te werken";
         }
     }
+    
 }
+
 ?>

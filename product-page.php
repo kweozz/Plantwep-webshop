@@ -107,10 +107,42 @@ if (!$product) {
 
                 <button class="btn" type="submit">Add to Cart</button>
         </div>
-    </div>
+        </div>
+        <script>
+            // JavaScript om de prjs te berekenen op basis van de geselecteerde opties
+            //de 2 argumenten zijn de id's van de select elementen
+            document.querySelectorAll('select,#quantity').forEach(function (select) {
+                select.addEventListener('change', updatePrice);
+            });
+            //
+            function updatePrice() {
+                let basePrice = <?php echo $product['price']; ?>;
+                let sizePrice = 0;
+                let potPrice = 0;
+
+                // op basis van de prijs van de plant en de geselecteerde opties de prijs berekenen
+                const size = document.getElementById('size').value;
+                if (size === 'medium') {
+                    sizePrice = 5;
+                } else if (size === 'large') {
+                    sizePrice = 10;
+                }
+
+                // Pot pricing
+                const pot = document.getElementById('pot').value;
+                if (pot === 'with') {
+                    potPrice = 5;
+                }
+                // als
+                const quantity = document.getElementById('quantity').value;
+                const finalPrice = (basePrice + sizePrice + potPrice) * quantity;
+                document.getElementById('finalPrice').textContent = finalPrice.toFixed(2);
+            }
 
 
+        </script>
 
+    
     <h2>Meer van de categorie <span
             style="color:green;"><?php echo htmlspecialchars($product['category_name']); ?></span></h2>
     <div class="related-products">
@@ -131,39 +163,6 @@ if (!$product) {
             <?php endforeach; ?>
         </div>
     </div>
-    <script>
-        // JavaScript om de prjs te berekenen op basis van de geselecteerde opties
-        //de 2 argumenten zijn de id's van de select elementen
-        document.querySelectorAll('select,#quantity').forEach(function (select) {
-            select.addEventListener('change', updatePrice);
-        });
-        //
-        function updatePrice() {
-            let basePrice = <?php echo $product['price']; ?>;
-            let sizePrice = 0;
-            let potPrice = 0;
-
-            // op basis van de prijs van de plant en de geselecteerde opties de prijs berekenen
-            const size = document.getElementById('size').value;
-            if (size === 'medium') {
-                sizePrice = 5;
-            } else if (size === 'large') {
-                sizePrice = 10;
-            }
-
-            // Pot pricing
-            const pot = document.getElementById('pot').value;
-            if (pot === 'with') {
-                potPrice = 5;
-            }
-            // als
-            const quantity = document.getElementById('quantity').value;
-            const finalPrice = (basePrice + sizePrice + potPrice) * quantity;
-            document.getElementById('finalPrice').textContent = finalPrice.toFixed(2);
-        }
 
 
-    </script>
-</body>
-
-</html>
+    </html>
