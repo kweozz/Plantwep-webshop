@@ -105,16 +105,15 @@ if (isset($_POST['delete_product'])) {
                     <input type="hidden" name="product_id" value="<?= htmlspecialchars($product['id']); ?>">
                     <button type="submit" name="delete_product"
                         style="color:red; border:none; background:none; cursor:pointer;">
-                        <i class="fas fa-times-circle"></i> Verwijderen
-                    </button>
+                        <i class="fas fa-times-circle"></i>  </button>
                 </form>
                 <!-- In je productcard, voeg een bewerken knop toe -->
-                <form action="edit-product.php" method="GET" style="display:inline;">
+                <a href="edit-product.php?id=<?php echo $product['id']; ?>" class="product-card">
                     <input type="hidden" name="product_id" value="<?= htmlspecialchars($product['id']); ?>">
                     <button type="submit" style="border:none; background:none; cursor:pointer;">
                         <i class="fas fa-edit"></i> Bewerken
                     </button>
-                </form>
+                </a>
 
             </div>
 

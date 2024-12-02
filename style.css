@@ -188,6 +188,7 @@ h2 {
     height: fit-content;
     object-fit: cover;
     padding-bottom: 4%;
+    aspect-ratio: 1; /* Houdt de hoogte en breedte in een 1:1 verhouding */
 }
 
 .product-card h4 {
@@ -546,7 +547,12 @@ textarea,
 .delete-btn i {
     pointer-events: none; /* Ensure icon doesn't block button functionality */
 }
-
+.back-icon{
+    font-size: 1.5em;
+    color: #2A2B2A;
+    cursor: pointer;
+    transition: color 0.3s;
+}
 
 /* Responsive */
 @media (min-width: 650px) {
