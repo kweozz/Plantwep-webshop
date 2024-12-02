@@ -4,6 +4,8 @@ include_once __DIR__ . '/classes/Db.php';
 include_once __DIR__ . '/classes/User.php';
 include_once __DIR__ . '/classes/Category.php';
 include_once __DIR__ . '/classes/Product.php';
+include_once __DIR__ . '/classes/ImageUploader.php';
+
 session_start();
 
 if ($_SESSION['role'] !== 1) {
@@ -25,7 +27,7 @@ $product = new Product();
 $products = $product->getAll();
 
 
-// Add Product
+/// Add Product
 if (isset($_POST['add_product'])) {
     $productName = htmlspecialchars(trim($_POST['product_name']), ENT_QUOTES, 'UTF-8');
     $productPrice = htmlspecialchars(trim($_POST['product_price']), ENT_QUOTES, 'UTF-8');
@@ -35,7 +37,8 @@ if (isset($_POST['add_product'])) {
 
     if (isset($_FILES['product_image']) && $_FILES['product_image']['error'] === 0) {
         try {
-            $uploadResult = uploadImage($_FILES['product_image']);
+            $imageUploader = new ImageUploader();
+            $uploadResult = $imageUploader->uploadImage($_FILES['product_image']);
             if ($uploadResult) {
                 $product = new Product();
                 $product->setName($productName);
@@ -59,22 +62,6 @@ if (isset($_POST['add_product'])) {
         $productErrorMessage = 'Please choose an image.';
     }
 }
-
-
-
-
-// Upload Image Function (From Admin Class)
-function uploadImage($file)
-{
-    // File upload logic goes here, e.g., move file to a directory
-    $targetDirectory = 'images/uploads/';
-    $targetFile = $targetDirectory . basename($file['name']);
-    if (move_uploaded_file($file['tmp_name'], $targetFile)) {
-        return basename($file['name']);
-    } else {
-        return false;
-    }
-}
 ?>
 
 <!DOCTYPE html>
@@ -93,27 +80,31 @@ function uploadImage($file)
 
     <section class="product padding">
         <h2>Add products</h2>
-        <div class="add-product-container ">
 
-            <?php if (!empty($productSuccessMessage)): ?>
-                <div class="alert-succes alert"><?= htmlspecialchars($productSuccessMessage); ?></div>
-            <?php endif; ?>
+        <!-- Success or error messages -->
+        <?php if (!empty($productSuccessMessage)): ?>
+            <div class="alert-succes alert"><?= htmlspecialchars($productSuccessMessage); ?></div>
+        <?php endif; ?>
 
-            <?php if (!empty($productErrorMessage)): ?>
-                <div class="alert-danger"><?= htmlspecialchars($productErrorMessage); ?></div>
-            <?php endif; ?>
+        <?php if (!empty($productErrorMessage)): ?>
+            <div class="alert-danger"><?= htmlspecialchars($productErrorMessage); ?></div>
+        <?php endif; ?>
+
+
+        <form class="form-group add-product-container" method="post" action="" enctype="multipart/form-data">
 
             <!-- File upload input (hidden) and preview section -->
-            <div class="product-image" >
+            <div class="product-image">
                 <label for="image" class="image-upload-label">
-                    <img id="imagePreview" src="">
-                    <span class="upload-icon">+</span>
+                    <img id="imagePreview" src="" style="display:none;"> <!-- Hide preview initially -->
+                    <span class="upload-icon">+</span> <!-- Make sure this is visible -->
                 </label>
-                <input type="file" id="image" name="product_image" accept="image/*" onchange="previewImage(event)"
-                    style="display: none;">
+                <input type="file" id="image" name="product_image" accept="image/*" required
+                    onchange="previewImage(event, 'imagePreview')" style="display: none;">
             </div>
 
-            <form class="form-group product-details" method="post" action="" enctype="multipart/form-data">
+            <!-- Product Details Form -->
+            <div class="product-details">
                 <label for="product_name">Product Name:</label>
                 <input type="text" id="product_name" name="product_name" required>
 
@@ -136,48 +127,34 @@ function uploadImage($file)
                     <?php endif; ?>
                 </select>
 
-
                 <label for="product_stock">Product Stock:</label>
                 <input type="number" id="product_stock" name="product_stock" required>
-
-
-
-                <!-- Add Product Button -->
                 <button class="btn btn-admin" type="submit" name="add_product">Add Product</button>
-            </form>
-
-
-
-
-
-        </div>
-        </div>
+            </div>
+           
+        </form>
 
     </section>
     </div>
     </div>
     <script>
 
-        // Image previewer function
-        function previewImage(event) {
-            // Get the uploaded file
-            const file = event.target.files[0];
-
-            if (file) {
-                // Create a FileReader instance
-                const reader = new FileReader();
-
-                // Once the file is loaded, set the image preview's `src`
-                reader.onload = function (e) {
-                    const preview = document.getElementById('imagePreview');
-                    preview.src = e.target.result; // Set the image source to the file's data URL
-                };
-
-                // Read the file as a data URL
-                reader.readAsDataURL(file);
-            }
+        // Image previewer
+        function previewImage(event, previewId) {
+            // Maak een nieuwe FileReader aan, js object dat bestanden kan lezen
+            const reader = new FileReader();
+            //als het geladen is dan wordt de functie uitgevoerd
+            reader.onload = function () {
+                // Zoek het <img> element op de pagina met het meegegeven id (previewId)
+                const preview = document.getElementById(previewId);
+                // zet de src (bron) van img naar de gelezen data 
+                preview.src = reader.result;
+                // maakt de afbeelding zichtbaar
+                preview.style.display = 'block';
+            };
+            // Lees het bestand als een data URL (base64 encoded image) --> voor mijzelf een data url is een url waarin de afbeelding is opgeslagen --> vragen aan joris
+            reader.readAsDataURL(event.target.files[0]);
         }
-
 
     </script>
 </body>
