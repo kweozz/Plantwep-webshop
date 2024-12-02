@@ -5,30 +5,29 @@ include_once(__DIR__ . '/classes/Category.php');
 include_once(__DIR__ . '/classes/Product.php');
 include_once(__DIR__ . '/classes/ImageUploader.php');
 
+// Controleer of de gebruiker rechten heeft
 if ($_SESSION['role'] !== 1) {
-    header("refresh:3;url=login.php");
     echo '<h1 style="text-align: center; padding:10%; color:red; font-family:Helvetica;">' . htmlspecialchars('You do not have access to this page') . '</h1>';
+    header("refresh:3;url=login.php");
     exit();
 }
 
-
-
-if (!isset($_GET['id']) || !is_numeric($_GET['id'])) {
+// Haal het specifieke product op
+$productId = isset($_GET['id']) && is_numeric($_GET['id']) ? intval($_GET['id']) : null;
+if (!$productId) {
     die('Product ID is not valid.');
 }
 
-
-// Haal het specifieke product op
-$productId = intval($_GET['id']);
 $product = Product::getById($productId);
-
-//haal de categorie op van het product
-$category = Category::getById($product['category_id']);
-$product['category_name'] = $category['name'];
-
 if (!$product) {
     die('Product not found.');
 }
+
+// Haal categorieën op
+$category = new Category();
+$categories = $category->getAll();
+
+$message = '';
 
 // Verwerk het bewerkte product
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -36,43 +35,32 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $description = htmlspecialchars(trim($_POST['description']), ENT_QUOTES, 'UTF-8');
     $price = htmlspecialchars(trim($_POST['price']), ENT_QUOTES, 'UTF-8');
     $stock = htmlspecialchars(trim($_POST['stock']), ENT_QUOTES, 'UTF-8');
-    $message = '';
+    $categoryId = htmlspecialchars(trim($_POST['category']), ENT_QUOTES, 'UTF-8');
+    $imagePath = $product['image']; // Standaard huidige afbeelding gebruiken
 
     try {
         // Controleer of er een nieuwe afbeelding is geüpload
         if (isset($_FILES['product_image']) && $_FILES['product_image']['error'] === UPLOAD_ERR_OK) {
             $imageUploader = new ImageUploader();
             $uploadResult = $imageUploader->uploadImage($_FILES['product_image']);
-
-            if ($uploadResult['success']) {
-                $product['image'] = $uploadResult['file_path']; // Wijzig de image in de array
+            if ($uploadResult) {
+                $imagePath = "images/uploads/{$uploadResult}";
             } else {
-                throw new Exception($uploadResult['error']);
+                throw new Exception('Afbeelding uploaden mislukt.');
             }
         }
 
-        // Werk productdetails bij
-        $product['name'] = $name;
-        $product['description'] = $description;
-        $product['price'] = $price;
-        $product['stock'] = $stock;
-
-        // Bijwerken in de database
-        $updateResult = Product::update($product); // Zorg ervoor dat de update-methode correct is aangepast
-        if ($updateResult) {
-            $message = 'Product succesvol bijgewerkt!';
-            header("Location: edit-product.php?product_id=" . $productId . "&message=" . urlencode($message));
-            exit();
+        // Update het product
+        $updateMessage = Product::updateProduct($productId, $name, $price, $description, $categoryId, $imagePath, $stock);
+        if (strpos($updateMessage, 'succesvol') !== false) {
+            $message = '<div class="alert-success">' . $updateMessage . '</div>';
         } else {
-            $message = 'Product bijwerken mislukt.';
+            $message = '<div class="alert-danger">' . $updateMessage . '</div>';
         }
     } catch (Exception $e) {
-        $message = 'Fout: ' . $e->getMessage();
+        $message = '<div class="alert-danger">Fout: ' . htmlspecialchars($e->getMessage()) . '</div>';
     }
-
-    echo '<div class="message">' . htmlspecialchars($message) . '</div>';
 }
-
 ?>
 
 <!DOCTYPE html>
@@ -83,54 +71,68 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="style.css">
-    <title>Edit Product</title>
+    <title>Product Bewerken</title>
 </head>
 
 <body>
     <nav>
-        <!-- Navigation links -->
+        <a href="index.php"><img class="logo" src="images/logo-plantwerp.png" alt="Plantwerp Logo"></a>
     </nav>
-    
-    <h3>Product Bewerken</h3>
-    <a class="back-icon" href="delete-product.php">
-        <i class="fa fa-arrow-left" aria-hidden="true"></i>
-    </a>
 
-    <?php if (isset($message)): ?>
-        <div class="message"><?= htmlspecialchars($message); ?></div>
-    <?php endif; ?>
+    <section class="product padding">
 
-    <form class="form-group add-product-container" action="" method="POST" enctype="multipart/form-data">
-    <div class="product-image">
-        <label for="image" class="image-upload-label">
-            <img id="imagePreview" src="<?= htmlspecialchars($product['image']); ?>" 
-                style="<?= $product['image'] ? 'display:block;' : 'display:none;'; ?>">
-            <span class="upload-icon">+</span>
-        </label>
-        <input type="file" id="image" name="product_image" accept="image/*" 
-            onchange="previewImage(event, 'imagePreview')" style="display: none;">
-    </div>
+        <!-- Succes- of foutmeldingen -->
+        <?= $message; ?>
 
-    <div class="product-details">
-        <label for="name">Naam:</label>
-        <input type="text" name="name" value="<?= htmlspecialchars($product['name']); ?>" required><br>
+        <form class="form-group add-product-container" method="post" action="" enctype="multipart/form-data">
+            <a class="back-icon" href="delete-product.php">
+                <i class="fa fa-arrow-left" aria-hidden="true"></i>
+            </a>
+            <!-- Afbeelding upload -->
+            <div class="product-image">
+                <label for="image" class="image-upload-label">
+                    <img id="imagePreview" src="<?= htmlspecialchars($product['image']); ?>"
+                        style="<?= $product['image'] ? 'display:block;' : 'display:none;'; ?>">
+                    <span class="upload-icon">+</span>
+                </label>
+                <input type="file" id="image" name="product_image" accept="image/*"
+                    onchange="previewImage(event, 'imagePreview')" style="display: none;">
+            </div>
 
-        <label for="description">Beschrijving:</label>
-        <textarea name="description" required><?= htmlspecialchars($product['description']); ?></textarea><br>
+            <!-- Productdetails -->
+            <div class="product-details">
+                <h2>Product Bewerken</h2>
 
-        <label for="price">Prijs:</label>
-        <input type="number" step="0.01" name="price" value="<?= htmlspecialchars($product['price']); ?>" required><br>
+                <label for="name">Naam:</label>
+                <input type="text" id="name" name="name" value="<?= htmlspecialchars($product['name']); ?>" required>
 
-        <label for="stock">Voorraad:</label>
-        <input type="number" name="stock" value="<?= htmlspecialchars($product['stock']); ?>" required><br>
+                <label for="description">Beschrijving:</label>
+                <textarea id="description" name="description"
+                    required><?= htmlspecialchars($product['description']); ?></textarea>
 
-        <button class="btn btn-admin" type="submit">Aanpassingen opslaan</button>
-    </div>
-</form>
+                <label for="price">Prijs:</label>
+                <input type="number" id="price" name="price" step="0.01"
+                    value="<?= htmlspecialchars($product['price']); ?>" required>
 
+                <label for="stock">Voorraad:</label>
+                <input type="number" id="stock" name="stock" value="<?= htmlspecialchars($product['stock']); ?>"
+                    required>
+
+                <label for="category">Categorie:</label>
+                <select id="category" name="category">
+                    <?php foreach ($categories as $cat): ?>
+                        <option value="<?= htmlspecialchars($cat['id']); ?>" <?= $cat['id'] == $product['category_id'] ? 'selected' : ''; ?>>
+                            <?= htmlspecialchars($cat['name']); ?>
+                        </option>
+                    <?php endforeach; ?>
+                </select>
+
+                <button class="btn btn-admin" type="submit">Opslaan</button>
+            </div>
+        </form>
+    </section>
 
     <script>
-        // Preview uploaded image
         function previewImage(event, previewId) {
             const reader = new FileReader();
             reader.onload = function () {

@@ -78,43 +78,14 @@ if (isset($_POST['add_product'])) {
 </head>
 
 <body>
-<nav>
-        <a href="index.php"><img class="logo" src="images/logo-plantwerp.png" alt="Plantwerp Logo"></a>
-        <input type="text" placeholder="Zoek naar planten..." class="search-bar">
-        <div class="nav-items">
 
-            <a href="profile.php" class="icon profile-icon" aria-label="Profiel">
-                <i class="fas fa-user"></i>
-            </a>
-
-
-            <a href="#" class="icon basket-icon" aria-label="Winkelmand">
-                <i class="fas fa-shopping-basket"></i>
-            </a>
-
-
-            <?php if (isset($_SESSION['role']) && $_SESSION['role'] == 1): ?>
-                <a href="admin-dash.php" class="icon admin-icon" aria-label="Admin Dashboard">
-                    <i class="fas fa-tools"></i>
-                </a>
-            <?php endif; ?>
-
-            <!-- Currency -->
-            <?php if (isset($_SESSION['user']['currency'])): ?>
-                <span class="currency-display">
-                    <i class="fas fa-coins"></i>
-                    <?php echo htmlspecialchars($_SESSION['user']['currency']); ?>
-                </span>
-            <?php endif; ?>
-        </div>
-    </nav>
 
     <section class="product padding">
         <h2>Add products</h2>
 
         <!-- Success or error messages -->
         <?php if (!empty($productSuccessMessage)): ?>
-            <div class="alert-success"><?= htmlspecialchars($productSuccessMessage); ?></div>
+            <div class="alert-succes"><?= htmlspecialchars($productSuccessMessage); ?></div>
         <?php endif; ?>
 
         <?php if (!empty($productErrorMessage)): ?>

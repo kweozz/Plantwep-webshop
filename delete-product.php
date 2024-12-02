@@ -75,11 +75,11 @@ if (isset($_POST['delete_product'])) {
         <div class="categories-wrapper">
             <button class="scroll-btn left-btn">&#8592;</button>
             <div class="categories">
-                <a href="delete_product.php" class="category-card <?= $selectedCategoryId === null ? 'active' : ''; ?>">
+                <a href="delete-product.php" class="category-card <?= $selectedCategoryId === null ? 'active' : ''; ?>">
                     <p>All</p>
                 </a>
                 <?php foreach ($categories as $category): ?>
-                    <a href="delete_product.php?category_id=<?php echo $category['id']; ?>"
+                    <a href="delete-product.php?category_id=<?php echo $category['id']; ?>"
                         class="category-card <?= $selectedCategoryId == $category['id'] ? 'active' : ''; ?>">
                         <p><?php echo htmlspecialchars($category['name']); ?></p>
                     </a>
@@ -93,28 +93,28 @@ if (isset($_POST['delete_product'])) {
     <!-- Dit is de HTML weergave van de producten -->
     <div class="products">
         <?php foreach ($products as $product): ?>
-            <div class="product-card">
+            <div class="product-card manage-card">
+                        <!-- Verwijder knop (Rood kruisje) -->
+                        <form class="delete-form" action="" method="POST" style="display:inline;">
+                    <input type="hidden" name="product_id" value="<?= htmlspecialchars($product['id']); ?>">
+                    <button class="delete-btn" type="submit" name="delete_product">
+                        <i class="fas fa-times-circle"></i> </button>
+                </form>
                 <img src="<?= htmlspecialchars($product['image']); ?>" alt="<?= htmlspecialchars($product['name']); ?>">
                 <h4><?= htmlspecialchars($product['name']); ?></h4>
                 <p><?= htmlspecialchars($product['description']); ?></p>
                 <p>€<?= htmlspecialchars($product['price']); ?></p>
                 <p>Stock: <?= htmlspecialchars($product['stock']); ?></p>
 
-                <!-- Verwijder knop (Rood kruisje) -->
-                <form action="" method="POST" style="display:inline;">
-                    <input type="hidden" name="product_id" value="<?= htmlspecialchars($product['id']); ?>">
-                    <button type="submit" name="delete_product"
-                        style="color:red; border:none; background:none; cursor:pointer;">
-                        <i class="fas fa-times-circle"></i>  </button>
-                </form>
+
                 <!-- In je productcard, voeg een bewerken knop toe -->
-                <a href="edit-product.php?id=<?php echo $product['id']; ?>" class="product-card">
+                <a href="edit-product.php?id=<?php echo $product['id']; ?>" class="btn">
                     <input type="hidden" name="product_id" value="<?= htmlspecialchars($product['id']); ?>">
                     <button type="submit" style="border:none; background:none; cursor:pointer;">
-                        <i class="fas fa-edit"></i> Bewerken
+                      <p>Edit</p>
                     </button>
                 </a>
-
+        
             </div>
 
         <?php endforeach; ?>
@@ -156,6 +156,17 @@ if (isset($_POST['delete_product'])) {
             categories.scrollBy({
                 left: 200,
                 behavior: 'smooth',
+            });
+        });
+        //are yyou sure u want to delte this product
+        //if yes, delete
+        //if no, cancel
+        document.querySelectorAll('.delete-form').forEach(form => {
+            form.addEventListener('submit', function(event) {
+                event.preventDefault();
+                if (confirm('Are you sure you want to delete this product?')) {
+                    this.submit();
+                }
             });
         });
     </script>

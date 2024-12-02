@@ -188,7 +188,8 @@ h2 {
     height: fit-content;
     object-fit: cover;
     padding-bottom: 4%;
-    aspect-ratio: 1; /* Houdt de hoogte en breedte in een 1:1 verhouding */
+    aspect-ratio: 1;
+    /* Houdt de hoogte en breedte in een 1:1 verhouding */
 }
 
 .product-card h4 {
@@ -232,7 +233,8 @@ h2 {
     height: 100%;
     width: 100%;
     overflow: hidden;
-    aspect-ratio: 1; /* Houdt de hoogte en breedte in een 1:1 verhouding */
+    aspect-ratio: 1;
+    /* Houdt de hoogte en breedte in een 1:1 verhouding */
 }
 
 .product-image img {
@@ -502,14 +504,17 @@ textarea,
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 100%; /* Laat het de breedte van de oudercontainer gebruiken */
-    aspect-ratio: 1; /* Houdt de hoogte en breedte in een 1:1 verhouding */
+    width: 100%;
+    /* Laat het de breedte van de oudercontainer gebruiken */
+    aspect-ratio: 1;
+    /* Houdt de hoogte en breedte in een 1:1 verhouding */
     cursor: pointer;
     position: relative;
     overflow: hidden;
     border-radius: 16px;
     padding: 0%;
-    background-color: rgba(0, 0, 0, 0.5); /* Achtergrondkleur */
+    background-color: rgba(0, 0, 0, 0.5);
+    /* Achtergrondkleur */
 }
 
 .image-upload-label img {
@@ -522,32 +527,56 @@ textarea,
 .upload-icon {
     position: absolute;
     font-size: 5em;
-    color: white; /* Zichtbare kleur tegen donkere achtergrond */
+    color: white;
+    /* Zichtbare kleur tegen donkere achtergrond */
     pointer-events: none;
     z-index: 1;
 }
+
+.manage-card:hover {
+    cursor: default;
+}
+
+.manage-card p {
+    padding: 0% 10%;
+}
+.manage-card .btn p  {
+   font-size: 1.4em;
+   color: #f6f6f6;
+   margin: 0%;
+}
+
 .delete-form {
-    display: inline-block;
-    margin-left: 10px;
+
+    position: relative;
+    height: 0px;
+    top: 5%;
+    right: -40%;
 }
 
 .delete-btn {
     background: transparent;
     border: none;
     color: red;
-    font-size: 1.5em;
+    font-size: 2em;
     cursor: pointer;
     transition: color 0.3s;
 }
 
 .delete-btn:hover {
     color: darkred;
+    scale: 1.1;
+    transition: transform 0.3s, box-shadow 0.3s;
+    cursor: pointer;
+
 }
 
 .delete-btn i {
-    pointer-events: none; /* Ensure icon doesn't block button functionality */
+    pointer-events: none;
+    /* Ensure icon doesn't block button functionality */
 }
-.back-icon{
+
+.back-icon {
     font-size: 1.5em;
     color: #2A2B2A;
     cursor: pointer;
