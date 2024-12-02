@@ -62,16 +62,17 @@ if (isset($_POST['delete_product'])) {
         </div>
     </nav>
 
-    <h3>Manage products</h3>
+    <h1>Manage products</h1>
 
     <?php if (isset($_GET['message'])): ?>
         <div class="message">
             <?php echo htmlspecialchars($_GET['message']); ?>
         </div>
     <?php endif; ?>
-
-    <h2>Categories</h2>
-    <section class="category-section">
+<div class="manage-products">
+    <h2>Filter by categories</h2>
+    <section class="category-section manage-category">
+        
         <div class="categories-wrapper">
             <button class="scroll-btn left-btn">&#8592;</button>
             <div class="categories">
@@ -88,10 +89,14 @@ if (isset($_POST['delete_product'])) {
             <button class="scroll-btn right-btn">&#8594;</button>
         </div>
     </section>
-
+    <section class="products-section">
     <h2>Products</h2>
     <!-- Dit is de HTML weergave van de producten -->
-    <div class="products">
+     
+    <div class="products"> <?php if (empty($products)): ?>
+                <p>No products found for this category.</p>
+            <?php else: ?>
+
         <?php foreach ($products as $product): ?>
             <div class="product-card manage-card">
                         <!-- Verwijder knop (Rood kruisje) -->
@@ -118,8 +123,11 @@ if (isset($_POST['delete_product'])) {
             </div>
 
         <?php endforeach; ?>
+        <?php endif; ?>
     </div>
-
+    
+    </section>
+    </div>
     <script>
         // Optional: Handle category scrolling if needed
         const categories = document.querySelector('.categories');

@@ -73,7 +73,7 @@ nav {
     scrollbar-width: none;
     /* Hide scrollbar in Firefox */
     scroll-behavior: smooth;
-    padding: 2% 4%;
+    padding:  5%;
 }
 
 h2 {
@@ -82,10 +82,10 @@ h2 {
 }
 
 .category-section {
-    padding: 5% 0%;
     border-radius: 16px;
     display: flex;
     flex-direction: column;
+ 
     background-color: #f6f6f6;
     overflow-x: hidden;
 }
@@ -153,9 +153,6 @@ h2 {
     transform: scale(1.05);
 }
 
-.products-section {
-    padding: 5% 0%;
-}
 
 
 .products {
@@ -468,7 +465,9 @@ textarea,
 .signup-btn:hover {
     background-color: #45a049;
 }
-
+section {
+     padding: 5% 0%;
+}
 /* Admin Page */
 .admin-section {
     background-color: #f6f6f6;
@@ -575,14 +574,21 @@ textarea,
     pointer-events: none;
     /* Ensure icon doesn't block button functionality */
 }
-
+.manage-products{
+    padding-top: 5%;
+}
+.manage-category{
+    padding: 0%;
+}
 .back-icon {
     font-size: 1.5em;
     color: #2A2B2A;
     cursor: pointer;
     transition: color 0.3s;
 }
-
+h1{
+    margin: 0%;
+}
 /* Responsive */
 @media (min-width: 650px) {
     .product-container {
