@@ -143,7 +143,11 @@ if (isset($_POST["logout"])) {
                 </div>
                 <button type="submit" class="btn" name="change_password">Wijzig wachtwoord</button>
             </form>
-
+       <!-- Bestellingen -->
+       <section class="profile-orders padding">
+            <h2>Bestellingen</h2>
+            <p>Er zijn geen bestellingen gevonden.</p>
+        </section> 
             <!-- Uitloggen -->
             <form action="profile.php" method="POST" class="logout-form padding ">
                 <h2>Uitloggen</h2>
@@ -158,11 +162,7 @@ if (isset($_POST["logout"])) {
             </form>
         </section>
 
-        <!-- Bestellingen -->
-        <section class="profile-orders padding">
-            <h2>Bestellingen</h2>
-            <p>Er zijn geen bestellingen gevonden.</p>
-        </section>
+ 
     </div>
 
 </body>
