@@ -65,11 +65,29 @@ class Category
     public function delete($categoryId)
     {
         $conn = Db::getConnection();
-        $statement = $conn->prepare("DELETE FROM category WHERE id = :id");
+
+        // Retrieve the image path before deleting the category
+        $statement = $conn->prepare("SELECT image FROM category WHERE id = :id");
         $statement->bindValue(':id', $categoryId);
-        return $statement->execute();
+        $statement->execute();
+        $category = $statement->fetch(PDO::FETCH_ASSOC);
+
+        if ($category) {
+            // Delete the image file if it exists
+            $imagePath = $category['image'];
+            if (file_exists($imagePath)) {
+                unlink($imagePath);
+            }
+
+            // Delete the category from the database
+            $statement = $conn->prepare("DELETE FROM category WHERE id = :id");
+            $statement->bindValue(':id', $categoryId);
+            return $statement->execute();
+        }
+
+        return false;
     }
-    
+
     // Retrieve all categories
     public static function getAll()
     {
@@ -136,7 +154,5 @@ class Category
             return "Het is niet gelukt om de categorie te verwijderen";
         }
     }
-
-
 }
 ?>
