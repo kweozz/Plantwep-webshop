@@ -2,8 +2,8 @@
 session_start();
 
 if ($_SESSION['role'] !== 1) {
-    echo '<h1 style="text-align: center; padding:10%; color:red; font-family:Helvetica;">' . htmlspecialchars('You do not have access to this page') . '</h1>';
     header("refresh:3;url=login.php");
+    echo '<h1 style="text-align: center; padding:10%; color:red; font-family:Helvetica;">' . htmlspecialchars('You do not have access to this page') . '</h1>';
     exit();
 }
 
@@ -26,7 +26,7 @@ if ($selectedCategoryId) {
 
 // Delete Product
 if (isset($_POST['delete_product'])) {
-    $productId = htmlspecialchars(trim($_POST['product_id']), ENT_QUOTES, 'UTF-8');
+    $productId = intval($_POST['product_id']);
     try {
         $product = new Product();
         $product->setId($productId); // Zorg ervoor dat de ID goed wordt ingesteld
@@ -102,7 +102,7 @@ if (isset($_POST['delete_product'])) {
                         <div class="product-card manage-card">
                             <!-- Verwijder knop (Rood kruisje) -->
                             <form class="delete-form" action="" method="POST" style="display:inline;">
-                                <input type="hidden" name="product_id" value="<?= htmlspecialchars($product['id']); ?>">
+                                <input type="hidden" name="product_id" value="<?= intval($product['id']); ?>">
                                 <button class="delete-btn" type="submit" name="delete_product">
                                     <i class="fas fa-times-circle"></i> </button>
                             </form>

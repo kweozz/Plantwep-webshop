@@ -125,9 +125,32 @@ class Product
     public function delete()
     {
         $conn = Db::getConnection();
-        $statement = $conn->prepare("DELETE FROM products WHERE id = :id");
+        
+        // First, retrieve the image path
+        $statement = $conn->prepare("SELECT image FROM products WHERE id = :id");
         $statement->bindValue(":id", $this->getId());
-        return $statement->execute();
+        $statement->execute();
+        $product = $statement->fetch(PDO::FETCH_ASSOC);
+        
+        if ($product) {
+            $imagePath = $product['image'];
+            
+            // Delete the product from the database
+            $statement = $conn->prepare("DELETE FROM products WHERE id = :id");
+            $statement->bindValue(":id", $this->getId());
+            $result = $statement->execute();
+            
+            if ($result) {
+                // Delete the image file
+                if (file_exists($imagePath)) {
+                    unlink($imagePath);
+                }
+            }
+            
+            return $result;
+        }
+        
+        return false;
     }
 
     // Retrieve all products
