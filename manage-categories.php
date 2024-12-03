@@ -7,8 +7,8 @@ if ($_SESSION['role'] !== 1) {
     exit();
 }
 
-include_once(__DIR__ . '/classes/Db.php');
-include_once(__DIR__ . '/classes/Category.php');
+include_once __DIR__ . '/classes/Db.php';
+include_once __DIR__ . '/classes/Category.php';
 
 // Fetch categories from the database
 $categories = Category::getAll();
@@ -19,7 +19,7 @@ if (isset($_POST['delete_category'])) {
     try {
         $category = new Category();
         $category->setId($categoryId);
-        if ($category->delete()) {
+        if ($category->delete($categoryId)) {
             $deleteSuccessMessage = 'Category successfully deleted!';
         } else {
             $deleteErrorMessage = 'Failed to delete category.';
@@ -58,31 +58,30 @@ if (isset($_POST['delete_category'])) {
     <?php endif; ?>
 
     <div class="categories">
-    <?php foreach ($categories as $category): ?>
-        <div class="category-card manage-card">
-            <form class="delete-form" action="" method="POST" style="display:inline;">
-                <input type="hidden" name="category_id" value="<?= htmlspecialchars($category['id']); ?>">
-                <button class="delete-btn" type="submit" name="delete_category" onclick="return confirm('Are you sure you want to delete this category?')">
-                    <i class="fas fa-times-circle"></i>
-                </button>
-            </form>
-            <img src="<?= htmlspecialchars($category['image']); ?>" alt="<?= htmlspecialchars($category['name']); ?>">
-            <h4><?= htmlspecialchars($category['name']); ?></h4>
+        <?php foreach ($categories as $category): ?>
+            <div class="category-card manage-card">
+                <form class="delete-form" action="" method="POST" style="display:inline;">
+                    <input type="hidden" name="category_id" value="<?= htmlspecialchars($category['id']); ?>">
+                    <button class="delete-btn" type="submit" name="delete_category">
+                        <i class="fas fa-times-circle"></i>
+                    </button>
+                </form>
+                <img src="<?= htmlspecialchars($category['image']); ?>" alt="<?= htmlspecialchars($category['name']); ?>">
+                <h4><?= htmlspecialchars($category['name']); ?></h4>
 
-            <a href="edit-category.php?id=<?= $category['id']; ?>" class="btn btn-edit">
-                <i class="fa fa-edit"></i> Bewerken
-            </a>
-        </div>
-    <?php endforeach; ?>
-</div>
+                <a href="edit-category.php?id=<?= $category['id']; ?>" class="btn btn-edit">
+                    <i class="fa fa-edit"></i> Bewerken
+                </a>
+            </div>
+        <?php endforeach; ?>
+    </div>
 
 
     <script>
         document.querySelectorAll('.delete-form').forEach(form => {
-            form.addEventListener('submit', function(event) {
-                event.preventDefault();
-                if (confirm('Are you sure you want to delete this category?')) {
-                    this.submit();
+            form.addEventListener('submit', function (event) {
+                if (!confirm('Are you sure you want to delete this category?')) {
+                    event.preventDefault();
                 }
             });
         });
