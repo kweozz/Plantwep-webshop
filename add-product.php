@@ -79,13 +79,12 @@ if (isset($_POST['add_product'])) {
 
 <body>
 
-
     <section class="product padding">
-        <h2>Add products</h2>
+
 
         <!-- Success or error messages -->
         <?php if (!empty($productSuccessMessage)): ?>
-            <div class="alert-succes"><?= htmlspecialchars($productSuccessMessage); ?></div>
+            <div class="alert-success"><?= htmlspecialchars($productSuccessMessage); ?></div>
         <?php endif; ?>
 
         <?php if (!empty($productErrorMessage)): ?>
@@ -94,7 +93,11 @@ if (isset($_POST['add_product'])) {
 
 
         <form class="form-group add-product-container" method="post" action="" enctype="multipart/form-data">
-
+            <div class="back">
+                <a class="back-icon" href="admin-dash.php">
+                    <i class="fa fa-arrow-left" aria-hidden="true"></i>
+                </a>
+            </div>
             <!-- File upload input (hidden) and preview section -->
             <div class="product-image">
                 <label for="image" class="image-upload-label">
@@ -107,6 +110,7 @@ if (isset($_POST['add_product'])) {
 
             <!-- Product Details Form -->
             <div class="product-details">
+                <h2>Add products</h2>
                 <label for="product_name">Product Name:</label>
                 <input type="text" id="product_name" name="product_name" required>
 
@@ -133,7 +137,7 @@ if (isset($_POST['add_product'])) {
                 <input type="number" id="product_stock" name="product_stock" required>
                 <button class="btn btn-admin" type="submit" name="add_product">Add Product</button>
             </div>
-           
+
         </form>
 
     </section>

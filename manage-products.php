@@ -62,7 +62,12 @@ if (isset($_POST['delete_product'])) {
         </div>
     </nav>
 
-    <h1>Manage products</h1>
+    <div class="back">
+        <a class="back-icon" href="admin-dash.php">
+            <i class="fa fa-arrow-left" aria-hidden="true"></i>
+        </a>
+        <h1>Manage products</h1>
+    </div>
 
     <?php if (isset($_GET['message'])): ?>
         <div class="message">
@@ -109,7 +114,6 @@ if (isset($_POST['delete_product'])) {
                             <img src="<?= htmlspecialchars($product['image']); ?>"
                                 alt="<?= htmlspecialchars($product['name']); ?>">
                             <h4><?= htmlspecialchars($product['name']); ?></h4>
-                            <p><?= htmlspecialchars($product['description']); ?></p>
                             <p>€<?= htmlspecialchars($product['price']); ?></p>
                             <p>Stock: <?= htmlspecialchars($product['stock']); ?></p>
 

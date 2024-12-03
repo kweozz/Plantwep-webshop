@@ -48,7 +48,12 @@ if (isset($_POST['delete_category'])) {
         <input type="text" placeholder="Search categories..." class="search-bar">
     </nav>
 
-    <h1>Manage Categories</h1>
+    <div class="back">
+        <a class="back-icon" href="admin-dash.php">
+            <i class="fa fa-arrow-left" aria-hidden="true"></i>
+        </a>
+        <h1>Manage categories</h1>
+    </div>
 
     <?php if (isset($deleteSuccessMessage)): ?>
         <div class="message success"><?= htmlspecialchars($deleteSuccessMessage); ?></div>

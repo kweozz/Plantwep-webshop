@@ -59,8 +59,8 @@ if (isset($_POST['add_category'])) {
 <body>
 
     <section class="category padding">
-        <h2>Add Category</h2>
 
+  
         <!-- Success or error messages -->
         <?php if (!empty($categorySuccessMessage)): ?>
             <div class="alert-succes"><?= htmlspecialchars($categorySuccessMessage); ?></div>
@@ -71,7 +71,11 @@ if (isset($_POST['add_category'])) {
         <?php endif; ?>
 
         <form class="form-group add-product-container" method="post" action="" enctype="multipart/form-data">
-
+        <div class="back">
+                <a class="back-icon" href="admin-dash.php">
+                    <i class="fa fa-arrow-left" aria-hidden="true"></i>
+                </a>
+            </div>
             <!-- File upload input (hidden) and preview section -->
             <div class="product-image">
                 <label for="image" class="image-upload-label">
@@ -84,6 +88,7 @@ if (isset($_POST['add_category'])) {
 
             <!-- Category Details Form -->
             <div class="category-details">
+                <h2>Add Category</h2>
                 <label for="category_name">Category Name:</label>
                 <input type="text" id="category_name" name="category_name" required>
 

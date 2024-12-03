@@ -379,7 +379,11 @@ label {
 }
 
 
-
+.back{
+    display: flex;
+    gap: 2%;
+    align-items: center;
+}
 .form-group input,
 textarea,
 .form-group select {
