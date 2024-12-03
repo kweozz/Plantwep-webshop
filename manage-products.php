@@ -7,9 +7,9 @@ if ($_SESSION['role'] !== 1) {
     exit();
 }
 
-include_once(__DIR__ . '/classes/Db.php');
-include_once(__DIR__ . '/classes/Category.php');
-include_once(__DIR__ . '/classes/Product.php');
+include_once __DIR__ . '/classes/Db.php';
+include_once __DIR__ . '/classes/Category.php';
+include_once __DIR__ . '/classes/Product.php';
 
 // Fetch categories from the database
 $categories = Category::getAll();
@@ -18,11 +18,7 @@ $categories = Category::getAll();
 $selectedCategoryId = isset($_GET['category_id']) ? intval($_GET['category_id']) : null;
 
 // Fetch products based on the selected category
-if ($selectedCategoryId) {
-    $products = Product::getByCategory($selectedCategoryId);
-} else {
-    $products = Product::getAll(); // Show all products if no category is selected
-}
+$products = $selectedCategoryId ? Product::getByCategory($selectedCategoryId) : Product::getAll(); // Show all products if no category is selected
 
 // Delete Product
 if (isset($_POST['delete_product'])) {
@@ -169,19 +165,18 @@ if (isset($_POST['delete_product'])) {
                 behavior: 'smooth',
             });
         });
-        //are yyou sure u want to delte this product
+        //are you sure u want to delete this product
         //if yes, delete
-        //if no, cancel
-        document.querySelectorAll('.delete-form').forEach(form => {
-            form.addEventListener('submit', function (event) {
+        //if no, prevent default
+       
+    document.querySelectorAll('.delete-form').forEach(form => {
+        form.addEventListener('submit', function (event) {
+            if (!confirm('Are you sure you want to delete this product?')) {
                 event.preventDefault();
-                if (confirm('Are you sure you want to delete this product?')) {
-                    this.submit();
-                }
-            });
+            }
         });
-    </script>
-
+    });
+</script>
 </body>
 
 </html>
