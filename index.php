@@ -65,10 +65,12 @@ if ($selectedCategoryId) {
             <?php endif; ?>
         </div>
     </nav>
-    <section>
     <h1>Plantwerp</h1>
-    <div class="hero">
-    </div>
+    <section class="hero-section">
+        <div class="hero">
+        </div>
+
+
     </section>
 
 
@@ -151,6 +153,24 @@ if ($selectedCategoryId) {
                 behavior: 'smooth',
             });
         });
+
+        // Save the current scroll position before navigating
+        document.querySelectorAll('.category-card').forEach(card => {
+            card.addEventListener('click', () => {
+                // Save the current scroll position to localStorage
+                localStorage.setItem('scrollPosition', window.scrollY);
+            });
+        });
+
+        // Restore the scroll position on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            const savedPosition = localStorage.getItem('scrollPosition');
+            if (savedPosition) {
+                window.scrollTo(0, parseInt(savedPosition, 10));
+                localStorage.removeItem('scrollPosition'); // Clear the position after restoring
+            }
+        });
+
 
 
     </script>
