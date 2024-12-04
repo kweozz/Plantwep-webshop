@@ -85,21 +85,46 @@ class Product
     // CRUD Operations
 
     // Create a new product
-    public function create()
+    public function create($options = [])
     {
         $conn = Db::getConnection();
+
+        // Stap 1: Voeg het product toe
         $statement = $conn->prepare("
-            INSERT INTO products (name, price, description, category_id, image, stock) 
+            INSERT INTO products (name, price, description, category_id, image, stock)
             VALUES (:name, :price, :description, :category_id, :image, :stock)
         ");
-        $statement->bindValue(":name", $this->getName());
-        $statement->bindValue(":price", $this->getPrice());
-        $statement->bindValue(":description", $this->getDescription());
-        $statement->bindValue(":category_id", $this->getCategory());
-        $statement->bindValue(":image", $this->getImage());
-        $statement->bindValue(":stock", $this->getStock());
-        return $statement->execute();
+        $statement->bindValue(':name', $this->getName());
+        $statement->bindValue(':price', $this->getPrice());
+        $statement->bindValue(':description', $this->getDescription());
+        $statement->bindValue(':category_id', $this->getCategory());
+        $statement->bindValue(':image', $this->getImage());
+        $statement->bindValue(':stock', $this->getStock());
+
+        if ($statement->execute()) {
+            // Stap 2: Haal het product_id op
+            $productId = $conn->lastInsertId();
+
+            // Stap 3: Voeg de opties toe in product_options
+            if (!empty($options)) {
+                $optionStatement = $conn->prepare("
+                    INSERT INTO product_options (product_id, option_id)
+                    VALUES (:product_id, :option_id)
+                ");
+
+                foreach ($options as $optionId) {
+                    $optionStatement->bindValue(':product_id', $productId);
+                    $optionStatement->bindValue(':option_id', $optionId);
+                    $optionStatement->execute();
+                }
+            }
+
+            return $productId; // Return het product_id
+        }
+
+        return false;
     }
+
 
     // Update an existing product
     public function update()
@@ -125,31 +150,31 @@ class Product
     public function delete()
     {
         $conn = Db::getConnection();
-        
+
         // First, retrieve the image path
         $statement = $conn->prepare("SELECT image FROM products WHERE id = :id");
         $statement->bindValue(":id", $this->getId());
         $statement->execute();
         $product = $statement->fetch(PDO::FETCH_ASSOC);
-        
+
         if ($product) {
             $imagePath = $product['image'];
-            
+
             // Delete the product from the database
             $statement = $conn->prepare("DELETE FROM products WHERE id = :id");
             $statement->bindValue(":id", $this->getId());
             $result = $statement->execute();
-            
+
             if ($result) {
                 // Delete the image file
                 if (file_exists($imagePath)) {
                     unlink($imagePath);
                 }
             }
-            
+
             return $result;
         }
-        
+
         return false;
     }
 
@@ -171,7 +196,7 @@ class Product
         $statement->execute();
         return $statement->fetch(PDO::FETCH_ASSOC);
     }
-    
+
 
     // Retrieve products by category
     public static function getByCategory($category_id)
@@ -223,7 +248,6 @@ class Product
             return "Het is niet gelukt om het product bij te werken";
         }
     }
-    
 }
 
 ?>

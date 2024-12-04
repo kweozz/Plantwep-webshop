@@ -61,6 +61,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $message = '<div class="alert-danger">Fout: ' . htmlspecialchars($e->getMessage()) . '</div>';
     }
 }
+$selectedOptions = Option::getByProductId($productId);
+$selectedOptionIds = array_column($selectedOptions, 'id');
+
 ?>
 
 <!DOCTYPE html>

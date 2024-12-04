@@ -22,6 +22,7 @@ $product['category_name'] = $category['name'];
 if (!$product) {
     die('Product not found.');
 }
+
 ?>
 <!DOCTYPE html>
 <html lang="en">

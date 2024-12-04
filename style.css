@@ -377,8 +377,12 @@ label {
 .form-group label {
     font-size: 0.8em;
     color: #333;
-    margin-bottom: 2%;
+    font-weight: bold;
     text-align: left;
+}
+.form-group div{
+    padding-bottom: 5%;
+
 }
 
 
@@ -442,7 +446,7 @@ textarea,
     width: 100%;
     font-size: 1.1em;
     color: #fff;
-    background-color: #2f8f46;
+    background-color: #45a049;
     border: none;
     border-radius: 12px;
     text-align: center;
@@ -504,8 +508,8 @@ section {
     flex-direction: column;
     max-width: 100%;
     overflow: hidden;
-    justify-content: center;
-    align-items: center;
+    
+    
     height: 100%;
 }
 
@@ -522,7 +526,7 @@ section {
     overflow: hidden;
     border-radius: 16px;
     padding: 0%;
-    background-color: rgba(0, 0, 0, 0.5);
+    background-color: #f6f6f6;
     /* Achtergrondkleur */
 }
 
@@ -536,7 +540,7 @@ section {
 .upload-icon {
     position: absolute;
     font-size: 5em;
-    color: white;
+   color: #45a049;
     /* Zichtbare kleur tegen donkere achtergrond */
     pointer-events: none;
     z-index: 1;
@@ -610,9 +614,62 @@ h1 {
 .hero-section h1{
     padding-bottom: 3%; 
 }
+/* Optiegroep styling */
+.options-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5%;
+    max-width: 100%;
+    justify-content: center;
+    
+}
+
+/* Checkbox verbergen */
+.option-button input[type="checkbox"] {
+    display: none;
+}
+
+/* Knopstijl voor opties */
+.option-button input[type="checkbox"] + span {
+    display: flex;
+    margin-bottom: 0%;
+    border-radius: 16px;
+    font-size: 1em;
+    font-weight: bold;
+    cursor: pointer;
+    padding: 2% 4%;
+    background-color: #f6f6f6; /* Standaard wit */
+    transition: all 0.3s ease;
+    width: auto;
+    border: 4px solid transparent; /* Voeg een standaard transparante rand toe */
+}
+
+/* Actieve knop-styling (gehele knop krijgt border wanneer geselecteerd) */
+.option-button input[type="checkbox"]:checked + span {
+    color: white;
+    background-color: #4CAF50; /* Groene achtergrond als geselecteerd */
+    border-color: #8bb194; /* Groene rand bij selectie */
+}
+
+/* Hover-effect */
+.option-button:hover {
+    transform: translateY(-5px);
+}
+
+/* Actieve knop-styling (gehele knop krijgt rand wanneer checkbox geselecteerd) */
+.option-button input[type="checkbox"]:checked + span {
+    background-color: #4CAF50; /* Achtergrondkleur verandert */
+    color: white; /* Witte tekst */
+    border-color: #8bb194; /* Groene rand */
+}
+
+
+
+
+
 
 /* Responsive */
-@media (min-width: 650px) {
+@media (min-width: 800px) {
     .product-container {
         flex-direction: row;
         align-items: flex-start;
