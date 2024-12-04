@@ -13,13 +13,15 @@ if (!isset($_SESSION['role']) || (int)$_SESSION['role'] !== 1) {
 }
 
 // Handle form submission
-// Check if form is submitted
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $productName = htmlspecialchars(trim($_POST['product_name']), ENT_QUOTES, 'UTF-8');
     $productDescription = htmlspecialchars(trim($_POST['product_description']), ENT_QUOTES, 'UTF-8');
     $productPrice = (float) htmlspecialchars(trim($_POST['product_price']), ENT_QUOTES, 'UTF-8');
     $categoryId = (int) htmlspecialchars(trim($_POST['category']), ENT_QUOTES, 'UTF-8');
-    $productStock = (int) htmlspecialchars(trim($_POST['product_stock']), ENT_QUOTES, 'UTF-8');
+
+    // Get options and stock data
+    $options = isset($_POST['options']) ? (array) $_POST['options'] : [];
+    $stockData = isset($_POST['stock']) ? $_POST['stock'] : [];
 
     if (empty($productName)) {
         $productErrorMessage = 'Product name cannot be empty.';
@@ -29,31 +31,33 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $uploadResult = $imageUploader->uploadImage($_FILES['product_image']);
 
             if ($uploadResult) {
-                // Instantiate the product object here
-                $product = new Product(); // Create the product object
-
-                // Now set the product properties
+                // Instantiate the product object
+                $product = new Product();
                 $product->setName($productName);
                 $product->setPrice($productPrice);
                 $product->setDescription($productDescription);
-                $product->setStock($productStock);
                 $product->setCategory($categoryId);
-
-                // Set the image only after the product has been created
                 $product->setImage($uploadResult);
 
-                // Get the selected options from the form
-                $options = isset($_POST['options']) ? (array) $_POST['options'] : [];
-
-                // Create the product and assign options in one step
-                $productId = $product->create($options); // Pass options with the product creation
+                // Create the product and get the product ID
+                $productId = $product->create($options);
 
                 if ($productId) {
+                    // Insert stock data for each size/pot combination
+                    foreach ($stockData as $sizeId => $pots) {
+                        foreach ($pots as $potId => $stockQuantity) {
+                            if ($stockQuantity > 0) {
+                                $query = "INSERT INTO product_stock (product_id, size_id, pot_type_id, stock_quantity)
+                                          VALUES ($productId, $sizeId, $potId, $stockQuantity)";
+                                $db->executeQuery($query); // Ensure this query is executed properly via your DB class
+                            }
+                        }
+                    }
+
                     $productSuccessMessage = 'Product added successfully!';
                 } else {
                     $productErrorMessage = 'Failed to add product.';
                 }
-                
             } else {
                 $productErrorMessage = 'Image upload failed.';
             }
@@ -65,10 +69,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
-// Fetch categories
+// Fetch categories and options
 $categories = Category::getAll();
-
-// Fetch options
 $options = Option::getAll();
 ?>
 
@@ -138,7 +140,6 @@ $options = Option::getAll();
 
             <div class="options-group">
                 <label>Beschikbare maten:</label>
-                <!-- Select All Sizes -->
                 <label class="option-button">
                     <input type="checkbox" id="select-all-sizes">
                     <span>Select All Sizes</span>
@@ -167,8 +168,8 @@ $options = Option::getAll();
                 <?php endforeach; ?>
             </div>
 
-            <label for="product_stock">Product Stock:</label>
-            <input type="number" id="product_stock" name="product_stock" required>
+            <div id="stock-options"></div> <!-- Dynamically stock options will be appended here -->
+
             <button class="btn btn-admin" type="submit" name="add_product">Add Product</button>
         </div>
 
@@ -194,24 +195,24 @@ $options = Option::getAll();
         sizeCheckboxes.forEach(checkbox => checkbox.checked = this.checked);
     });
 
-    // Before form submission, ensure that options are always an array
+    // Dynamically add stock input fields for each size/pot combination
     document.querySelector('form').addEventListener('submit', function(e) {
-        var options = document.querySelectorAll('input[name="options[]"]:checked');
-        var optionsArray = [];
+        var stockData = {};
+        var selectedSizes = document.querySelectorAll('.size-checkbox:checked');
+        var selectedPots = document.querySelectorAll('.pot-checkbox:checked');
 
-        options.forEach(function(option) {
-            optionsArray.push(option.value);
+        selectedSizes.forEach(function(size) {
+            selectedPots.forEach(function(pot) {
+                var stockInput = document.createElement('input');
+                stockInput.type = 'number';
+                stockInput.name = 'stock[' + size.value + '][' + pot.value + ']';
+                stockInput.placeholder = 'Stock for size ' + size.nextElementSibling.textContent + ' and pot ' + pot.nextElementSibling.textContent;
+                stockInput.required = true;
+                document.getElementById('stock-options').appendChild(stockInput);
+            });
         });
-
-        // Ensure that optionsArray is always passed even if it's empty
-        if (optionsArray.length === 0) {
-            var hiddenInput = document.createElement('input');
-            hiddenInput.type = 'hidden';
-            hiddenInput.name = 'options[]';
-            hiddenInput.value = '';
-            this.appendChild(hiddenInput);
-        }
     });
 </script>
+
 </body>
 </html>

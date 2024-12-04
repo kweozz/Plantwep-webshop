@@ -88,7 +88,7 @@ class Product
     public function create($options = [])
     {
         $conn = Db::getConnection();
-
+    
         // Stap 1: Voeg het product toe
         $statement = $conn->prepare("
             INSERT INTO products (name, price, description, category_id, image, stock)
@@ -100,36 +100,40 @@ class Product
         $statement->bindValue(':category_id', $this->getCategory());
         $statement->bindValue(':image', $this->getImage());
         $statement->bindValue(':stock', $this->getStock());
-
+    
         if ($statement->execute()) {
             // Stap 2: Haal het product_id op
             $productId = $conn->lastInsertId();
-
-            // Stap 3: Voeg de opties toe in product_options
+    
+            // Stap 3: Voeg de opties toe in product_options (Potopties inbegrepen)
             if (!empty($options)) {
                 $optionStatement = $conn->prepare("
                     INSERT INTO product_options (product_id, option_id)
                     VALUES (:product_id, :option_id)
                 ");
-
+    
                 foreach ($options as $optionId) {
                     $optionStatement->bindValue(':product_id', $productId);
                     $optionStatement->bindValue(':option_id', $optionId);
+                    
                     $optionStatement->execute();
                 }
             }
-
+    
             return $productId; // Return het product_id
         }
-
+    
         return false;
     }
+    
 
 
     // Update an existing product
-    public function update()
+    public function update($options = [])
     {
         $conn = Db::getConnection();
+    
+        // Stap 1: Werk het product bij
         $statement = $conn->prepare("
             UPDATE products 
             SET name = :name, price = :price, description = :description, category_id = :category_id, 
@@ -143,9 +147,36 @@ class Product
         $statement->bindValue(":image", $this->getImage());
         $statement->bindValue(":stock", $this->getStock());
         $statement->bindValue(":id", $this->getId());
-        return $statement->execute();
+    
+        if ($statement->execute()) {
+            // Stap 2: Verwijder de bestaande opties
+            $deleteOptionsStatement = $conn->prepare("
+                DELETE FROM product_options WHERE product_id = :product_id
+            ");
+            $deleteOptionsStatement->bindValue(':product_id', $this->getId());
+            $deleteOptionsStatement->execute();
+    
+            // Stap 3: Voeg de nieuwe opties toe in product_options
+            if (!empty($options)) {
+                $optionStatement = $conn->prepare("
+                    INSERT INTO product_options (product_id, option_id)
+                    VALUES (:product_id, :option_id)
+                ");
+    
+                foreach ($options as $optionId) {
+                    $optionStatement->bindValue(':product_id', $this->getId());
+                    $optionStatement->bindValue(':option_id', $optionId);
+                    
+                    $optionStatement->execute();
+                }
+            }
+    
+            return true;
+        }
+    
+        return false;
     }
-
+    
     // Delete a product
     public function delete()
     {
