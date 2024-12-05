@@ -67,4 +67,5 @@ class Option {
 
         return $result ? $result['price_addition'] : 0;  // Return 0 if no price addition is set
     }
+    
 }

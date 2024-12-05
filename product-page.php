@@ -85,7 +85,7 @@ $potOptions = array_filter($options, function ($option) {
             <p class="product-description"><?php echo htmlspecialchars($product['description']); ?></p>
 
             <?php if (count($sizeOptions) > 1): ?>
-                <div class="options-group">
+                <div class="options-group form-group">
                     <label>Beschikbare maten:</label>
                     <?php foreach ($sizeOptions as $option): ?>
                         <label class="option-button">
@@ -99,7 +99,7 @@ $potOptions = array_filter($options, function ($option) {
                 </div>
             <?php endif; ?>
 
-            <div class="options-group">
+            <div class="options-group form-group">
                 <label>Beschikbare potten:</label>
                 <?php foreach ($potOptions as $option): ?>
                     <label class="option-button">
@@ -116,17 +116,18 @@ $potOptions = array_filter($options, function ($option) {
                 <label for="quantity">Aantal:</label>
                 <input type="number" id="quantity" name="quantity" value="1" min="1">
             </div>
+            <div class="product-price">
+            <p>Price: €<span id="finalPrice"><?php echo htmlspecialchars($product['price']); ?></span></p>
+            <form action="cart.php" method="POST">
+                <input type="hidden" name="product_id" value="<?php echo $product['id']; ?>">
+                <input type="hidden" name="product_price" value="<?php echo $product['price']; ?>">
+                <button class="btn" type="submit">Add to Cart</button>
+            </form>
         </div>
+        </div>
+   
     </div>
 
-    <div class="product-price">
-        <p>Price: €<span id="finalPrice"><?php echo htmlspecialchars($product['price']); ?></span></p>
-        <form action="cart.php" method="POST">
-            <input type="hidden" name="product_id" value="<?php echo $product['id']; ?>">
-            <input type="hidden" name="product_price" value="<?php echo $product['price']; ?>">
-            <button class="btn" type="submit">Add to Cart</button>
-        </form>
-    </div>
 
     <script>
         const sizeCheckboxes = document.querySelectorAll('.size-checkbox');
@@ -163,7 +164,7 @@ $potOptions = array_filter($options, function ($option) {
 
         // Add event listeners to checkboxes
         sizeCheckboxes.forEach(checkbox => {
-            checkbox.addEventListener('change', function() {
+            checkbox.addEventListener('change', function () {
                 sizeCheckboxes.forEach(cb => cb.checked = false);
                 this.checked = true;
                 calculatePrice();
@@ -171,7 +172,7 @@ $potOptions = array_filter($options, function ($option) {
         });
 
         potCheckboxes.forEach(checkbox => {
-            checkbox.addEventListener('change', function() {
+            checkbox.addEventListener('change', function () {
                 potCheckboxes.forEach(cb => cb.checked = false);
                 this.checked = true;
                 calculatePrice();
