@@ -149,20 +149,37 @@ $potOptions = array_filter($options, function ($option) {
                 }
             });
 
+            // Add the quantity to the price
+            const quantity = document.getElementById('quantity').value;
+            price *= quantity;
+
+            // Ensure the price does not go below the base price
+            if (price < productPrice) {
+                price = productPrice;
+            }
+
             finalPrice.innerText = price.toFixed(2);
         }
 
         // Add event listeners to checkboxes
         sizeCheckboxes.forEach(checkbox => {
-            checkbox.addEventListener('change', calculatePrice);
+            checkbox.addEventListener('change', function() {
+                sizeCheckboxes.forEach(cb => cb.checked = false);
+                this.checked = true;
+                calculatePrice();
+            });
         });
 
         potCheckboxes.forEach(checkbox => {
-            checkbox.addEventListener('change', calculatePrice);
+            checkbox.addEventListener('change', function() {
+                potCheckboxes.forEach(cb => cb.checked = false);
+                this.checked = true;
+                calculatePrice();
+            });
         });
 
-
-
+        // Add event listener to quantity input
+        document.getElementById('quantity').addEventListener('input', calculatePrice);
     </script>
 </body>
 
