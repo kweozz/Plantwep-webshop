@@ -38,12 +38,22 @@ class ProductOption {
     // Get options for a product
     public static function getByProductId($productId) {
         $conn = Db::getConnection();
-        $statement = $conn->prepare("
-            SELECT * FROM product_options WHERE product_id = :product_id
+    
+        // Fetch the options for this product (sizes and pots) only
+        $stmt = $conn->prepare("
+            SELECT o.id, o.name, o.type
+            FROM options o
+            JOIN product_options po ON o.id = po.option_id
+            WHERE po.product_id = ?
         ");
-        $statement->bindValue(":product_id", $productId);
-        $statement->execute();
-        return $statement->fetchAll(PDO::FETCH_ASSOC);
+        $stmt->execute([$productId]);
+    
+        // Fetch all available options for the product
+        $options = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        
+        return $options;
     }
+    
+    
 }
 ?>
