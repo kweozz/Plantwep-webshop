@@ -21,10 +21,12 @@ $category = Category::getById($product['category_id']);
 $product['category_name'] = $category['name'];
 
 // Haal de opties voor dit product op via de ProductOption klasse
-$options = ProductOption::getOptionsByProductId($productId);
+$options = ProductOption::getByProductId($productId);
 if (!$product) {
     die('Product not found.');
 }
+var_dump($options);
+die();
 ?>
 
 <!DOCTYPE html>
@@ -84,7 +86,7 @@ if (!$product) {
                             <option value="default">Select <?php echo htmlspecialchars($option->getName()); ?></option>
 
                             <?php
-                            $availableValues = ProductOption::getAvailableValues($option->getId());
+                            $availableValues = $option->getAvailableValues();
                             foreach ($availableValues as $value):
                                 $extraCost = 0;
                                 if ($option->getType() == 'size') {
