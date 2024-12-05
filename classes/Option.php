@@ -59,5 +59,12 @@ class Option {
             $statement->execute();
         }
     }
-    
+    public static function getPriceAdditionById($optionId) {
+        $conn = Db::getConnection();
+        $stmt = $conn->prepare("SELECT price_addition FROM options WHERE id = ?");
+        $stmt->execute([$optionId]);
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        return $result ? $result['price_addition'] : 0;  // Return 0 if no price addition is set
+    }
 }

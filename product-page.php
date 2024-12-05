@@ -26,6 +26,15 @@ if (!$product) {
     die('Product not found.');
 }
 
+// Filter size options
+$sizeOptions = array_filter($options, function ($option) {
+    return $option['type'] == 'size';
+});
+
+// Filter pot options
+$potOptions = array_filter($options, function ($option) {
+    return $option['type'] == 'pot';
+});
 
 ?>
 
@@ -75,38 +84,32 @@ if (!$product) {
             <p class="product-price">€<?php echo htmlspecialchars(number_format($product['price'], 2)); ?></p>
             <p class="product-description"><?php echo htmlspecialchars($product['description']); ?></p>
 
-            <div class="options-group">
-                <label>Beschikbare maten:</label>
-                <!-- Select All Sizes -->
-                <label class="option-button">
-                    <input type="checkbox" id="select-all-sizes">
-                    <span>Select All Sizes</span>
-                </label>
-
-                <!-- Displaying available sizes -->
-                <?php foreach ($options as $option): ?>
-                    <?php if ($option['type'] == 'size'): ?>
+            <?php if (count($sizeOptions) > 1): ?>
+                <div class="options-group">
+                    <label>Beschikbare maten:</label>
+                    <?php foreach ($sizeOptions as $option): ?>
                         <label class="option-button">
                             <input type="checkbox" class="size-checkbox" name="options[]"
-                                value="<?= htmlspecialchars($option['id']); ?>">
+                                value="<?= htmlspecialchars($option['id']); ?>"
+                                data-price="<?= htmlspecialchars($option['price_addition']); ?>">
                             <span><?= htmlspecialchars($option['name']); ?></span>
                         </label>
-                    <?php endif; ?>
-                <?php endforeach; ?>
-            </div>
+                    <?php endforeach; ?>
+
+                </div>
+            <?php endif; ?>
 
             <div class="options-group">
                 <label>Beschikbare potten:</label>
-                <!-- Displaying available pots -->
-                <?php foreach ($options as $option): ?>
-                    <?php if ($option['type'] == 'pot'): ?>
-                        <label class="option-button">
-                            <input type="checkbox" class="pot-checkbox" name="options[]"
-                                value="<?= htmlspecialchars($option['id']); ?>">
-                            <span><?= htmlspecialchars($option['name']); ?></span>
-                        </label>
-                    <?php endif; ?>
+                <?php foreach ($potOptions as $option): ?>
+                    <label class="option-button">
+                        <input type="checkbox" class="pot-checkbox" name="options[]"
+                            value="<?= htmlspecialchars($option['id']); ?>"
+                            data-price="<?= htmlspecialchars($option['price_addition']); ?>">
+                        <span><?= htmlspecialchars($option['name']); ?></span>
+                    </label>
                 <?php endforeach; ?>
+
             </div>
 
             <div class="form-group">
@@ -116,46 +119,40 @@ if (!$product) {
         </div>
     </div>
 
-
-
     <div class="product-price">
         <p>Price: €<span id="finalPrice"><?php echo htmlspecialchars($product['price']); ?></span></p>
-    <form action="cart.php" method="POST">
-        <input type="hidden" name="product_id" value="<?php echo $product['id']; ?>">
-        <input type="hidden" name="product_price" value="<?php echo $product['price']; ?>">
-        <button class="btn" type="submit">Add to Cart</button>
-    </form>
-    </div>
+        <form action="cart.php" method="POST">
+            <input type="hidden" name="product_id" value="<?php echo $product['id']; ?>">
+            <input type="hidden" name="product_price" value="<?php echo $product['price']; ?>">
+            <button class="btn" type="submit">Add to Cart</button>
+        </form>
     </div>
 
     <script>
-        // JavaScript to update price dynamically based on selected options and quantity
         const sizeCheckboxes = document.querySelectorAll('.size-checkbox');
         const potCheckboxes = document.querySelectorAll('.pot-checkbox');
-        const quantityInput = document.getElementById('quantity');
         const finalPrice = document.getElementById('finalPrice');
+        const productPrice = parseFloat(finalPrice.innerText);
 
-        // Calculate the total price based on selected options and quantity
         function calculatePrice() {
-            let price = <?php echo $product['price']; ?>;
-            let quantity = quantityInput.value;
+            let price = productPrice;
 
             sizeCheckboxes.forEach(checkbox => {
                 if (checkbox.checked) {
-                    price += parseFloat(checkbox.value);
+                    price += parseFloat(checkbox.dataset.price || 0);
                 }
             });
 
             potCheckboxes.forEach(checkbox => {
                 if (checkbox.checked) {
-                    price += parseFloat(checkbox.value);
+                    price += parseFloat(checkbox.dataset.price || 0);
                 }
             });
 
-            finalPrice.textContent = (price * quantity).toFixed(2);
+            finalPrice.innerText = price.toFixed(2);
         }
 
-        // Event listeners for checkboxes and quantity input
+        // Add event listeners to checkboxes
         sizeCheckboxes.forEach(checkbox => {
             checkbox.addEventListener('change', calculatePrice);
         });
@@ -164,40 +161,9 @@ if (!$product) {
             checkbox.addEventListener('change', calculatePrice);
         });
 
-        quantityInput.addEventListener('input', calculatePrice);
 
-        // Select All Sizes functionality
-        document.getElementById('select-all-sizes').addEventListener('change', function () {
-            sizeCheckboxes.forEach(checkbox => checkbox.checked = this.checked);
-            calculatePrice();
-        });
-        
-
-        
 
     </script>
-
-    <h2>Meer van de categorie <span
-            style="color:green;"><?php echo htmlspecialchars($product['category_name']); ?></span></h2>
-    <div class="related-products">
-        <div class="products">
-            <?php
-            // Fetch products from the same category, excluding the current product
-            $relatedProducts = Product::getByCategory($product['category_id']);
-            foreach ($relatedProducts as $relatedProduct):
-                if ($relatedProduct['id'] == $product['id'])
-                    continue;
-                ?>
-                <a href="product-page.php?id=<?php echo $relatedProduct['id']; ?>" class="product-card">
-                    <img src="<?php echo htmlspecialchars($relatedProduct['image']); ?>"
-                        alt="<?php echo htmlspecialchars($relatedProduct['name']); ?>">
-                    <p><?php echo htmlspecialchars($relatedProduct['name']); ?></p>
-                    <p>€<?php echo htmlspecialchars(number_format($relatedProduct['price'], 2)); ?></p>
-                </a>
-            <?php endforeach; ?>
-        </div>
-    </div>
-
 </body>
 
 </html>
