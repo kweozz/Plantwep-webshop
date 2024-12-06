@@ -125,6 +125,26 @@ class Product
     
         return false;
     }
+    // delete a product
+    public function delete()
+    {
+        $conn = Db::getConnection();
+
+        // Step 1: Delete the product options
+        $deleteOptionsStatement = $conn->prepare("
+            DELETE FROM product_options WHERE product_id = :product_id
+        ");
+        $deleteOptionsStatement->bindValue(':product_id', $this->getId());
+        $deleteOptionsStatement->execute();
+
+        // Step 2: Delete the product
+        $statement = $conn->prepare("
+            DELETE FROM products WHERE id = :id
+        ");
+        $statement->bindValue(':id', $this->getId());
+
+        return $statement->execute();
+    }
 
     public function update($options = [])
     {
