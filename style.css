@@ -10,7 +10,7 @@ nav {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 20px 0;
+    padding-top: 2%;
 }
 
 .nav-items {
@@ -326,7 +326,7 @@ label {
 
 /* related products */
 .related-products {
-    padding: 5% 0%;
+
     display: flex;
 
     gap: 5%;
@@ -380,7 +380,8 @@ label {
     font-weight: bold;
     text-align: left;
 }
-.form-group div{
+
+.form-group div {
     padding-bottom: 5%;
 
 }
@@ -508,8 +509,8 @@ section {
     flex-direction: column;
     max-width: 100%;
     overflow: hidden;
-    
-    
+
+
     height: 100%;
 }
 
@@ -540,7 +541,7 @@ section {
 .upload-icon {
     position: absolute;
     font-size: 5em;
-   color: #45a049;
+    color: #45a049;
     /* Zichtbare kleur tegen donkere achtergrond */
     pointer-events: none;
     z-index: 1;
@@ -608,12 +609,14 @@ section {
 h1 {
     margin: 0%;
     font-size: 2.2em;
-    
+
     color: #45a049;
 }
-.hero-section h1{
-    padding-bottom: 3%; 
+
+.hero-section h1 {
+    padding-bottom: 3%;
 }
+
 /* Optiegroep styling */
 .options-group {
     display: flex;
@@ -621,7 +624,7 @@ h1 {
     gap: 5%;
     max-width: 100%;
     justify-content: center;
-    
+
 }
 
 /* Checkbox verbergen */
@@ -630,7 +633,7 @@ h1 {
 }
 
 /* Knopstijl voor opties */
-.option-button input[type="checkbox"] + span {
+.option-button input[type="checkbox"]+span {
     display: flex;
     margin-bottom: 0%;
     border-radius: 16px;
@@ -638,17 +641,21 @@ h1 {
     font-weight: bold;
     cursor: pointer;
     padding: 2% 4%;
-    background-color: #f6f6f6; /* Standaard wit */
+    background-color: #f6f6f6;
+    /* Standaard wit */
     transition: all 0.3s ease;
     width: auto;
-    border: 4px solid transparent; /* Voeg een standaard transparante rand toe */
+    border: 4px solid transparent;
+    /* Voeg een standaard transparante rand toe */
 }
 
 /* Actieve knop-styling (gehele knop krijgt border wanneer geselecteerd) */
-.option-button input[type="checkbox"]:checked + span {
+.option-button input[type="checkbox"]:checked+span {
     color: white;
-    background-color: #4CAF50; /* Groene achtergrond als geselecteerd */
-    border-color: #8bb194; /* Groene rand bij selectie */
+    background-color: #4CAF50;
+    /* Groene achtergrond als geselecteerd */
+    border-color: #8bb194;
+    /* Groene rand bij selectie */
 }
 
 /* Hover-effect */
@@ -657,10 +664,13 @@ h1 {
 }
 
 /* Actieve knop-styling (gehele knop krijgt rand wanneer checkbox geselecteerd) */
-.option-button input[type="checkbox"]:checked + span {
-    background-color: #4CAF50; /* Achtergrondkleur verandert */
-    color: white; /* Witte tekst */
-    border-color: #8bb194; /* Groene rand */
+.option-button input[type="checkbox"]:checked+span {
+    background-color: #4CAF50;
+    /* Achtergrondkleur verandert */
+    color: white;
+    /* Witte tekst */
+    border-color: #8bb194;
+    /* Groene rand */
 }
 
 

@@ -127,8 +127,28 @@ $potOptions = array_filter($options, function ($option) {
         </div>
    
     </div>
-
-
+    
+    <h2>Meer van de categorie <span style="color:green;"><?php echo htmlspecialchars($product['category_name']); ?></span></h2>
+    <div class="related-products">
+        <div class="products">
+            <?php
+            // Fetch products from the same category, excluding the current product
+            $relatedProducts = Product::getByCategory($product['category_id']);
+            $count = 0;
+            foreach ($relatedProducts as $relatedProduct):
+                if ($relatedProduct['id'] == $product['id'] || $count >= 3)
+                    continue;
+                $count++;
+                ?>
+                <div class="product-card">
+                    <img src="<?php echo htmlspecialchars($relatedProduct['image']); ?>"
+                        alt="<?php echo htmlspecialchars($relatedProduct['name']); ?>">
+                    <h4><?php echo htmlspecialchars($relatedProduct['name']); ?></h4>
+                    <p>€<?php echo htmlspecialchars(number_format($relatedProduct['price'], 2)); ?></p>
+                </div>
+            <?php endforeach; ?>
+        </div>
+    </div>
     <script>
         const sizeCheckboxes = document.querySelectorAll('.size-checkbox');
         const potCheckboxes = document.querySelectorAll('.pot-checkbox');
