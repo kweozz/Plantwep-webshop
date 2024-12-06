@@ -155,7 +155,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <div class="price-addition" id="price_addition_<?= $option['id']; ?>" style="display: <?= in_array($option['id'], $selectedOptions) ? 'block' : 'none'; ?>;">
                             <label for="price_addition_<?= $option['id']; ?>">Price Addition:</label>
                             <input type="number" id="price_addition_<?= $option['id']; ?>" name="options[<?= $option['id']; ?>][price_addition]" step="0.01" 
-                                value="<?= htmlspecialchars($priceAdditions[$option['id']] ?? 0); ?>" autocomplete="price-addition">
+                                value="0" autocomplete="price-addition">
                         </div>
                     <?php endforeach; ?>
                 </div>
