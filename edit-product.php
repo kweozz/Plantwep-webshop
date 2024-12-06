@@ -34,6 +34,7 @@ $options = Option::getAll();
 $productOptions = ProductOption::getByProductId($productId);
 $selectedOptions = array_column($productOptions, 'id');
 
+
 $message = ''; // Initialize the message variable to avoid undefined variable error
 
 // Verwerk het bewerkte product
@@ -44,7 +45,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $price = (float) htmlspecialchars(trim($_POST['price']), ENT_QUOTES, 'UTF-8');
     $stock = (int) htmlspecialchars(trim($_POST['stock']), ENT_QUOTES, 'UTF-8');
     $categoryId = (int) htmlspecialchars(trim($_POST['category']), ENT_QUOTES, 'UTF-8');
-    $imagePath = $product['image']; // Standaard huidige afbeelding gebruiken
+    $imagePath = $product['image'];
 
     try {
         // Als er een nieuwe afbeelding is geüpload
@@ -64,12 +65,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             // Verzamel de opties
             $options = [];
             if (!empty($_POST['options'])) {
+                $options = [];
                 foreach ($_POST['options'] as $optionId => $data) {
-                    $options[] = [
-                        'option_id' => $optionId,
-                        'price_addition' => isset($data['price_addition']) ? (float) $data['price_addition'] : 0.0,
-                    ];
+                    if (isset($data['id'])) { // Controleer of de optie is geselecteerd
+                        $options[] = [
+                            'option_id' => $optionId,
+                            'price_addition' => isset($data['price_addition']) ? (float) $data['price_addition'] : 0.0,
+                        ];
+                    }
                 }
+            
+            
             }
 
             // Update de productopties

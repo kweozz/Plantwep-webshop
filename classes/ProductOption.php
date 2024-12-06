@@ -129,6 +129,19 @@ class ProductOption
         $stmt = $conn->prepare("DELETE FROM product_options WHERE product_id = ? AND option_id = ?");
         $stmt->execute([$productId, $optionId]);
     }
+    public static function delete($productId, $optionId) {
+
+        $db = Db::getInstance();
+
+        $stmt = $db->prepare("DELETE FROM product_options WHERE product_id = :product_id AND option_id = :option_id");
+
+        $stmt->bindParam(':product_id', $productId, PDO::PARAM_INT);
+
+        $stmt->bindParam(':option_id', $optionId, PDO::PARAM_INT);
+
+        return $stmt->execute();
+
+    }
 
 
 }
