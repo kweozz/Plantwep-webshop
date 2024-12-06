@@ -89,7 +89,7 @@ class Product
     {
         $conn = Db::getConnection();
     
-        // Stap 1: Voeg het product toe
+        // Step 1: Add the product
         $statement = $conn->prepare("
             INSERT INTO products (name, price, description, category_id, image, stock)
             VALUES (:name, :price, :description, :category_id, :image, :stock)
@@ -102,38 +102,35 @@ class Product
         $statement->bindValue(':stock', $this->getStock());
     
         if ($statement->execute()) {
-            // Stap 2: Haal het product_id op
+            // Step 2: Get the product_id
             $productId = $conn->lastInsertId();
     
-            // Stap 3: Voeg de opties toe in product_options (Potopties inbegrepen)
+            // Step 3: Add the options to product_options
             if (!empty($options)) {
                 $optionStatement = $conn->prepare("
-                    INSERT INTO product_options (product_id, option_id)
-                    VALUES (:product_id, :option_id)
+                    INSERT INTO product_options (product_id, option_id, price_addition)
+                    VALUES (:product_id, :option_id, :price_addition)
                 ");
     
-                foreach ($options as $optionId) {
+                foreach ($options as $option) {
                     $optionStatement->bindValue(':product_id', $productId);
-                    $optionStatement->bindValue(':option_id', $optionId);
-                    
+                    $optionStatement->bindValue(':option_id', $option['option_id']);
+                    $optionStatement->bindValue(':price_addition', $option['price_addition']);
                     $optionStatement->execute();
                 }
             }
     
-            return $productId; // Return het product_id
+            return $productId; // Return the product_id
         }
     
         return false;
     }
-    
 
-
-    // Update an existing product
     public function update($options = [])
     {
         $conn = Db::getConnection();
     
-        // Stap 1: Werk het product bij
+        // Step 1: Update the product
         $statement = $conn->prepare("
             UPDATE products 
             SET name = :name, price = :price, description = :description, category_id = :category_id, 
@@ -149,24 +146,24 @@ class Product
         $statement->bindValue(":id", $this->getId());
     
         if ($statement->execute()) {
-            // Stap 2: Verwijder de bestaande opties
+            // Step 2: Delete existing options
             $deleteOptionsStatement = $conn->prepare("
                 DELETE FROM product_options WHERE product_id = :product_id
             ");
             $deleteOptionsStatement->bindValue(':product_id', $this->getId());
             $deleteOptionsStatement->execute();
     
-            // Stap 3: Voeg de nieuwe opties toe in product_options
+            // Step 3: Add new options to product_options
             if (!empty($options)) {
                 $optionStatement = $conn->prepare("
-                    INSERT INTO product_options (product_id, option_id)
-                    VALUES (:product_id, :option_id)
+                    INSERT INTO product_options (product_id, option_id, price_addition)
+                    VALUES (:product_id, :option_id, :price_addition)
                 ");
     
-                foreach ($options as $optionId) {
+                foreach ($options as $option) {
                     $optionStatement->bindValue(':product_id', $this->getId());
-                    $optionStatement->bindValue(':option_id', $optionId);
-                    
+                    $optionStatement->bindValue(':option_id', $option['option_id']);
+                    $optionStatement->bindValue(':price_addition', $option['price_addition']);
                     $optionStatement->execute();
                 }
             }
@@ -175,47 +172,6 @@ class Product
         }
     
         return false;
-    }
-    
-    // Delete a product
-    public function delete()
-    {
-        $conn = Db::getConnection();
-
-        // First, retrieve the image path
-        $statement = $conn->prepare("SELECT image FROM products WHERE id = :id");
-        $statement->bindValue(":id", $this->getId());
-        $statement->execute();
-        $product = $statement->fetch(PDO::FETCH_ASSOC);
-
-        if ($product) {
-            $imagePath = $product['image'];
-
-            // Delete the product from the database
-            $statement = $conn->prepare("DELETE FROM products WHERE id = :id");
-            $statement->bindValue(":id", $this->getId());
-            $result = $statement->execute();
-
-            if ($result) {
-                // Delete the image file
-                if (file_exists($imagePath)) {
-                    unlink($imagePath);
-                }
-            }
-
-            return $result;
-        }
-
-        return false;
-    }
-
-    // Retrieve all products
-    public static function getAll()
-    {
-        $conn = Db::getConnection();
-        $statement = $conn->prepare("SELECT * FROM products");
-        $statement->execute();
-        return $statement->fetchAll(PDO::FETCH_ASSOC);
     }
 
     // Retrieve a single product by ID
@@ -228,6 +184,14 @@ class Product
         return $statement->fetch(PDO::FETCH_ASSOC);
     }
 
+    // Retrieve all products
+    public static function getAll()
+    {
+        $conn = Db::getConnection();
+        $statement = $conn->prepare("SELECT * FROM products");
+        $statement->execute();
+        return $statement->fetchAll(PDO::FETCH_ASSOC);
+    }
 
     // Retrieve products by category
     public static function getByCategory($category_id)
@@ -239,30 +203,10 @@ class Product
         return $statement->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    // Method to create a new product (alternative way)
-    public static function createProduct($name, $price, $description, $category_id, $image, $stock)
-    {
-        // Maak een nieuw productobject
-        $product = new Product();
-        $product->setName($name);
-        $product->setPrice($price);
-        $product->setDescription($description);
-        $product->setCategory($category_id);
-        $product->setImage($image);
-        $product->setStock($stock);
-
-        // Sla het product op in de database
-        if ($product->create()) {
-            return "Product succesvol aangemaakt";
-        } else {
-            return "Het is niet gelukt om het product aan te maken";
-        }
-    }
-
     // Method to update an existing product (alternative way)
     public static function updateProduct($productId, $name, $price, $description, $category_id, $image, $stock)
     {
-        // Haal het product op en stel de nieuwe waarden in
+        // Retrieve the product and set the new values
         $product = new Product();
         $product->setId($productId);
         $product->setName($name);
@@ -272,7 +216,7 @@ class Product
         $product->setImage($image);
         $product->setStock($stock);
 
-        // Werk het product bij
+        // Update the product
         if ($product->update()) {
             return "Product succesvol bijgewerkt";
         } else {
@@ -280,5 +224,4 @@ class Product
         }
     }
 }
-
 ?>

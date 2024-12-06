@@ -1,11 +1,11 @@
 <?php
 session_start();
-include_once(__DIR__ . '/classes/Db.php');
-include_once(__DIR__ . '/classes/Category.php');
-include_once(__DIR__ . '/classes/Product.php');
-include_once(__DIR__ . '/classes/ImageUploader.php');
-include_once(__DIR__ . '/classes/ProductOption.php');
-include_once(__DIR__ . '/classes/Option.php');
+include_once __DIR__ . '/classes/Db.php';
+include_once __DIR__ . '/classes/Category.php';
+include_once __DIR__ . '/classes/Product.php';
+include_once __DIR__ . '/classes/ImageUploader.php';
+include_once __DIR__ . '/classes/ProductOption.php';
+include_once __DIR__ . '/classes/Option.php';
 
 // Controleer of de gebruiker rechten heeft
 if ($_SESSION['role'] !== 1) {
@@ -29,57 +29,51 @@ if (!$product) {
 $category = new Category();
 $categories = $category->getAll();
 
-// Haal de opties voor dit product op via de ProductOption klasse
+// Haal opties voor dit product op
 $options = Option::getAll();
 $productOptions = ProductOption::getByProductId($productId);
-$selectedOptions = array_column($productOptions, 'id');
+$selectedOptions = array_column($productOptions, 'option_id');
+$priceAdditions = array_column($productOptions, 'price_addition', 'option_id');
 
-
-$message = ''; // Initialize the message variable to avoid undefined variable error
+$message = '';
 
 // Verwerk het bewerkte product
-
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $name = htmlspecialchars(trim($_POST['name']), ENT_QUOTES, 'UTF-8');
     $description = htmlspecialchars(trim($_POST['description']), ENT_QUOTES, 'UTF-8');
     $price = (float) htmlspecialchars(trim($_POST['price']), ENT_QUOTES, 'UTF-8');
     $stock = (int) htmlspecialchars(trim($_POST['stock']), ENT_QUOTES, 'UTF-8');
     $categoryId = (int) htmlspecialchars(trim($_POST['category']), ENT_QUOTES, 'UTF-8');
-    $imagePath = $product['image'];
+    $imagePath = $product['image']; // Standaard huidige afbeelding gebruiken
 
     try {
-        // Als er een nieuwe afbeelding is geüpload
         if (isset($_FILES['product_image']) && $_FILES['product_image']['error'] === UPLOAD_ERR_OK) {
             $imageUploader = new ImageUploader();
             $uploadResult = $imageUploader->uploadImage($_FILES['product_image']);
             if ($uploadResult) {
-                $imagePath = "images/uploads/{$uploadResult}";
+                $imagePath = $uploadResult;
+                $product['image'] = $imagePath; // Update the product image path
             } else {
                 throw new Exception('Afbeelding uploaden mislukt.');
             }
         }
 
-        // Update het product zelf
+        // Update het product
         $updateMessage = Product::updateProduct($productId, $name, $price, $description, $categoryId, $imagePath, $stock);
         if (strpos($updateMessage, 'succesvol') !== false) {
-            // Verzamel de opties
+            // Update de opties
             $options = [];
             if (!empty($_POST['options'])) {
-                $options = [];
                 foreach ($_POST['options'] as $optionId => $data) {
-                    if (isset($data['id'])) { // Controleer of de optie is geselecteerd
+                    if (isset($data['id'])) { // Ensure the option_id is set
                         $options[] = [
-                            'option_id' => $optionId,
+                            'option_id' => $data['id'],
                             'price_addition' => isset($data['price_addition']) ? (float) $data['price_addition'] : 0.0,
                         ];
                     }
                 }
-            
-            
+                ProductOption::updateOptions($productId, $options);
             }
-
-            // Update de productopties
-            ProductOption::update($productId, $options, $productOptions, $selectedOptions);
 
             $message = '<div class="alert-success">' . $updateMessage . '</div>';
         } else {
@@ -89,8 +83,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $message = '<div class="alert-danger">Fout: ' . htmlspecialchars($e->getMessage()) . '</div>';
     }
 }
-
-
 ?>
 
 <!DOCTYPE html>
@@ -121,8 +113,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             <div class="product-image">
                 <label for="image" class="image-upload-label">
-                    <img id="imagePreview" src="<?= htmlspecialchars($product['image']); ?>"
-                        style="<?= $product['image'] ? 'display:block;' : 'display:none;'; ?>">
+                    <img id="imagePreview" src="<?= htmlspecialchars($product['image'] ?: 'images/default-placeholder.png'); ?>" 
+                        style="display:block;">
                     <span class="upload-icon">+</span>
                 </label>
                 <input type="file" id="image" name="product_image" accept="image/*" onchange="previewImage(event, 'imagePreview')" style="display: none;">
@@ -131,19 +123,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <div class="product-details">
                 <h2>Product Bewerken</h2>
                 <label for="name">Naam:</label>
-                <input type="text" id="name" name="name" value="<?= htmlspecialchars($product['name']); ?>" required>
+                <input type="text" id="name" name="name" value="<?= htmlspecialchars($product['name']); ?>" required autocomplete="name">
 
                 <label for="description">Beschrijving:</label>
-                <textarea id="description" name="description" required><?= htmlspecialchars($product['description']); ?></textarea>
+                <textarea id="description" name="description" required autocomplete="description"><?= htmlspecialchars($product['description']); ?></textarea>
 
                 <label for="price">Prijs:</label>
-                <input type="number" id="price" name="price" step="0.01" value="<?= htmlspecialchars($product['price']); ?>" required>
+                <input type="number" id="price" name="price" step="0.01" value="<?= htmlspecialchars($product['price']); ?>" required autocomplete="price">
 
                 <label for="stock">Voorraad:</label>
-                <input type="number" id="stock" name="stock" value="<?= htmlspecialchars($product['stock']); ?>" required>
+                <input type="number" id="stock" name="stock" value="<?= htmlspecialchars($product['stock']); ?>" required autocomplete="stock">
 
                 <label for="category">Categorie:</label>
-                <select id="category" name="category">
+                <select id="category" name="category" autocomplete="category">
                     <?php foreach ($categories as $cat): ?>
                         <option value="<?= htmlspecialchars($cat['id']); ?>" <?= $cat['id'] == $product['category_id'] ? 'selected' : ''; ?>>
                             <?= htmlspecialchars($cat['name']); ?>
@@ -154,15 +146,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <div class="options-group">
                     <label>Opties:</label>
                     <?php foreach ($options as $option): ?>
-                        <label class="option-button">
-                            <input type="checkbox" name="options[<?= $option['id']; ?>][id]" value="<?= $option['id']; ?>" 
+                        <label class="option-button" for="option_<?= $option['id']; ?>">
+                            <input type="checkbox" id="option_<?= $option['id']; ?>" name="options[<?= $option['id']; ?>][id]" value="<?= $option['id']; ?>" 
                                 <?= in_array($option['id'], $selectedOptions) ? 'checked' : ''; ?>
                                 data-price-addition-input="price_addition_<?= $option['id']; ?>">
                             <span><?= htmlspecialchars($option['name']); ?></span>
                         </label>
                         <div class="price-addition" id="price_addition_<?= $option['id']; ?>" style="display: <?= in_array($option['id'], $selectedOptions) ? 'block' : 'none'; ?>;">
                             <label for="price_addition_<?= $option['id']; ?>">Price Addition:</label>
-                            <input type="number" name="options[<?= $option['id']; ?>][price_addition]" step="0.01" value="<?= htmlspecialchars($productOptions[array_search($option['id'], array_column($productOptions, 'id'))]['price_addition'] ?? 0); ?>">
+                            <input type="number" id="price_addition_<?= $option['id']; ?>" name="options[<?= $option['id']; ?>][price_addition]" step="0.01" 
+                                value="<?= htmlspecialchars($priceAdditions[$option['id']] ?? 0); ?>" autocomplete="price-addition">
                         </div>
                     <?php endforeach; ?>
                 </div>
@@ -183,13 +176,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             reader.readAsDataURL(event.target.files[0]);
         }
 
-        // Function to handle checkbox changes
+        // Dynamisch tonen/verbergen van prijsverhoging invoervelden
         document.querySelectorAll('.option-button input[type="checkbox"]').forEach(function (checkbox) {
             checkbox.addEventListener('change', function () {
-                var priceAdditionInputId = this.getAttribute('data-price-addition-input');
-                var priceAdditionDiv = document.getElementById(priceAdditionInputId);
+                const priceAdditionInputId = this.getAttribute('data-price-addition-input');
+                const priceAdditionDiv = document.getElementById(priceAdditionInputId);
 
-                // Show or hide the price addition input depending on checkbox state
                 if (this.checked) {
                     priceAdditionDiv.style.display = 'block';
                 } else {
