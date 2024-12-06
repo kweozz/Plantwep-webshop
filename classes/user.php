@@ -7,7 +7,7 @@ class User
     private $email;
     private $password;
     private $role;
-    private $id;
+    public $id;
     private $currency;
 
     public function setFirstname($firstname)
@@ -78,6 +78,11 @@ class User
     {
         return $this->role;
     }
+    //get id
+    public function getId()
+    {
+        return $this->id;
+    }
 
     public function save()
     {
@@ -106,8 +111,14 @@ class User
         // Execute the query
         $result = $statement->execute();
 
+        // Set the id property of the user object
+        if ($result) {
+            $this->id = $conn->lastInsertId();
+        }
+
         return $result;
     }
+
 
     public function updateCurrency($amount)
     {

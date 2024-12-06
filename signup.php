@@ -1,6 +1,7 @@
 <?php
 // Include the User class
 include_once(__DIR__ . '/classes/user.php');
+include_once(__DIR__ . '/classes/Basket.php');
 
 if (!empty($_POST)) {
     try {
@@ -8,7 +9,6 @@ if (!empty($_POST)) {
         if (User::exists($_POST['email'])) {
             // If the account exists, show the feedback message
             $error = 'Account with this email already exists!';
-
         } else {
             // Create a new User instance
             $user = new User();
@@ -22,6 +22,12 @@ if (!empty($_POST)) {
             $user->setPassword($_POST['password']);
             // Save the user
             $user->save();
+
+            // Create a new basket for the user
+            $basket = new Basket();
+            $basket->setUserId($user->id);
+            $basket->save();
+
             // Success message
             $success = "Account created successfully!";
             // Redirect to the login page

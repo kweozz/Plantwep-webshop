@@ -118,7 +118,7 @@ $potOptions = array_filter($options, function ($option) {
             </div>
             <div class="product-price">
             <p>Price: €<span id="finalPrice"><?php echo htmlspecialchars($product['price']); ?></span></p>
-            <form action="cart.php" method="POST">
+            <form action="basket-page.php" method="POST">
                 <input type="hidden" name="product_id" value="<?php echo $product['id']; ?>">
                 <input type="hidden" name="product_price" value="<?php echo $product['price']; ?>">
                 <button class="btn" type="submit">Add to Cart</button>
