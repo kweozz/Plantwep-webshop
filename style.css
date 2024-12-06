@@ -383,7 +383,6 @@ label {
 
 .form-group div {
     padding-bottom: 5%;
-
 }
 
 
@@ -636,7 +635,7 @@ h1 {
 .option-button input[type="checkbox"]+span {
     display: flex;
     margin-bottom: 0%;
-    border-radius: 16px;
+    border-radius: 12px;
     font-size: 1em;
     font-weight: bold;
     cursor: pointer;
@@ -651,9 +650,9 @@ h1 {
 
 /* Actieve knop-styling (gehele knop krijgt border wanneer geselecteerd) */
 .option-button input[type="checkbox"]:checked+span {
-    color: white;
-    background-color: #4CAF50;
-    /* Groene achtergrond als geselecteerd */
+    color: #333;
+    background-color: #ffffff;
+
     border-color: #8bb194;
     /* Groene rand bij selectie */
 }
@@ -662,17 +661,6 @@ h1 {
 .option-button:hover {
     transform: translateY(-5px);
 }
-
-/* Actieve knop-styling (gehele knop krijgt rand wanneer checkbox geselecteerd) */
-.option-button input[type="checkbox"]:checked+span {
-    background-color: #4CAF50;
-    /* Achtergrondkleur verandert */
-    color: white;
-    /* Witte tekst */
-    border-color: #8bb194;
-    /* Groene rand */
-}
-
 
 
 
@@ -723,5 +711,4 @@ h1 {
        
         padding-top: 0%;
     }
-    
 }

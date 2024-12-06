@@ -127,6 +127,7 @@ $options = Option::getAll();
             <!-- Product Details Form -->
             <div class="product-details">
                 <h2>Add products</h2>
+                <div class="options-group">
                 <label for="product_name">Product Name:</label>
                 <input type="text" id="product_name" name="product_name" required>
 
@@ -148,7 +149,7 @@ $options = Option::getAll();
                         <option value="">No categories available</option>
                     <?php endif; ?>
                 </select>
-
+                </div>
                 <div class="options-group">
                     <label>Beschikbare maten:</label>
                     <!-- Select All Sizes -->

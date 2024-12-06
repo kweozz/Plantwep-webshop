@@ -113,49 +113,60 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             <div class="product-image">
                 <label for="image" class="image-upload-label">
-                    <img id="imagePreview" src="<?= htmlspecialchars($product['image'] ?: 'images/default-placeholder.png'); ?>" 
+                    <img id="imagePreview"
+                        src="<?= htmlspecialchars($product['image'] ?: 'images/default-placeholder.png'); ?>"
                         style="display:block;">
                     <span class="upload-icon">+</span>
                 </label>
-                <input type="file" id="image" name="product_image" accept="image/*" onchange="previewImage(event, 'imagePreview')" style="display: none;">
+                <input type="file" id="image" name="product_image" accept="image/*"
+                    onchange="previewImage(event, 'imagePreview')" style="display: none;">
             </div>
 
             <div class="product-details">
-                <h2>Product Bewerken</h2>
-                <label for="name">Naam:</label>
-                <input type="text" id="name" name="name" value="<?= htmlspecialchars($product['name']); ?>" required autocomplete="name">
+            <h2>Product Bewerken</h2>
+                <div class="options-group">
+                   
+                    <label for="name">Naam:</label>
+                    <input type="text" id="name" name="name" value="<?= htmlspecialchars($product['name']); ?>" required
+                        autocomplete="name">
 
-                <label for="description">Beschrijving:</label>
-                <textarea id="description" name="description" required autocomplete="description"><?= htmlspecialchars($product['description']); ?></textarea>
+                    <label for="description">Beschrijving:</label>
+                    <textarea id="description" name="description" required
+                        autocomplete="description"><?= htmlspecialchars($product['description']); ?></textarea>
 
-                <label for="price">Prijs:</label>
-                <input type="number" id="price" name="price" step="0.01" value="<?= htmlspecialchars($product['price']); ?>" required autocomplete="price">
+                    <label for="price">Prijs:</label>
+                    <input type="number" id="price" name="price" step="0.01"
+                        value="<?= htmlspecialchars($product['price']); ?>" required autocomplete="price">
 
-                <label for="stock">Voorraad:</label>
-                <input type="number" id="stock" name="stock" value="<?= htmlspecialchars($product['stock']); ?>" required autocomplete="stock">
+                    <label for="stock">Voorraad:</label>
+                    <input type="number" id="stock" name="stock" value="<?= htmlspecialchars($product['stock']); ?>"
+                        required autocomplete="stock">
 
-                <label for="category">Categorie:</label>
-                <select id="category" name="category" autocomplete="category">
-                    <?php foreach ($categories as $cat): ?>
-                        <option value="<?= htmlspecialchars($cat['id']); ?>" <?= $cat['id'] == $product['category_id'] ? 'selected' : ''; ?>>
-                            <?= htmlspecialchars($cat['name']); ?>
-                        </option>
-                    <?php endforeach; ?>
-                </select>
-
+                    <label for="category">Categorie:</label>
+                    <select id="category" name="category" autocomplete="category">
+                        <?php foreach ($categories as $cat): ?>
+                            <option value="<?= htmlspecialchars($cat['id']); ?>" <?= $cat['id'] == $product['category_id'] ? 'selected' : ''; ?>>
+                                <?= htmlspecialchars($cat['name']); ?>
+                            </option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
                 <div class="options-group">
                     <label>Opties:</label>
                     <?php foreach ($options as $option): ?>
                         <label class="option-button" for="option_<?= $option['id']; ?>">
-                            <input type="checkbox" id="option_<?= $option['id']; ?>" name="options[<?= $option['id']; ?>][id]" value="<?= $option['id']; ?>" 
+                            <input type="checkbox" id="option_<?= $option['id']; ?>"
+                                name="options[<?= $option['id']; ?>][id]" value="<?= $option['id']; ?>"
                                 <?= in_array($option['id'], $selectedOptions) ? 'checked' : ''; ?>
                                 data-price-addition-input="price_addition_<?= $option['id']; ?>">
                             <span><?= htmlspecialchars($option['name']); ?></span>
                         </label>
-                        <div class="price-addition" id="price_addition_<?= $option['id']; ?>" style="display: <?= in_array($option['id'], $selectedOptions) ? 'block' : 'none'; ?>;">
+                        <div class="price-addition" id="price_addition_<?= $option['id']; ?>"
+                            style="display: <?= in_array($option['id'], $selectedOptions) ? 'block' : 'none'; ?>;">
                             <label for="price_addition_<?= $option['id']; ?>">Price Addition:</label>
-                            <input type="number" id="price_addition_<?= $option['id']; ?>" name="options[<?= $option['id']; ?>][price_addition]" step="0.01" 
-                                value="0" autocomplete="price-addition">
+                            <input type="number" id="price_addition_<?= $option['id']; ?>"
+                                name="options[<?= $option['id']; ?>][price_addition]" step="0.01" value="0"
+                                autocomplete="price-addition">
                         </div>
                     <?php endforeach; ?>
                 </div>

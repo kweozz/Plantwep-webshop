@@ -74,7 +74,6 @@ if ($selectedCategoryId) {
 
     </section>
 
-
     <section class="category-section">
         <h2>Categories</h2>
         <div class="categories-wrapper">
