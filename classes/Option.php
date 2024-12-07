@@ -61,7 +61,7 @@ class Option {
     }
     public static function getPriceAdditionById($optionId) {
         $conn = Db::getConnection();
-        $stmt = $conn->prepare("SELECT price_addition FROM options WHERE id = ?");
+        $stmt = $conn->prepare("SELECT price_addition FROM product_options WHERE id = ?");
         $stmt->execute([$optionId]);
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
 

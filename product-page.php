@@ -76,26 +76,25 @@ $potOptions = array_filter($options, function ($option) {
 
     <div class="product-container">
         <div class="product-image">
-            <img src="<?php echo htmlspecialchars($product['image']); ?>"
-                alt="<?php echo htmlspecialchars($product['name']); ?>">
+            <img src="<?php echo htmlspecialchars($product['image']); ?>" alt="<?php echo htmlspecialchars($product['name']); ?>">
         </div>
-        <div class="product-details">
-            <h1><?php echo htmlspecialchars($product['name']); ?></h1>
-            <p class="product-price">€<?php echo htmlspecialchars(number_format($product['price'], 2)); ?></p>
-            <p class="product-description"><?php echo htmlspecialchars($product['description']); ?></p>
+        <form action="add-to-basket.php" method="POST">
+            <input type="hidden" name="product_id" value="<?php echo $product['id']; ?>">
+            <input type="hidden" name="product_price" value="<?php echo $product['price']; ?>">
+            <input type="hidden" name="final_quantity" id="finalQuantityInput" value="1">
 
             <?php if (count($sizeOptions) > 1): ?>
                 <div class="options-group form-group">
                     <label>Beschikbare maten:</label>
                     <?php foreach ($sizeOptions as $option): ?>
                         <label class="option-button">
-                            <input type="checkbox" class="size-checkbox" name="options[]"
+                            <input type="checkbox" class="size-checkbox" name="options[<?php echo $option['id']; ?>][id]"
                                 value="<?= htmlspecialchars($option['id']); ?>"
                                 data-price="<?= htmlspecialchars($option['price_addition']); ?>">
                             <span><?= htmlspecialchars($option['name']); ?></span>
                         </label>
+                        <input type="hidden" name="options[<?php echo $option['id']; ?>][price_addition]" value="<?= htmlspecialchars($option['price_addition']); ?>">
                     <?php endforeach; ?>
-
                 </div>
             <?php endif; ?>
 
@@ -103,13 +102,13 @@ $potOptions = array_filter($options, function ($option) {
                 <label>Beschikbare potten:</label>
                 <?php foreach ($potOptions as $option): ?>
                     <label class="option-button">
-                        <input type="checkbox" class="pot-checkbox" name="options[]"
+                        <input type="checkbox" class="pot-checkbox" name="options[<?php echo $option['id']; ?>][id]"
                             value="<?= htmlspecialchars($option['id']); ?>"
                             data-price="<?= htmlspecialchars($option['price_addition']); ?>">
                         <span><?= htmlspecialchars($option['name']); ?></span>
                     </label>
+                    <input type="hidden" name="options[<?php echo $option['id']; ?>][price_addition]" value="<?= htmlspecialchars($option['price_addition']); ?>">
                 <?php endforeach; ?>
-
             </div>
 
             <div class="form-group">
@@ -117,18 +116,14 @@ $potOptions = array_filter($options, function ($option) {
                 <input type="number" id="quantity" name="quantity" value="1" min="1">
             </div>
             <div class="product-price">
-            <p>Price: €<span id="finalPrice"><?php echo htmlspecialchars($product['price']); ?></span></p>
-            <form action="basket-page.php" method="POST">
-                <input type="hidden" name="product_id" value="<?php echo $product['id']; ?>">
-                <input type="hidden" name="product_price" value="<?php echo $product['price']; ?>">
+                <p>Price: €<span id="finalPrice"><?php echo htmlspecialchars($product['price']); ?></span></p>
                 <button class="btn" type="submit">Add to Cart</button>
-            </form>
-        </div>
-        </div>
-   
+            </div>
+        </form>
     </div>
-    
-    <h2>Meer van de categorie <span style="color:green;"><?php echo htmlspecialchars($product['category_name']); ?></span></h2>
+
+    <h2>Meer van de categorie <span
+            style="color:green;"><?php echo htmlspecialchars($product['category_name']); ?></span></h2>
     <div class="related-products">
         <div class="products">
             <?php

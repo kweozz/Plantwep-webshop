@@ -93,11 +93,12 @@ class BasketItem
         $this->total_price = $total_price;
     }
 
-    public static function createBasketItem($basket_id, $product_id, $quantity, $price, $option_id = null, $price_addition = 0)
+    public static function createBasketItem($basket_id, $product_id, $quantity, $price, $option_id = null, $price_addition = 0, $total_price)
     {
         $db = Db::getConnection();
-        $query = $db->prepare('INSERT INTO basket_item (basket_id, product_id, quantity, price, option_id, price_addition, total_price) VALUES (:basket_id, :product_id, :quantity, :price, :option_id, :price_addition, :total_price)');
-        $total_price = ($price + $price_addition) * $quantity;
+        $query = $db->prepare('INSERT INTO basket_item 
+            (basket_id, product_id, quantity, price, option_id, price_addition, total_price) 
+            VALUES (:basket_id, :product_id, :quantity, :price, :option_id, :price_addition, :total_price)');
         $query->bindValue(':basket_id', $basket_id, PDO::PARAM_INT);
         $query->bindValue(':product_id', $product_id, PDO::PARAM_INT);
         $query->bindValue(':quantity', $quantity, PDO::PARAM_INT);
@@ -105,7 +106,10 @@ class BasketItem
         $query->bindValue(':option_id', $option_id, PDO::PARAM_INT);
         $query->bindValue(':price_addition', $price_addition, PDO::PARAM_STR);
         $query->bindValue(':total_price', $total_price, PDO::PARAM_STR);
-        $query->execute();
+
+        if (!$query->execute()) {
+            error_log("SQL Error: " . implode(" | ", $query->errorInfo()));
+        }
 
         $basketItem = new self();
         $basketItem->setId($db->lastInsertId());
@@ -119,20 +123,16 @@ class BasketItem
         return $basketItem;
     }
 
+
     public static function getItemsByBasketId($basketId)
     {
-
         $db = Db::getConnection();
-
         $stmt = $db->prepare('SELECT * FROM basket_item WHERE basket_id = :basket_id');
-
         $stmt->bindParam(':basket_id', $basketId, PDO::PARAM_INT);
-
         $stmt->execute();
-
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
-
     }
+
     //add item to basket function
     public static function addItemToBasket($basket_id, $product_id, $quantity, $price, $option_id = null, $price_addition = 0)
     {
