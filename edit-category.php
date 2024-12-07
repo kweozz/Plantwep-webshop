@@ -53,6 +53,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $message = '<div class="alert-danger">Fout: ' . htmlspecialchars($e->getMessage()) . '</div>';
     }
 }
+
 ?>
 
 <!DOCTYPE html>
@@ -84,11 +85,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <div class="category-image">
                 <label for="image" class="image-upload-label">
                     <img id="imagePreview" src="<?= htmlspecialchars($category['image']); ?>"
-                         style="<?= $category['image'] ? 'display:block;' : 'display:none;'; ?>">
+                        style="<?= $category['image'] ? 'display:block;' : 'display:none;'; ?>">
                     <span class="upload-icon">+</span>
                 </label>
                 <input type="file" id="image" name="category_image" accept="image/*"
-                       onchange="previewImage(event, 'imagePreview')" style="display: none;">
+                    onchange="previewImage(event, 'imagePreview')" style="display: none;">
             </div>
 
             <!-- Categorie details -->

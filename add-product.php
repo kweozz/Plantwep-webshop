@@ -108,11 +108,11 @@ $options = Option::getAll();
         <?php endif; ?>
 
         <form class="form-group add-product-container" method="post" action="" enctype="multipart/form-data">
-            <div class="back">
+           
                 <a class="back-icon" href="admin-dash.php">
                     <i class="fa fa-arrow-left" aria-hidden="true"></i>
                 </a>
-            </div>
+    
 
             <!-- File upload input (hidden) and preview section -->
             <div class="product-image">

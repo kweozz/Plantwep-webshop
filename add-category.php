@@ -42,6 +42,23 @@ if (isset($_POST['add_category'])) {
     } else {
         $categoryErrorMessage = 'Please choose an image.';
     }
+
+    // Store messages in session and redirect
+    $_SESSION['categorySuccessMessage'] = $categorySuccessMessage;
+    $_SESSION['categoryErrorMessage'] = $categoryErrorMessage;
+    header("Location: add-category.php");
+    exit();
+}
+
+// Retrieve messages from session
+if (isset($_SESSION['categorySuccessMessage'])) {
+    $categorySuccessMessage = $_SESSION['categorySuccessMessage'];
+    unset($_SESSION['categorySuccessMessage']);
+}
+
+if (isset($_SESSION['categoryErrorMessage'])) {
+    $categoryErrorMessage = $_SESSION['categoryErrorMessage'];
+    unset($_SESSION['categoryErrorMessage']);
 }
 ?>
 
@@ -60,10 +77,9 @@ if (isset($_POST['add_category'])) {
 
     <section class="category padding">
 
-  
         <!-- Success or error messages -->
         <?php if (!empty($categorySuccessMessage)): ?>
-            <div class="alert-succes"><?= htmlspecialchars($categorySuccessMessage); ?></div>
+            <div class="alert-success"><?= htmlspecialchars($categorySuccessMessage); ?></div>
         <?php endif; ?>
 
         <?php if (!empty($categoryErrorMessage)): ?>
@@ -71,7 +87,7 @@ if (isset($_POST['add_category'])) {
         <?php endif; ?>
 
         <form class="form-group add-product-container" method="post" action="" enctype="multipart/form-data">
-        <div class="back">
+            <div class="back">
                 <a class="back-icon" href="admin-dash.php">
                     <i class="fa fa-arrow-left" aria-hidden="true"></i>
                 </a>

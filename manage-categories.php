@@ -28,7 +28,18 @@ if (isset($_POST['delete_category'])) {
         $deleteErrorMessage = 'Error: ' . $e->getMessage();
     }
 }
+ 
 
+// Retrieve messages from session
+if (isset($_SESSION['categorySuccessMessage'])) {
+    $categorySuccessMessage = $_SESSION['categorySuccessMessage'];
+    unset($_SESSION['categorySuccessMessage']);
+}
+
+if (isset($_SESSION['categoryErrorMessage'])) {
+    $categoryErrorMessage = $_SESSION['categoryErrorMessage'];
+    unset($_SESSION['categoryErrorMessage']);
+}
 ?>
 
 <!DOCTYPE html>
@@ -56,10 +67,10 @@ if (isset($_POST['delete_category'])) {
     </div>
 
     <?php if (isset($deleteSuccessMessage)): ?>
-        <div class="message success"><?= htmlspecialchars($deleteSuccessMessage); ?></div>
+        <div class="alert-success"><?= htmlspecialchars($deleteSuccessMessage); ?></div>
     <?php endif; ?>
     <?php if (isset($deleteErrorMessage)): ?>
-        <div class="message error"><?= htmlspecialchars($deleteErrorMessage); ?></div>
+        <div class="alert-danger"><?= htmlspecialchars($deleteErrorMessage); ?></div>
     <?php endif; ?>
 
     <div class="categories">
