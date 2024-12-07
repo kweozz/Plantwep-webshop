@@ -370,7 +370,9 @@ label {
     flex-direction: column;
 }
 
-
+div.form-group {
+    padding-bottom: 1% ;
+}
 
 .form-group label {
     font-size: 0.9em;
@@ -455,9 +457,6 @@ textarea,
     cursor: pointer;
 }
 
-.btn-admin {
-    margin: 5% 0%;
-}
 
 .btn:hover {
     background-color: #267b3a;
