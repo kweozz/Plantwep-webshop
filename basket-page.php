@@ -69,6 +69,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['clear_basket'])) {
             <?php foreach ($basketItems as $item): ?>
                 <?php $product = Product::getById($item['product_id']); ?>
                 <li class="basket-item">
+                    <img src="<?php echo $product['image']; ?>" alt="<?php echo htmlspecialchars($product['name']); ?>" class="product-image">
                     <div class="basket-item-info">
                         <h4 class="product-name"><?php echo htmlspecialchars($product['name']); ?></h4>
                         <p>Quantity: <?php echo $item['quantity']; ?></p>
