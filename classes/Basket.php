@@ -47,5 +47,6 @@ class Basket
         $query->execute();
         $this->setId($db->lastInsertId());
     }
+    
 }
 ?>

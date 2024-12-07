@@ -35,7 +35,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $imageUploader = new ImageUploader();
             $uploadResult = $imageUploader->uploadImage($_FILES['category_image']);
             if ($uploadResult) {
-                $imagePath = "images/uploads/{$uploadResult}";
+                $imagePath = $uploadResult;
+                $category['image'] = $imagePath;
             } else {
                 throw new Exception('Afbeelding uploaden mislukt.');
             }
