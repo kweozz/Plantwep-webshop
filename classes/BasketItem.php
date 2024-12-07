@@ -93,17 +93,17 @@ class BasketItem
         $this->total_price = $total_price;
     }
 
-    public static function createBasketItem($basket_id, $product_id, $quantity, $price, $option_id = null, $price_addition = 0, $total_price)
+    public static function createBasketItem($basket_id, $product_id, $quantity, $price, $option_ids = null, $price_addition = 0, $total_price)
     {
         $db = Db::getConnection();
         $query = $db->prepare('INSERT INTO basket_item 
-            (basket_id, product_id, quantity, price, option_id, price_addition, total_price) 
-            VALUES (:basket_id, :product_id, :quantity, :price, :option_id, :price_addition, :total_price)');
+            (basket_id, product_id, quantity, price, option_ids, price_addition, total_price) 
+            VALUES (:basket_id, :product_id, :quantity, :price, :option_ids, :price_addition, :total_price)');
         $query->bindValue(':basket_id', $basket_id, PDO::PARAM_INT);
         $query->bindValue(':product_id', $product_id, PDO::PARAM_INT);
         $query->bindValue(':quantity', $quantity, PDO::PARAM_INT);
         $query->bindValue(':price', $price, PDO::PARAM_STR);
-        $query->bindValue(':option_id', $option_id, PDO::PARAM_INT);
+        $query->bindValue(':option_ids', $option_ids, PDO::PARAM_STR);
         $query->bindValue(':price_addition', $price_addition, PDO::PARAM_STR);
         $query->bindValue(':total_price', $total_price, PDO::PARAM_STR);
 
@@ -117,7 +117,7 @@ class BasketItem
         $basketItem->setProductId($product_id);
         $basketItem->setQuantity($quantity);
         $basketItem->setPrice($price);
-        $basketItem->setOptionId($option_id);
+        $basketItem->setOptionId($option_ids);
         $basketItem->setPriceAddition($price_addition);
         $basketItem->setTotalPrice($total_price);
         return $basketItem;

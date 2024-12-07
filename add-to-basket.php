@@ -22,6 +22,24 @@ if (!is_array($options)) {
     $options = [];
 }
 
+// Bereken de totale prijs op basis van opties
+$basePrice = $productPrice; // Basisprijs van het product
+$optionPriceAdditions = 0.0; // Houd de prijsverhogingen bij
+$selectedOptionIds = [];
+
+foreach ($options as $optionId => $option) {
+    if (isset($option['price_addition']) && isset($option['id'])) {
+        $priceAddition = floatval($option['price_addition']);
+        $optionPriceAdditions += $priceAddition;
+        $selectedOptionIds[] = intval($option['id']);
+    }
+}
+
+$totalPrice = ($basePrice + $optionPriceAdditions) * $quantity; // Bereken de totale prijs
+
+// Debugging: controleer berekende prijzen
+var_dump($totalPrice, $optionPriceAdditions);
+
 // Krijg of maak de winkelmand van de gebruiker
 $basket = Basket::getBasket($userId);
 if (!$basket) {
@@ -31,20 +49,7 @@ if (!$basket) {
 $basketId = $basket['id'];
 
 // Voeg het product met opties toe aan de winkelmand
-$totalPrice = $productPrice * $quantity;
-if (!empty($options)) {
-    foreach ($options as $option) {
-        if (isset($option['id']) && isset($option['price_addition'])) {
-            $optionId = intval($option['id']);
-            $priceAddition = floatval($option['price_addition']);
-            $totalPrice += $priceAddition * $quantity;
-            BasketItem::createBasketItem($basketId, $productId, $quantity, $productPrice, $optionId, $priceAddition, $totalPrice);
-        }
-    }
-} else {
-    // Voeg het product zonder opties toe
-    BasketItem::createBasketItem($basketId, $productId, $quantity, $productPrice, null, 0, $totalPrice);
-}
+BasketItem::createBasketItem($basketId, $productId, $quantity, $productPrice, json_encode($selectedOptionIds), $optionPriceAdditions, $totalPrice);
 
 // Redirect naar de winkelmand
 header('Location: basket-page.php');

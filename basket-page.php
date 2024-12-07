@@ -23,6 +23,13 @@ $basketItems = BasketItem::getItemsByBasketId($basket['id']);
 ?>
 
 <!DOCTYPE html>
+<?php
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['clear_basket'])) {
+    BasketItem::clearBasket($basket['id']);
+    header('Location: basket-page.php');
+    exit();
+}
+?>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -56,20 +63,33 @@ $basketItems = BasketItem::getItemsByBasketId($basket['id']);
         </div>
     </nav>
 
-    <div class="basket-container">
+    <section class="basket-container">
         <h1>Your Basket</h1>
-        <ul>
+        <ul class="basket-list">
             <?php foreach ($basketItems as $item): ?>
                 <?php $product = Product::getById($item['product_id']); ?>
-                <li>
-                    <?php echo htmlspecialchars($product['name']); ?> - Quantity: <?php echo $item['quantity']; ?> - Total Price: €<?php echo $item['total_price']; ?>
-                    <form action="remove-from-basket.php" method="POST" style="display:inline;">
-                        <input type="hidden" name="basket_item_id" value="<?php echo $item['id']; ?>">
-                        <button type="submit">Remove</button>
-                    </form>
+                <li class="basket-item">
+                    <div class="basket-item-info">
+                        <h4 class="product-name"><?php echo htmlspecialchars($product['name']); ?></h4>
+                        <p>Quantity: <?php echo $item['quantity']; ?></p>
+                        <p>Total Price: €<?php echo number_format($item['total_price'], 2); ?></p>
+                    </div>
+                    <div class="basket-item-actions">
+                        <form action="" method="POST">
+                            <input type="hidden" name="basket_item_id" value="<?php echo $item['id']; ?>">
+                            <button type="submit" class="btn">Remove</button>
+                        </form>
+                    </div>
                 </li>
             <?php endforeach; ?>
         </ul>
-    </div>
+        <div class="basket-summary">
+            <form action="" method="POST">
+                <input type="hidden" name="clear_basket" value="1">
+                <button type="submit" class="btn">Clear Basket</button>
+            </form>
+        </div>
+        <a class="padding" href="checkout.php">Proceed to Checkout</a>
+    </section>
 </body>
 </html>

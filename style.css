@@ -665,6 +665,57 @@ h1 {
 .option-button:hover {
     transform: translateY(-5px);
 }
+/*winkelmandje*/
+.basket-container {
+    padding: 5%;
+    background-color: #f6f6f6;
+    border-radius: 16px;
+    margin: 2% auto;
+}
+
+.basket-list {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+.basket-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+    border-bottom: 1px solid #ddd;
+    gap: 10px;
+}
+
+.basket-item:last-child {
+    border-bottom: none;
+}
+
+.basket-item-info {
+    flex-grow: 1;
+}
+
+.product-name {
+    font-size: 1.2em;
+    color: #2f8f46;
+    margin: 0;
+}
+
+.basket-item-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.basket-summary {
+    text-align: right;
+    margin-top: 20px;
+}
+
+.basket-summary .btn {
+    max-width: 200px;
+    display: inline-block;
+}
 
 
 

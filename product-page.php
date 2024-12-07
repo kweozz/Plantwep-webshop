@@ -126,7 +126,7 @@ $potOptions = array_filter($options, function ($option) {
                         <input type="number" id="quantity" name="quantity" value="1" min="1">
                     </div>
                     <div class="product-price">
-                        <h3>Price: €<span id="finalPrice"><?php echo htmlspecialchars($product['price']); ?></span></h3>
+                        <p>Price: €<span id="finalPrice"><?php echo htmlspecialchars($product['price']); ?></span></p>
                         <button class="btn" type="submit">Add to Cart</button>
                     </div>
                 </form>
