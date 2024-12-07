@@ -73,77 +73,88 @@ $potOptions = array_filter($options, function ($option) {
             <?php endif; ?>
         </div>
     </nav>
+    <section>
+        <h1><?php echo htmlspecialchars($product['name']); ?></h1>
 
-    <div class="product-container">
-        <div class="product-image">
-            <img src="<?php echo htmlspecialchars($product['image']); ?>" alt="<?php echo htmlspecialchars($product['name']); ?>">
+        <div class="product-container">
+
+            <div class="product-image">
+                <img src="<?php echo htmlspecialchars($product['image']); ?>"
+                    alt="<?php echo htmlspecialchars($product['name']); ?>">
+            </div>
+            <div class="product-details">
+                <h2>Kies uw product</h2>
+
+                <form action="add-to-basket.php" method="POST">
+
+                    <input type="hidden" name="product_id" value="<?php echo $product['id']; ?>">
+                    <input type="hidden" name="product_price" value="<?php echo $product['price']; ?>">
+                    <input type="hidden" name="final_quantity" id="finalQuantityInput" value="1">
+                    <?php if (count($sizeOptions) > 1): ?>
+                        <div class="options-group form-group">
+                            <label>Beschikbare maten:</label>
+                            <?php foreach ($sizeOptions as $option): ?>
+                                <label class="option-button">
+                                    <input type="checkbox" class="size-checkbox"
+                                        name="options[<?php echo $option['id']; ?>][id]"
+                                        value="<?= htmlspecialchars($option['id']); ?>"
+                                        data-price="<?= htmlspecialchars($option['price_addition']); ?>">
+                                    <span><?= htmlspecialchars($option['name']); ?></span>
+                                </label>
+                                <input type="hidden" name="options[<?php echo $option['id']; ?>][price_addition]"
+                                    value="<?= htmlspecialchars($option['price_addition']); ?>">
+                            <?php endforeach; ?>
+                        </div>
+                    <?php endif; ?>
+
+                    <div class="options-group form-group">
+                        <label>Beschikbare potten:</label>
+                        <?php foreach ($potOptions as $option): ?>
+                            <label class="option-button">
+                                <input type="checkbox" class="pot-checkbox" name="options[<?php echo $option['id']; ?>][id]"
+                                    value="<?= htmlspecialchars($option['id']); ?>"
+                                    data-price="<?= htmlspecialchars($option['price_addition']); ?>">
+                                <span><?= htmlspecialchars($option['name']); ?></span>
+                            </label>
+                            <input type="hidden" name="options[<?php echo $option['id']; ?>][price_addition]"
+                                value="<?= htmlspecialchars($option['price_addition']); ?>">
+                        <?php endforeach; ?>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="quantity">Aantal:</label>
+                        <input type="number" id="quantity" name="quantity" value="1" min="1">
+                    </div>
+                    <div class="product-price">
+                        <h3>Price: €<span id="finalPrice"><?php echo htmlspecialchars($product['price']); ?></span></h3>
+                        <button class="btn" type="submit">Add to Cart</button>
+                    </div>
+                </form>
+            </div>
         </div>
-        <form action="add-to-basket.php" method="POST">
-            <input type="hidden" name="product_id" value="<?php echo $product['id']; ?>">
-            <input type="hidden" name="product_price" value="<?php echo $product['price']; ?>">
-            <input type="hidden" name="final_quantity" id="finalQuantityInput" value="1">
-
-            <?php if (count($sizeOptions) > 1): ?>
-                <div class="options-group form-group">
-                    <label>Beschikbare maten:</label>
-                    <?php foreach ($sizeOptions as $option): ?>
-                        <label class="option-button">
-                            <input type="checkbox" class="size-checkbox" name="options[<?php echo $option['id']; ?>][id]"
-                                value="<?= htmlspecialchars($option['id']); ?>"
-                                data-price="<?= htmlspecialchars($option['price_addition']); ?>">
-                            <span><?= htmlspecialchars($option['name']); ?></span>
-                        </label>
-                        <input type="hidden" name="options[<?php echo $option['id']; ?>][price_addition]" value="<?= htmlspecialchars($option['price_addition']); ?>">
-                    <?php endforeach; ?>
-                </div>
-            <?php endif; ?>
-
-            <div class="options-group form-group">
-                <label>Beschikbare potten:</label>
-                <?php foreach ($potOptions as $option): ?>
-                    <label class="option-button">
-                        <input type="checkbox" class="pot-checkbox" name="options[<?php echo $option['id']; ?>][id]"
-                            value="<?= htmlspecialchars($option['id']); ?>"
-                            data-price="<?= htmlspecialchars($option['price_addition']); ?>">
-                        <span><?= htmlspecialchars($option['name']); ?></span>
-                    </label>
-                    <input type="hidden" name="options[<?php echo $option['id']; ?>][price_addition]" value="<?= htmlspecialchars($option['price_addition']); ?>">
+        <h2>Meer van de categorie <span
+                style="color:green;"><?php echo htmlspecialchars($product['category_name']); ?></span></h2>
+        <div class="related-products">
+            <div class="products">
+                <?php
+                // Fetch products from the same category, excluding the current product
+                $relatedProducts = Product::getByCategory($product['category_id']);
+                $count = 0;
+                foreach ($relatedProducts as $relatedProduct):
+                    if ($relatedProduct['id'] == $product['id'] || $count >= 3)
+                        continue;
+                    $count++;
+                    ?>
+                    <div class="product-card">
+                        <img src="<?php echo htmlspecialchars($relatedProduct['image']); ?>"
+                            alt="<?php echo htmlspecialchars($relatedProduct['name']); ?>">
+                        <h4><?php echo htmlspecialchars($relatedProduct['name']); ?></h4>
+                        <p>€<?php echo htmlspecialchars(number_format($relatedProduct['price'], 2)); ?></p>
+                    </div>
                 <?php endforeach; ?>
             </div>
-
-            <div class="form-group">
-                <label for="quantity">Aantal:</label>
-                <input type="number" id="quantity" name="quantity" value="1" min="1">
-            </div>
-            <div class="product-price">
-                <p>Price: €<span id="finalPrice"><?php echo htmlspecialchars($product['price']); ?></span></p>
-                <button class="btn" type="submit">Add to Cart</button>
-            </div>
-        </form>
-    </div>
-
-    <h2>Meer van de categorie <span
-            style="color:green;"><?php echo htmlspecialchars($product['category_name']); ?></span></h2>
-    <div class="related-products">
-        <div class="products">
-            <?php
-            // Fetch products from the same category, excluding the current product
-            $relatedProducts = Product::getByCategory($product['category_id']);
-            $count = 0;
-            foreach ($relatedProducts as $relatedProduct):
-                if ($relatedProduct['id'] == $product['id'] || $count >= 3)
-                    continue;
-                $count++;
-                ?>
-                <div class="product-card">
-                    <img src="<?php echo htmlspecialchars($relatedProduct['image']); ?>"
-                        alt="<?php echo htmlspecialchars($relatedProduct['name']); ?>">
-                    <h4><?php echo htmlspecialchars($relatedProduct['name']); ?></h4>
-                    <p>€<?php echo htmlspecialchars(number_format($relatedProduct['price'], 2)); ?></p>
-                </div>
-            <?php endforeach; ?>
         </div>
-    </div>
+    </section>
     <script>
         const sizeCheckboxes = document.querySelectorAll('.size-checkbox');
         const potCheckboxes = document.querySelectorAll('.pot-checkbox');
