@@ -27,7 +27,7 @@ if (isset($_POST['add_category'])) {
             if ($uploadResult) {
                 $category = new Category();
                 $category->setName($categoryName);
-                $category->setImage("images/uploads/{$uploadResult}");
+                $category->setImage($uploadResult);
                 if ($category->create()) {
                     $categorySuccessMessage = 'Category added successfully!';
                 } else {

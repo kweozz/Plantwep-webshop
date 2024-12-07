@@ -148,7 +148,7 @@ class Category
         $category->setId($categoryId);
 
         // Verwijder de categorie
-        if ($category->delete()) {
+        if ($category->delete($categoryId)) {
             return "Categorie succesvol verwijderd";
         } else {
             return "Het is niet gelukt om de categorie te verwijderen";
