@@ -45,10 +45,7 @@ if (!empty($options)) {
     // Voeg het product zonder opties toe
     BasketItem::createBasketItem($basketId, $productId, $quantity, $productPrice, null, 0, $totalPrice);
 }
-var_dump($priceAddition);
-var_dump($productPrice);
-var_dump($totalPrice);
-die();
+
 // Redirect naar de winkelmand
 header('Location: basket-page.php');
 exit();
