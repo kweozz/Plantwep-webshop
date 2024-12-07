@@ -16,11 +16,6 @@ $productId = intval($_POST['product_id']);
 $productPrice = floatval($_POST['product_price']);
 $quantity = intval($_POST['quantity']);
 $options = isset($_POST['options']) ? $_POST['options'] : [];
-// price addition
-
-
-// Debugging: controleer ontvangen gegevens
-
 
 // Valideer opties (zorg dat deze een array zijn)
 if (!is_array($options)) {
@@ -36,21 +31,24 @@ if (!$basket) {
 $basketId = $basket['id'];
 
 // Voeg het product met opties toe aan de winkelmand
+$totalPrice = $productPrice * $quantity;
 if (!empty($options)) {
-    foreach ($options as $optionId => $option) {
+    foreach ($options as $option) {
         if (isset($option['id']) && isset($option['price_addition'])) {
             $optionId = intval($option['id']);
             $priceAddition = floatval($option['price_addition']);
-        
-            $totalPrice = $productPrice + $priceAddition;
+            $totalPrice += $priceAddition * $quantity;
             BasketItem::createBasketItem($basketId, $productId, $quantity, $productPrice, $optionId, $priceAddition, $totalPrice);
         }
     }
 } else {
     // Voeg het product zonder opties toe
-    BasketItem::createBasketItem($basketId, $productId, $quantity, $productPrice, null, 0, $calculatedPrice);
+    BasketItem::createBasketItem($basketId, $productId, $quantity, $productPrice, null, 0, $totalPrice);
 }
-
+var_dump($priceAddition);
+var_dump($productPrice);
+var_dump($totalPrice);
+die();
 // Redirect naar de winkelmand
 header('Location: basket-page.php');
 exit();
