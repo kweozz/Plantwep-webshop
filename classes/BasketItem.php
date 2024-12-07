@@ -96,7 +96,7 @@ class BasketItem
     public static function createBasketItem($basket_id, $product_id, $quantity, $price, $option_id = null, $price_addition = 0)
     {
         $db = Db::getConnection();
-        $query = $db->prepare('INSERT INTO basket_items (basket_id, product_id, quantity, price, option_id, price_addition, total_price) VALUES (:basket_id, :product_id, :quantity, :price, :option_id, :price_addition, :total_price)');
+        $query = $db->prepare('INSERT INTO basket_item (basket_id, product_id, quantity, price, option_id, price_addition, total_price) VALUES (:basket_id, :product_id, :quantity, :price, :option_id, :price_addition, :total_price)');
         $total_price = ($price + $price_addition) * $quantity;
         $query->bindValue(':basket_id', $basket_id, PDO::PARAM_INT);
         $query->bindValue(':product_id', $product_id, PDO::PARAM_INT);
@@ -124,7 +124,7 @@ class BasketItem
 
         $db = Db::getConnection();
 
-        $stmt = $db->prepare('SELECT * FROM basket_items WHERE basket_id = :basket_id');
+        $stmt = $db->prepare('SELECT * FROM basket_item WHERE basket_id = :basket_id');
 
         $stmt->bindParam(':basket_id', $basketId, PDO::PARAM_INT);
 
@@ -138,7 +138,7 @@ class BasketItem
     {
         // Check if the item already exists in the basket
         $db = Db::getConnection();
-        $query = $db->prepare('SELECT * FROM basket_items WHERE basket_id = :basket_id AND product_id = :product_id AND option_id = :option_id');
+        $query = $db->prepare('SELECT * FROM basket_item WHERE basket_id = :basket_id AND product_id = :product_id AND option_id = :option_id');
         $query->bindValue(':basket_id', $basket_id, PDO::PARAM_INT);
         $query->bindValue(':product_id', $product_id, PDO::PARAM_INT);
         $query->bindValue(':option_id', $option_id, PDO::PARAM_INT);
@@ -147,7 +147,7 @@ class BasketItem
     public static function removeItemFromBasket($basket_id, $product_id, $option_id = null)
     {
         $db = Db::getConnection();
-        $query = $db->prepare('DELETE FROM basket_items WHERE basket_id = :basket_id AND product_id = :product_id AND option_id = :option_id');
+        $query = $db->prepare('DELETE FROM basket_item WHERE basket_id = :basket_id AND product_id = :product_id AND option_id = :option_id');
         $query->bindValue(':basket_id', $basket_id, PDO::PARAM_INT);
         $query->bindValue(':product_id', $product_id, PDO::PARAM_INT);
         $query->bindValue(':option_id', $option_id, PDO::PARAM_INT);
@@ -156,7 +156,7 @@ class BasketItem
     public static function clearBasket($basket_id)
     {
         $db = Db::getConnection();
-        $query = $db->prepare('DELETE FROM basket_items WHERE basket_id = :basket_id');
+        $query = $db->prepare('DELETE FROM basket_item WHERE basket_id = :basket_id');
         $query->bindValue(':basket_id', $basket_id, PDO::PARAM_INT);
         return $query->execute();
     }
