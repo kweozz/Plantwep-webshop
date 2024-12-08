@@ -20,9 +20,11 @@ if (!empty($_POST)) {
             $user->setEmail($_POST['email']);
             // Set the password
             $user->setPassword($_POST['password']);
+            
+            // set the currency
+            $user->setCurrency(1000);
             // Save the user
             $user->save();
-
             // Create a new basket for the user
             $basket = new Basket();
             $basket->setUserId($user->id);
