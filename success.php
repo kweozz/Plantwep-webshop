@@ -33,25 +33,12 @@ $orderItems = OrderItem::getByOrderId($lastOrder['id']);
             <div class="order-summary">
                 <h3>Order Summary</h3>
                 <ul class="order-items">
-                    <?php foreach ($orderItems as $item): ?>
-                        <?php
-                        $product = Product::getById($item['product_id']);
-                        ?>
-                        <li class="order-item">
-                            <img src="<?php echo htmlspecialchars($product['image']); ?>"
-                                alt="<?php echo htmlspecialchars($product['name']); ?>" class="product-image">
-                            <div class="order-item-info">
-                                <h4 class="product-name"><?php echo htmlspecialchars($product['name']); ?></h4>
-                                <p class="product-price">€<?php echo number_format($item['total_price'], 2); ?></p>
-                                <p class="product-quantity">Quantity: <?php echo $item['quantity']; ?></p>
-                            </div>
-                        </li>
-                    <?php endforeach; ?>
+             
                 </ul>
                 <div class="order-total">
                     <p>Total Price: €<?php echo number_format($lastOrder['total_price'], 2); ?></p>
                 </div>
-                <a href="/" class="btn">Ga naar de homepage</a>
+                <a href="index.php" class="btn">Ga naar de homepage</a>
             </div>
         </div>
     </div>

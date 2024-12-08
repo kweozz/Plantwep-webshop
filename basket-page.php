@@ -90,52 +90,64 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['clear_basket'])) {
                 ?>
                 <li class="basket-item">
                     <img src="<?php echo $product['image']; ?>" alt="<?php echo htmlspecialchars($product['name']); ?>"
-                        class="product-image">
+                        class="product-image-basket">
                     <div class="basket-item-info">
+        
                         <h4 class="product-name"><?php echo htmlspecialchars($product['name']); ?></h4>
+                        <p class="product-quantity">Quantity: <?php echo $item['quantity']; ?></p>
                         <?php if (!empty($options)): ?>
 
-                            <?php foreach ($options as $optionId): 
-                               
+                            <?php foreach ($options as $optionId):
+
                                 $option = BasketItem::getOptionById($optionId); // Assuming you have a method to get option by ID in BasketItem class
                                 ?>
                                 <p>Option: <?php echo htmlspecialchars($option['name']); ?></p>
                             <?php endforeach; ?>
-                        </div>
-                    <?php endif; ?>
-                    <p class="product-price">€<?php echo number_format($item['total_price'], 2); ?></p>
-                    <p class="product-quantity">Quantity: <?php echo $item['quantity']; ?></p>
-                    </li>
 
-                   
-                <div class="basket-item-actions">
-                    <form action="" method="POST">
-                        <input type="hidden" name="basket_item_id" value="<?php echo $item['id']; ?>">
-                        <button type="submit" name="delete_item" aria-label="Remove">
-                            <i class="fas fa-trash"></i>
-                        </button>
-                    </form>
-                </div>
+
+                        <?php endif; ?>
+                    </div>
+                 
+                    <div class="basket-info">
+                        <div class="basket-item-actions">
+                            <form action="" method="POST">
+                                <input type="hidden" name="basket_item_id" value="<?php echo $item['id']; ?>">
+                                <button class="delete-btn" type="submit" name="delete_item" aria-label="Remove">
+                                    <i class="fas fa-times-circle"></i>
+                                </button>
+                            </form>
+                        </div>
+                        <p class="product-price">€<?php echo number_format($item['total_price'], 2); ?></p>
+                    </div>
+
+                </li>
+
+
+
                 </li>
             <?php endforeach; ?>
         </ul>
-        <div class="basket-summary"
-            <p class="total-price">Total: €<?php echo number_format($totalPrice, 2); ?></p>
-        
+        <div class="basket-summary" <p class="total-price">Total: €<?php echo number_format($totalPrice, 2); ?></p>
+
             <form action="" method="POST">
                 <input type="hidden" name="clear_basket" value="1">
                 <button type="submit" class="btn">Clear Basket</button>
             </form>
         </div>
         <?php if ($totalPrice > 0): ?>
-            <form action="payment.php" method="POST">
-            <input type="hidden" name="total_price" value="<?php echo $totalPrice; ?>">
-            <button type="submit" class="btn">Pay</button>
-            </form>
+            <?php if ($_SESSION['user']['currency'] >= $totalPrice): ?>
+                <form action="payment.php" method="POST">
+                    <input type="hidden" name="total_price" value="<?php echo $totalPrice; ?>">
+                    <button type="submit" class="btn">Pay</button>
+                </form>
+            <?php else: ?>
+                <p class="alert-danger">You don't have enough credits to complete this purchase.</p>
+            <?php endif; ?>
         <?php else: ?>
-            <p>Your basket is empty. Add items to your basket to proceed with payment.</p>
+            <p class="alert-danger">Your basket is empty. Add items to your basket to proceed with payment.</p>
         <?php endif; ?>
     </section>
 </body>
+
 
 </html>
