@@ -687,8 +687,9 @@ h1 {
     padding: 2%;
     gap: 5%;
     max-height: 200px;
-    border-bottom: solid 1px #2A2B2A ;
+    border-bottom: solid 1px #2A2B2A;
 }
+
 img.product-image-basket {
     max-width: 200px;
     max-height: 200px;
@@ -696,6 +697,7 @@ img.product-image-basket {
     border-radius: 16px;
     aspect-ratio: 1;
 }
+
 .basket-item:last-child {
     border-bottom: none;
 }
@@ -730,13 +732,65 @@ div.basket-info {
     flex-direction: column;
     justify-content: space-between;
     text-align: right;
-align-items: flex-end;
+    align-items: flex-end;
 }
+
 div.basket-item-actions {
     display: flex;
     justify-content: right;
 }
 
+.redirect button {
+    padding: 10px 20px;
+    font-size: 1.1em;
+    color: #fff;
+    background-color: #45a049;
+    border: none;
+    border-radius: 12px;
+    width: auto;
+    text-align: center;
+    text-decoration: none;
+    transition: background-color 0.3s;
+    cursor: pointer;
+
+}
+
+.redirect {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border: none;
+    text-align: center;
+}
+
+button.remove {
+    background-color: none;
+    color: red;
+    border: none;
+    background-color: #f6f6f6;
+    font-size: 1.2em;
+    cursor: pointer;
+}
+.basket-header{
+    display: flex;
+    justify-content: space-between;
+    padding: 2%;
+    text-align: center;
+    align-items: center;
+    border-bottom: solid 1px #2A2B2A;
+}
+.basket-header h2{
+    padding: 0%;
+
+    font-size: 1.8em;
+    color: #45a049;
+}
+.basket-header p{
+    padding: 0%;
+    font-size: 1em;
+    color: red;
+    font-weight: bold;
+}
 /* Payment success*/
 
 .success-container {

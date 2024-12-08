@@ -78,9 +78,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['clear_basket'])) {
             <?php endif; ?>
         </div>
     </nav>
-
+   
     <section class="basket-container">
-        <h1>Your Basket</h1>
+
+        <form action="" method="POST">
+        <input type="hidden" name="clear_basket" value="1">
+        <div class="basket-header" >
+        <h2>Your Basket</h2>
+              <p><button class="remove" type="submit" class="icon-btn"><i class="fas fa-trash-alt"></i> </button>Clear basket</p>
+              </div>
+        </form>
         <ul class="basket-list">
             <?php foreach ($basketItems as $item): ?>
                 <?php
@@ -92,7 +99,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['clear_basket'])) {
                     <img src="<?php echo $product['image']; ?>" alt="<?php echo htmlspecialchars($product['name']); ?>"
                         class="product-image-basket">
                     <div class="basket-item-info">
-        
+
                         <h4 class="product-name"><?php echo htmlspecialchars($product['name']); ?></h4>
                         <p class="product-quantity">Quantity: <?php echo $item['quantity']; ?></p>
                         <?php if (!empty($options)): ?>
@@ -107,7 +114,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['clear_basket'])) {
 
                         <?php endif; ?>
                     </div>
-                 
+
                     <div class="basket-info">
                         <div class="basket-item-actions">
                             <form action="" method="POST">
@@ -128,24 +135,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['clear_basket'])) {
             <?php endforeach; ?>
         </ul>
         <div class="basket-summary" <p class="total-price">Total: €<?php echo number_format($totalPrice, 2); ?></p>
+            <div class="redirect">
 
-            <form action="" method="POST">
-                <input type="hidden" name="clear_basket" value="1">
-                <button type="submit" class="btn">Clear Basket</button>
-            </form>
+                <a href="index.php" class="btn">Continue Shopping</a>
+                <?php if ($totalPrice > 0): ?>
+                    <?php if ($_SESSION['user']['currency'] >= $totalPrice): ?>
+                        <form action="payment.php" method="POST">
+                            <input type="hidden" name="total_price" value="<?php echo $totalPrice; ?>">
+                            <button type="submit" class="btn">Pay</button>
+                        </form>
+                    <?php else: ?>
+                        <p class="alert-danger">You don't have enough credits to complete this purchase.</p>
+                    <?php endif; ?>
+                <?php else: ?>
+                    <p class="alert-danger">Your basket is empty. Add items to your basket to proceed with payment.</p>
+                <?php endif; ?>
+
+
+            </div>
         </div>
-        <?php if ($totalPrice > 0): ?>
-            <?php if ($_SESSION['user']['currency'] >= $totalPrice): ?>
-                <form action="payment.php" method="POST">
-                    <input type="hidden" name="total_price" value="<?php echo $totalPrice; ?>">
-                    <button type="submit" class="btn">Pay</button>
-                </form>
-            <?php else: ?>
-                <p class="alert-danger">You don't have enough credits to complete this purchase.</p>
-            <?php endif; ?>
-        <?php else: ?>
-            <p class="alert-danger">Your basket is empty. Add items to your basket to proceed with payment.</p>
-        <?php endif; ?>
     </section>
 </body>
 
