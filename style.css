@@ -716,9 +716,45 @@ h1 {
     display: inline-block;
 }
 
+/* Payment success*/
 
-
-
+.success-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 5%;
+    background-color: #f6f6f6;
+    border-radius: 16px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+  }
+  
+  .success-icon {
+    font-size: 3em;
+    color: #45a049;
+    margin-bottom: 20px;
+  }
+  
+  .success-title {
+    font-size: 2em;
+    color: #45a049;
+    margin-bottom: 10px;
+  }
+  
+  .success-message {
+    font-size: 1em;
+    color: #555;
+    margin-bottom: 20px;
+  }
+  
+  .success-actions {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    width: 100%;
+  }
+  
 
 /* Responsive */
 @media (min-width: 800px) {
