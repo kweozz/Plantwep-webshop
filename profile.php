@@ -2,8 +2,9 @@
 
 session_start();
 
-include_once(__DIR__ . '/classes/Db.php');
-include_once(__DIR__ . '/classes/User.php');
+include_once __DIR__ . '/classes/Db.php';
+include_once __DIR__ . '/classes/User.php';
+include_once __DIR__ . '/classes/Order.php';
 
 // Controleer of de gebruiker is ingelogd
 if (isset($_SESSION['user'])) {
@@ -142,10 +143,27 @@ if (isset($_POST["logout"])) {
             </div>
             <button type="submit" class="btn" name="change_password">Wijzig wachtwoord</button>
         </form>
-        <!-- Bestellingen -->
+   
+        <?php
+        // Haal bestellingen op voor de ingelogde gebruiker
+        $orders = Order::getByUserId($userData['id']);
+        ?>
+
         <section class="profile-orders">
             <h2>Bestellingen</h2>
-            <p>Er zijn geen bestellingen gevonden.</p>
+            <?php if (!empty($orders)): ?>
+                <ul>
+                    <?php foreach ($orders as $order): ?>
+                        <li>
+                            <p>Order ID: <?php echo htmlspecialchars($order['id']); ?></p>
+                            <p>Datum: <?php echo htmlspecialchars($order['created_at']); ?></p>
+                            <p>Totaal: €<?php echo htmlspecialchars($order['total_price']); ?></p>
+                        </li>
+                    <?php endforeach; ?>
+                </ul>
+            <?php else: ?>
+                <p>Er zijn geen bestellingen gevonden.</p>
+            <?php endif; ?>
         </section>
         <!-- Uitloggen -->
         <form action="profile.php" method="POST" class="logout-form form-group">

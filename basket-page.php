@@ -127,6 +127,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['clear_basket'])) {
                 <button type="submit" class="btn">Clear Basket</button>
             </form>
         </div>
+        <?php if ($totalPrice > 0): ?>
+            <form action="payment.php" method="POST">
+            <input type="hidden" name="total_price" value="<?php echo $totalPrice; ?>">
+            <button type="submit" class="btn">Pay</button>
+            </form>
+        <?php else: ?>
+            <p>Your basket is empty. Add items to your basket to proceed with payment.</p>
+        <?php endif; ?>
     </section>
 </body>
 
