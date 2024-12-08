@@ -50,27 +50,32 @@ $potOptions = array_filter($options, function ($option) {
 </head>
 
 <body>
-    <nav>
+<nav>
         <a href="index.php"><img class="logo" src="images/logo-plantwerp.png" alt="Plantwerp Logo"></a>
         <input type="text" placeholder="Zoek naar planten..." class="search-bar">
         <div class="nav-items">
             <a href="profile.php" class="icon profile-icon" aria-label="Profiel">
                 <i class="fas fa-user"></i>
             </a>
-            <a href="#" class="icon basket-icon" aria-label="Winkelmand">
+            <?php if (isset($_SESSION['user']['currency'])): ?>
+                <div class="currency" >
+                    <i class="fas fa-coins currency"></i>
+                    <span class="display-currency"><?php echo htmlspecialchars($_SESSION['user']['currency']); ?></span>
+                </div>
+            <?php endif; ?>
+
+            <a href="basket-page.php" class="icon basket-icon" aria-label="Winkelmand">
                 <i class="fas fa-shopping-basket"></i>
+                <?php if ($totalItems > 0): ?>
+                    <span class="basket-count"><?php echo $totalItems; ?></span>
+                <?php endif; ?>
             </a>
             <?php if (isset($_SESSION['role']) && $_SESSION['role'] == 1): ?>
                 <a href="admin-dash.php" class="icon admin-icon" aria-label="Admin Dashboard">
                     <i class="fas fa-tools"></i>
                 </a>
             <?php endif; ?>
-            <?php if (isset($_SESSION['user']['currency'])): ?>
-                <span class="currency-display">
-                    <i class="fas fa-coins"></i>
-                    <?php echo htmlspecialchars($_SESSION['user']['currency']); ?>
-                </span>
-            <?php endif; ?>
+
         </div>
     </nav>
     <section>

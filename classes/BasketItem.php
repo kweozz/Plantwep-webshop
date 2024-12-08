@@ -167,5 +167,15 @@ class BasketItem
         $query->bindValue(':basket_id', $basket_id, PDO::PARAM_INT);
         return $query->execute();
     }
+
+    public static function getTotalItems($basketId)
+    {
+        $db = Db::getConnection();
+        $query = $db->prepare('SELECT SUM(quantity) as total_items FROM basket_item WHERE basket_id = :basket_id');
+        $query->bindValue(':basket_id', $basketId, PDO::PARAM_INT);
+        $query->execute();
+        $result = $query->fetch(PDO::FETCH_ASSOC);
+        return $result['total_items'] ?? 0;
+    }
 }
 ?>

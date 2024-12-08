@@ -778,7 +778,7 @@ button.remove {
 .basket-header{
     display: flex;
     justify-content: space-between;
-    padding: 2%;
+    padding:2% 0%;
     text-align: center;
     align-items: center;
 }
@@ -801,6 +801,30 @@ button.remove {
     margin: 2% auto;
     text-align: center;
 }
+.basket-count{
+    background-color: #333;
+    color: white;
+    font-size: 0.6em;
+    font-weight: bold;
+    padding: 2px 4px;
+    border-radius: 16px;
+}
+.currency{
+    font-size: 1.2em;
+    align-items: center;
+    display : flex;
+    justify-content: center;
+ }
+.display-currency{
+    background-color: #333;
+    color: white;
+    font-size: 0.6em;
+    font-weight: bold;
+    padding: 6px 4px;
+    border-radius: 16px;
+}
+
+
 /* Payment success*/
 
 .success-container {

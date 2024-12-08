@@ -1,4 +1,4 @@
-<h2?php
+<?php
 include_once __DIR__ . '/classes/Db.php';
 include_once __DIR__ . '/classes/Basket.php';
 include_once __DIR__ . '/classes/BasketItem.php';
@@ -15,6 +15,11 @@ if (!isset($_SESSION['user'])) {
 
 $userId = $_SESSION['user']['id'];
 $basket = Basket::getBasket($userId);
+$totalItems = 0;
+
+if ($basket) {
+    $totalItems = BasketItem::getTotalItems($basket['id']);
+}
 
 if (!$basket) {
     die('Basket not found.');
@@ -61,20 +66,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['clear_basket'])) {
             <a href="profile.php" class="icon profile-icon" aria-label="Profiel">
                 <i class="fas fa-user"></i>
             </a>
-            <a href="#" class="icon basket-icon" aria-label="Winkelmand">
+            <?php if (isset($_SESSION['user']['currency'])): ?>
+                <div class="currency" >
+                    <i class="fas fa-coins currency"></i>
+                    <span class="display-currency"><?php echo htmlspecialchars($_SESSION['user']['currency']); ?></span>
+                </div>
+            <?php endif; ?>
+
+            <a href="basket-page.php" class="icon basket-icon" aria-label="Winkelmand">
                 <i class="fas fa-shopping-basket"></i>
+                <?php if ($totalItems > 0): ?>
+                    <span class="basket-count"><?php echo $totalItems; ?></span>
+                <?php endif; ?>
             </a>
             <?php if (isset($_SESSION['role']) && $_SESSION['role'] == 1): ?>
                 <a href="admin-dash.php" class="icon admin-icon" aria-label="Admin Dashboard">
                     <i class="fas fa-tools"></i>
                 </a>
             <?php endif; ?>
-            <?php if (isset($_SESSION['user']['currency'])): ?>
-                <span class="currency-display">
-                    <i class="fas fa-coins"></i>
-                    <?php echo htmlspecialchars($_SESSION['user']['currency']); ?>
-                </span>
-            <?php endif; ?>
+
         </div>
     </nav>
 
@@ -82,8 +92,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['clear_basket'])) {
         <form action="" method="POST">
             <input type="hidden" name="clear_basket" value="1">
             <div class="basket-header">
-                <h2>Your Basket</h2>
-                <p><button class="remove" type="submit" class="icon-btn"><i class="fas fa-trash-alt"></i> </button>Clear basket</p>
+                <h2>Uw winkelmandje</h2>
+                <p><button class="remove" type="submit" class="icon-btn"><i class="fas fa-trash-alt"></i> </button>Clear
+                    basket</p>
             </div>
         </form>
         <ul class="basket-list">
@@ -94,7 +105,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['clear_basket'])) {
                 $options = json_decode($item['option_ids'], true); // Assuming options are stored as JSON
                 ?>
                 <li class="basket-item">
-                    <img src="<?php echo $product['image']; ?>" alt="<?php echo htmlspecialchars($product['name']); ?>" class="product-image-basket">
+                    <img src="<?php echo $product['image']; ?>" alt="<?php echo htmlspecialchars($product['name']); ?>"
+                        class="product-image-basket">
                     <div class="basket-item-info">
                         <h4 class="product-name"><?php echo htmlspecialchars($product['name']); ?></h4>
                         <p class="product-quantity">Quantity: <?php echo $item['quantity']; ?></p>
