@@ -95,7 +95,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['clear_basket'])) {
                 $totalPrice += $item['total_price'];
                 $options = json_decode($item['option_ids'], true); // Assuming options are stored as JSON
                 ?>
-                <li class="basket-item">
+                <li- class="basket-item">
                     <img src="<?php echo $product['image']; ?>" alt="<?php echo htmlspecialchars($product['name']); ?>"
                         class="product-image-basket">
                     <div class="basket-item-info">

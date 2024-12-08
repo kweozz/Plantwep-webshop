@@ -5,6 +5,10 @@ session_start();
 include_once __DIR__ . '/classes/Db.php';
 include_once __DIR__ . '/classes/User.php';
 include_once __DIR__ . '/classes/Order.php';
+include_once __DIR__ . '/classes/OrderItem.php';
+include_once __DIR__ . '/classes/Product.php';
+
+
 
 // Controleer of de gebruiker is ingelogd
 if (isset($_SESSION['user'])) {
@@ -143,22 +147,31 @@ if (isset($_POST["logout"])) {
             </div>
             <button type="submit" class="btn" name="change_password">Wijzig wachtwoord</button>
         </form>
-   
+
         <?php
         // Haal bestellingen op voor de ingelogde gebruiker
         $orders = Order::getByUserId($userData['id']);
+
+
         ?>
 
-        <section class="profile-orders">
+        <section class="profile-orders ">
             <h2>Bestellingen</h2>
             <?php if (!empty($orders)): ?>
-                <ul>
+                <ul class="basket-list">
                     <?php foreach ($orders as $order): ?>
-                        <li>
-                            <p>Order ID: <?php echo htmlspecialchars($order['id']); ?></p>
-                            <p>Datum: <?php echo htmlspecialchars($order['created_at']); ?></p>
-                            <p>Totaal: €<?php echo htmlspecialchars($order['total_price']); ?></p>
-                        </li>
+                        <?php $orderItems = OrderItem::getByOrderId($order['id']); ?>
+                        <?php foreach ($orderItems as $orderItem): ?>
+                            <?php $product = Product::getById($orderItem['product_id']); ?>
+                            <li class="basket-item">
+                                <img class="product-image-basket" src="<?php echo $product['image']; ?>" alt="<?php echo htmlspecialchars($product['name']); ?>">
+                                <p class="product-quantity">Datum: <?php echo htmlspecialchars($order['created_at']); ?></p>
+                                <div class="basket-info">
+                                    <p class="product-price">Totaal: €<?php echo htmlspecialchars($order['total_price']); ?></p>
+                                </div>
+                            </li>
+                        <?php endforeach; ?>
+
                     <?php endforeach; ?>
                 </ul>
             <?php else: ?>
@@ -177,10 +190,9 @@ if (isset($_POST["logout"])) {
             </script>
             <button type="submit" name="logout" class="logout-btn btn">Uitloggen</button>
         </form>
-    </section>
 
 
-    </div>
+        </div>
 
 </body>
 

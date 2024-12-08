@@ -687,7 +687,9 @@ h1 {
     padding: 2%;
     gap: 5%;
     max-height: 200px;
-    border-bottom: solid 1px #2A2B2A;
+    background-color: #ffffff;
+    border-radius: 16px;
+    margin-bottom: 2%;
 }
 
 img.product-image-basket {
@@ -777,7 +779,6 @@ button.remove {
     padding: 2%;
     text-align: center;
     align-items: center;
-    border-bottom: solid 1px #2A2B2A;
 }
 .basket-header h2{
     padding: 0%;

@@ -6,6 +6,7 @@ include_once __DIR__ . '/classes/BasketItem.php';
 include_once __DIR__ . '/classes/Order.php';
 include_once __DIR__ . '/classes/OrderItem.php';
 include_once __DIR__ . '/classes/User.php';
+include_once __DIR__ . '/classes/Product.php';
 
 // Check if user is logged in
 if (!isset($_SESSION['user'])) {
@@ -69,11 +70,26 @@ try {
         $orderItem->setPriceAddition($item['price_addition']);
         $orderItem->setTotalPrice($item['total_price']);
         $orderItem->save();
+
+        // Update the stock for the product
+        $product = Product::getById($item['product_id']);
+        if ($product) {
+            $newStock = $product['stock'] - $item['quantity'];
+            if ($newStock < 0) {
+                throw new Exception('Not enough stock for product ID: ' . $item['product_id']);
+            }
+            $productObj = new Product();
+            $productObj->setId($product['id']);
+            $productObj->setStock($newStock);
+            $productObj->save();
+        } else {
+            throw new Exception('Product not found: ' . $item['product_id']);
+        }
     }
 
     // Clear the user's basket
     BasketItem::clearBasket($basket['id']);
-
+    // 
     // Commit the transaction
     $db->commit();
 

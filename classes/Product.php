@@ -203,7 +203,7 @@ class Product
         $statement->execute();
         return $statement->fetch(PDO::FETCH_ASSOC);
     }
-
+// Retrieve a single product by ID
     // Retrieve all products
     public static function getAll()
     {
@@ -213,6 +213,19 @@ class Product
         return $statement->fetchAll(PDO::FETCH_ASSOC);
     }
 
+    public function save() {
+
+        $db = Db::getConnection();
+
+        $query = $db->prepare('UPDATE products SET stock = :stock WHERE id = :id');
+
+        $query->bindValue(':stock', $this->stock, PDO::PARAM_INT);
+
+        $query->bindValue(':id', $this->id, PDO::PARAM_INT);
+
+        $query->execute();
+
+    }
     // Retrieve products by category
     public static function getByCategory($category_id)
     {
