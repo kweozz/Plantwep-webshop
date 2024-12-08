@@ -7,20 +7,20 @@ include_once __DIR__ . '/classes/ProductOption.php';
 // Start session
 session_start();
 
-// Controleer of de id-parameter aanwezig is
+// Check if the id parameter is present
 if (!isset($_GET['id']) || !is_numeric($_GET['id'])) {
     die('Product ID is not valid.');
 }
 
-// Haal het specifieke product op
+// Retrieve the specific product
 $productId = intval($_GET['id']);
 $product = Product::getById($productId);
 
-// Haal de categorie op van het product
+// Retrieve the category of the product
 $category = Category::getById($product['category_id']);
 $product['category_name'] = $category['name'];
 
-// Haal de opties voor dit product op via de ProductOption klasse
+// Retrieve the options for this product via the ProductOption class
 $options = ProductOption::getByProductId($productId);
 if (!$product) {
     die('Product not found.');
@@ -85,7 +85,7 @@ $potOptions = array_filter($options, function ($option) {
             <div class="product-details">
                 <h2>Kies uw product</h2>
 
-                <form action="add-to-basket.php" method="POST">
+                <form id="add-to-basket-form" action="add-to-basket.php" method="POST">
 
                     <input type="hidden" name="product_id" value="<?php echo $product['id']; ?>">
                     <input type="hidden" name="product_price" value="<?php echo $product['price']; ?>">
@@ -123,17 +123,25 @@ $potOptions = array_filter($options, function ($option) {
 
                     <div class="form-group">
                         <label for="quantity">Aantal:</label>
-                        <input type="number" id="quantity" name="quantity" value="1" min="1">
+                        <input type="number" id="quantity" name="quantity" value="1" min="1" max="<?php echo $product['stock']; ?>">
+                        <p id="quantity-error" class="alert-danger" style="display: none;">Opgelet, je kan niet meer dan <?php echo htmlspecialchars($product['stock']); ?> bestellen, uitverkocht.</p>
+                    </div>
+                    <div class="product-stock">
+                        <?php if ($product['stock'] < 3): ?>
+                            <p class="alert-danger">Hurry, item is almost sold out!</p>
+                        <?php endif; ?>
                     </div>
                     <div class="product-price">
                         <p>Price: €<span id="finalPrice"><?php echo htmlspecialchars($product['price']); ?></span></p>
-                        <button class="btn" type="submit">Add to Cart</button>
+                        <button class="btn" type="submit" <?php echo $product['stock'] <= 0 ? 'disabled' : ''; ?>>Add to Cart</button>
+                        <?php if ($product['stock'] <= 0): ?>
+                            <p class="alert-danger">This item is out of stock.</p>
+                        <?php endif; ?>
                     </div>
                 </form>
             </div>
         </div>
-        <h2>Meer van de categorie <span
-                style="color:green;"><?php echo htmlspecialchars($product['category_name']); ?></span></h2>
+        <h2>Meer van de categorie <span style="color:green;"><?php echo htmlspecialchars($product['category_name']); ?></span></h2>
         <div class="related-products">
             <div class="products">
                 <?php
@@ -160,6 +168,9 @@ $potOptions = array_filter($options, function ($option) {
         const potCheckboxes = document.querySelectorAll('.pot-checkbox');
         const finalPrice = document.getElementById('finalPrice');
         const productPrice = parseFloat(finalPrice.innerText);
+        const quantityInput = document.getElementById('quantity');
+        const quantityError = document.getElementById('quantity-error');
+        const addToBasketForm = document.getElementById('add-to-basket-form');
 
         function calculatePrice() {
             let price = productPrice;
@@ -177,7 +188,7 @@ $potOptions = array_filter($options, function ($option) {
             });
 
             // Add the quantity to the price
-            const quantity = document.getElementById('quantity').value;
+            const quantity = quantityInput.value;
             price *= quantity;
 
             // Ensure the price does not go below the base price
@@ -206,7 +217,25 @@ $potOptions = array_filter($options, function ($option) {
         });
 
         // Add event listener to quantity input
-        document.getElementById('quantity').addEventListener('input', calculatePrice);
+        quantityInput.addEventListener('input', function () {
+            const maxQuantity = parseInt(quantityInput.getAttribute('max'), 10);
+            if (quantityInput.value > maxQuantity) {
+                quantityError.style.display = 'block';
+                quantityInput.value = maxQuantity;
+            } else {
+                quantityError.style.display = 'none';
+            }
+            calculatePrice();
+        });
+
+        // Prevent form submission if quantity exceeds stock
+        addToBasketForm.addEventListener('submit', function (event) {
+            const maxQuantity = parseInt(quantityInput.getAttribute('max'), 10);
+            if (quantityInput.value > maxQuantity) {
+                event.preventDefault();
+                quantityError.style.display = 'block';
+            }
+        });
     </script>
 </body>
 

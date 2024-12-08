@@ -1,4 +1,4 @@
-<?php
+<h2?php
 include_once __DIR__ . '/classes/Db.php';
 include_once __DIR__ . '/classes/Basket.php';
 include_once __DIR__ . '/classes/BasketItem.php';
@@ -19,6 +19,7 @@ $basket = Basket::getBasket($userId);
 if (!$basket) {
     die('Basket not found.');
 }
+
 function deleteBasketItem($basketItemId)
 {
     BasketItem::removeItemFromBasket($basketItemId);
@@ -34,16 +35,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_item'])) {
 $basketItems = BasketItem::getItemsByBasketId($basket['id']);
 $totalPrice = 0;
 
-?>
-
-<!DOCTYPE html>
-<?php
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['clear_basket'])) {
     BasketItem::clearBasket($basket['id']);
     header('Location: basket-page.php');
     exit();
 }
 ?>
+
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -78,15 +77,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['clear_basket'])) {
             <?php endif; ?>
         </div>
     </nav>
-   
-    <section class="basket-container">
 
+    <section class="basket-container">
         <form action="" method="POST">
-        <input type="hidden" name="clear_basket" value="1">
-        <div class="basket-header" >
-        <h2>Your Basket</h2>
-              <p><button class="remove" type="submit" class="icon-btn"><i class="fas fa-trash-alt"></i> </button>Clear basket</p>
-              </div>
+            <input type="hidden" name="clear_basket" value="1">
+            <div class="basket-header">
+                <h2>Your Basket</h2>
+                <p><button class="remove" type="submit" class="icon-btn"><i class="fas fa-trash-alt"></i> </button>Clear basket</p>
+            </div>
         </form>
         <ul class="basket-list">
             <?php foreach ($basketItems as $item): ?>
@@ -95,26 +93,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['clear_basket'])) {
                 $totalPrice += $item['total_price'];
                 $options = json_decode($item['option_ids'], true); // Assuming options are stored as JSON
                 ?>
-                <li- class="basket-item">
-                    <img src="<?php echo $product['image']; ?>" alt="<?php echo htmlspecialchars($product['name']); ?>"
-                        class="product-image-basket">
+                <li class="basket-item">
+                    <img src="<?php echo $product['image']; ?>" alt="<?php echo htmlspecialchars($product['name']); ?>" class="product-image-basket">
                     <div class="basket-item-info">
-
                         <h4 class="product-name"><?php echo htmlspecialchars($product['name']); ?></h4>
                         <p class="product-quantity">Quantity: <?php echo $item['quantity']; ?></p>
                         <?php if (!empty($options)): ?>
-
                             <?php foreach ($options as $optionId):
-
                                 $option = BasketItem::getOptionById($optionId); // Assuming you have a method to get option by ID in BasketItem class
                                 ?>
                                 <p>Option: <?php echo htmlspecialchars($option['name']); ?></p>
                             <?php endforeach; ?>
-
-
                         <?php endif; ?>
                     </div>
-
                     <div class="basket-info">
                         <div class="basket-item-actions">
                             <form action="" method="POST">
@@ -126,17 +117,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['clear_basket'])) {
                         </div>
                         <p class="product-price">€<?php echo number_format($item['total_price'], 2); ?></p>
                     </div>
-
-                </li>
-
-
-
                 </li>
             <?php endforeach; ?>
         </ul>
-        <div class="basket-summary" <p class="total-price">Total: €<?php echo number_format($totalPrice, 2); ?></p>
+        <div class="basket-summary">
+            <h2 class="total-price">Total: €<?php echo number_format($totalPrice, 2); ?></h2>
             <div class="redirect">
-
                 <a href="index.php" class="btn">Continue Shopping</a>
                 <?php if ($totalPrice > 0): ?>
                     <?php if ($_SESSION['user']['currency'] >= $totalPrice): ?>
@@ -145,17 +131,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['clear_basket'])) {
                             <button type="submit" class="btn">Pay</button>
                         </form>
                     <?php else: ?>
-                        <p class="alert-danger">You don't have enough credits to complete this purchase.</p>
+                        <p class="alert-danger basket-alert">You don't have enough credits to complete this purchase.</p>
                     <?php endif; ?>
                 <?php else: ?>
                     <p class="alert-danger">Your basket is empty. Add items to your basket to proceed with payment.</p>
                 <?php endif; ?>
-
-
             </div>
         </div>
     </section>
 </body>
-
 
 </html>

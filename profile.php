@@ -163,9 +163,15 @@ if (isset($_POST["logout"])) {
                         <?php $orderItems = OrderItem::getByOrderId($order['id']); ?>
                         <?php foreach ($orderItems as $orderItem): ?>
                             <?php $product = Product::getById($orderItem['product_id']); ?>
-                            <li class="basket-item">
-                                <img class="product-image-basket" src="<?php echo $product['image']; ?>" alt="<?php echo htmlspecialchars($product['name']); ?>">
-                                <p class="product-quantity">Datum: <?php echo htmlspecialchars($order['created_at']); ?></p>
+                            <h4 class="product-name"><?php echo htmlspecialchars($product['name']); ?></h4>
+                            <li class="basket-item basket-item-profile">
+                             
+                                <img class="product-image-basket" src="<?php echo $product['image']; ?>"
+                                    alt="<?php echo htmlspecialchars($product['name']); ?>">
+                                <div class="basket-item-info">
+                                    <p class="product-quantity">Aantal: <?php echo $orderItem['quantity']; ?></p>
+                                    <p class="product-price">Prijs: €<?php echo number_format($orderItem['total_price'], 2); ?></p>
+                                </div>
                                 <div class="basket-info">
                                     <p class="product-price">Totaal: €<?php echo htmlspecialchars($order['total_price']); ?></p>
                                 </div>
