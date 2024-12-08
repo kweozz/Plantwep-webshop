@@ -92,7 +92,15 @@ class BasketItem
     {
         $this->total_price = $total_price;
     }
-
+// get option id
+    public static function getOptionById($optionId)
+    {
+        $db = Db::getConnection();
+        $stmt = $db->prepare('SELECT * FROM options WHERE id = :option_id');
+        $stmt->bindParam(':option_id', $optionId, PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
     public static function createBasketItem($basket_id, $product_id, $quantity, $price, $option_ids = null, $price_addition = 0, $total_price)
     {
         $db = Db::getConnection();
@@ -144,13 +152,12 @@ class BasketItem
         $query->bindValue(':option_id', $option_id, PDO::PARAM_INT);
         $query->execute();
     }
-    public static function removeItemFromBasket($basket_id, $product_id, $option_id = null)
+   // remove form basket function
+    public static function removeItemFromBasket($basket_item_id)
     {
         $db = Db::getConnection();
-        $query = $db->prepare('DELETE FROM basket_item WHERE basket_id = :basket_id AND product_id = :product_id AND option_id = :option_id');
-        $query->bindValue(':basket_id', $basket_id, PDO::PARAM_INT);
-        $query->bindValue(':product_id', $product_id, PDO::PARAM_INT);
-        $query->bindValue(':option_id', $option_id, PDO::PARAM_INT);
+        $query = $db->prepare('DELETE FROM basket_item WHERE id = :basket_item_id');
+        $query->bindValue(':basket_item_id', $basket_item_id, PDO::PARAM_INT);
         return $query->execute();
     }
     public static function clearBasket($basket_id)

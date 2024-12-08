@@ -3,6 +3,7 @@ include_once __DIR__ . '/classes/Db.php';
 include_once __DIR__ . '/classes/Basket.php';
 include_once __DIR__ . '/classes/BasketItem.php';
 include_once __DIR__ . '/classes/Product.php';
+include_once __DIR__ . '/classes/Option.php';
 
 // Start session
 session_start();
@@ -18,8 +19,21 @@ $basket = Basket::getBasket($userId);
 if (!$basket) {
     die('Basket not found.');
 }
+function deleteBasketItem($basketItemId)
+{
+    BasketItem::removeItemFromBasket($basketItemId);
+    header('Location: basket-page.php');
+    exit();
+}
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_item'])) {
+    $basketItemId = $_POST['basket_item_id'];
+    deleteBasketItem($basketItemId);
+}
 
 $basketItems = BasketItem::getItemsByBasketId($basket['id']);
+$totalPrice = 0;
+
 ?>
 
 <!DOCTYPE html>
@@ -31,6 +45,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['clear_basket'])) {
 }
 ?>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -38,6 +53,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['clear_basket'])) {
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
     <nav>
         <a href="index.php"><img class="logo" src="images/logo-plantwerp.png" alt="Plantwerp Logo"></a>
@@ -67,30 +83,51 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['clear_basket'])) {
         <h1>Your Basket</h1>
         <ul class="basket-list">
             <?php foreach ($basketItems as $item): ?>
-                <?php $product = Product::getById($item['product_id']); ?>
+                <?php
+                $product = Product::getById($item['product_id']);
+                $totalPrice += $item['total_price'];
+                $options = json_decode($item['option_ids'], true); // Assuming options are stored as JSON
+                ?>
                 <li class="basket-item">
-                    <img src="<?php echo $product['image']; ?>" alt="<?php echo htmlspecialchars($product['name']); ?>" class="product-image">
+                    <img src="<?php echo $product['image']; ?>" alt="<?php echo htmlspecialchars($product['name']); ?>"
+                        class="product-image">
                     <div class="basket-item-info">
                         <h4 class="product-name"><?php echo htmlspecialchars($product['name']); ?></h4>
-                        <p>Quantity: <?php echo $item['quantity']; ?></p>
-                        <p>Total Price: €<?php echo number_format($item['total_price'], 2); ?></p>
-                    </div>
-                    <div class="basket-item-actions">
-                        <form action="" method="POST">
-                            <input type="hidden" name="basket_item_id" value="<?php echo $item['id']; ?>">
-                            <button type="submit" class="btn">Remove</button>
-                        </form>
-                    </div>
+                        <?php if (!empty($options)): ?>
+
+                            <?php foreach ($options as $optionId): 
+                               
+                                $option = BasketItem::getOptionById($optionId); // Assuming you have a method to get option by ID in BasketItem class
+                                ?>
+                                <p>Option: <?php echo htmlspecialchars($option['name']); ?></p>
+                            <?php endforeach; ?>
+                        </div>
+                    <?php endif; ?>
+                    <p class="product-price">€<?php echo number_format($item['total_price'], 2); ?></p>
+                    <p class="product-quantity">Quantity: <?php echo $item['quantity']; ?></p>
+                    </li>
+
+                   
+                <div class="basket-item-actions">
+                    <form action="" method="POST">
+                        <input type="hidden" name="basket_item_id" value="<?php echo $item['id']; ?>">
+                        <button type="submit" name="delete_item" aria-label="Remove">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </form>
+                </div>
                 </li>
             <?php endforeach; ?>
         </ul>
-        <div class="basket-summary">
+        <div class="basket-summary"
+            <p class="total-price">Total: €<?php echo number_format($totalPrice, 2); ?></p>
+        
             <form action="" method="POST">
                 <input type="hidden" name="clear_basket" value="1">
                 <button type="submit" class="btn">Clear Basket</button>
             </form>
         </div>
-        <a class="padding" href="checkout.php">Proceed to Checkout</a>
     </section>
 </body>
+
 </html>
