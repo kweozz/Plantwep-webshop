@@ -155,7 +155,11 @@ h2 {
     transition: transform 0.3s, box-shadow 0.3s;
 }
 
-
+.products-container {
+    padding: 0 15px;
+    margin: 0 auto;
+    overflow-x: hidden; /* Hide horizontal overflow */
+}
 
 .products {
     display: grid;
@@ -218,11 +222,9 @@ h2 {
 .product-container {
     display: flex;
     flex-direction: column;
-    gap: 5%;
+ gap: 2%;
     justify-content: center;
     align-items: center;
-    padding: 5% 0%;
-    height: 100%;
 }
 
 .product-image {
@@ -910,5 +912,55 @@ button.remove {
     .product-details h1 {
 
         padding-top: 0%;
+    }
+    
+}
+/* Add this at the end of your style.css file */
+
+/* Media query for screen widths from 0 to 1050 pixels */
+@media (max-width: 1050px) {
+    .product-container,
+    .categories-wrapper,
+    .basket-container,
+    .related-products .products {
+        overflow-x: hidden;
+    }
+
+    .product-container {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .product-image {
+        width: 100%;
+        max-width: 100%;
+    }
+
+    .product-details {
+        width: 100%;
+    }
+
+    .categories {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .category-card {
+        width: 100%;
+    }
+
+    .basket-container {
+        padding: 5%;
+    }
+
+    .related-products {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .related-products .products {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
     }
 }
