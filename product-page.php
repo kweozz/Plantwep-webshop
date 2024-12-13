@@ -54,7 +54,7 @@ $potOptions = array_filter($options, function ($option) {
     <section>
         <h1><?php echo htmlspecialchars($product['name']); ?></h1>
 
-        <div class="product-container">
+        <div class="product-container padding">
 
             <div class="product-image">
                 <img src="<?php echo htmlspecialchars($product['image']); ?>"
@@ -131,12 +131,12 @@ $potOptions = array_filter($options, function ($option) {
                         continue;
                     $count++;
                     ?>
-                    <div class="product-card">
+                    <a href="product-page.php?id=<?php echo htmlspecialchars($relatedProduct['id']); ?>" class="product-card">
                         <img src="<?php echo htmlspecialchars($relatedProduct['image']); ?>"
                             alt="<?php echo htmlspecialchars($relatedProduct['name']); ?>">
                         <h4><?php echo htmlspecialchars($relatedProduct['name']); ?></h4>
                         <p>€<?php echo htmlspecialchars(number_format($relatedProduct['price'], 2)); ?></p>
-                    </div>
+                    </a>
                 <?php endforeach; ?>
             </div>
         </div>
