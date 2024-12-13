@@ -194,18 +194,24 @@ class User
 
     public static function getById($id)
     {
+        $conn = Db::getConnection();
+        $statement = $conn->prepare("SELECT * FROM users WHERE id = :id");
+        $statement->bindValue(":id", $id);
+        $statement->execute();
+        $user = $statement->fetch(PDO::FETCH_ASSOC);
 
-        $db = Db::getConnection();
+        if ($user) {
+            $userObj = new User();
+            $userObj->id = $user['id'];
+            $userObj->firstname = $user['firstname'];
+            $userObj->lastname = $user['lastname'];
+            $userObj->email = $user['email'];
+            return $userObj;
+        }
 
-        $stmt = $db->prepare('SELECT * FROM users WHERE id = :id');
-
-        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
-
-        $stmt->execute();
-
-        return $stmt->fetch(PDO::FETCH_ASSOC);
-
+        return null;
     }
+
     public static function getUserByEmail($email)
     {
         $conn = Db::getConnection();
@@ -262,6 +268,11 @@ class User
     public function getCurrency()
     {
         return $this->currency;
+    }
+
+    public function getName()
+    {
+        return $this->firstname . ' ' . $this->lastname;
     }
 
 }

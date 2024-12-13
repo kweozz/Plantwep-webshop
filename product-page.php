@@ -3,6 +3,8 @@ include_once __DIR__ . '/classes/Db.php';
 include_once __DIR__ . '/classes/Product.php';
 include_once __DIR__ . '/classes/Category.php';
 include_once __DIR__ . '/classes/ProductOption.php';
+include_once __DIR__ . '/classes/Order.php';
+include_once(__DIR__ . '/classes/Review.php');
 
 // Start session
 session_start();
@@ -36,6 +38,8 @@ $potOptions = array_filter($options, function ($option) {
     return $option['type'] == 'pot';
 });
 
+// Fetch reviews for the product
+$reviews = Review::getByProductId($product['id']);
 ?>
 
 <!DOCTYPE html>
@@ -50,7 +54,7 @@ $potOptions = array_filter($options, function ($option) {
 </head>
 
 <body>
-<?php include 'classes/Nav.php'; ?>
+    <?php include 'classes/Nav.php'; ?>
     <section>
         <h1><?php echo htmlspecialchars($product['name']); ?></h1>
 
@@ -101,8 +105,11 @@ $potOptions = array_filter($options, function ($option) {
 
                     <div class="form-group">
                         <label for="quantity">Aantal:</label>
-                        <input type="number" id="quantity" name="quantity" value="1" min="1" max="<?php echo $product['stock']; ?>">
-                        <p id="quantity-error" class="alert-danger" style="display: none;">Opgelet, je kan niet meer dan <?php echo htmlspecialchars($product['stock']); ?> bestellen, uitverkocht.</p>
+                        <input type="number" id="quantity" name="quantity" value="1" min="1"
+                            max="<?php echo $product['stock']; ?>">
+                        <p id="quantity-error" class="alert-danger" style="display: none;">Opgelet, je kan niet meer dan
+                            <?php echo htmlspecialchars($product['stock']); ?> bestellen, uitverkocht.
+                        </p>
                     </div>
                     <div class="product-stock">
                         <?php if ($product['stock'] < 3): ?>
@@ -119,7 +126,42 @@ $potOptions = array_filter($options, function ($option) {
                 </form>
             </div>
         </div>
-        <h2>Meer van de categorie <span style="color:green;"><?php echo htmlspecialchars($product['category_name']); ?></span></h2>
+
+        <!-- Display reviews -->
+        <h2>Reviews</h2>
+        <div class="reviews">
+            <?php if (empty($reviews)): ?>
+                <p>No reviews yet.</p>
+            <?php else: ?>
+                <?php foreach ($reviews as $review): ?>
+                    <div class="review">
+                        <p><strong><?php echo htmlspecialchars($review['firstname'] . ' ' . $review['lastname']); ?></strong></p>
+                        <p>Rating:
+                            <?php echo str_repeat('<i class="fas fa-star"></i>', $review['rating']) . str_repeat('<i class="far fa-star"></i>', 5 - $review['rating']); ?>
+                        </p>
+                        <p><?php echo htmlspecialchars($review['comment']); ?></p>
+                        <p><small><?php echo htmlspecialchars($review['created_at']); ?></small></p>
+                    </div>
+                <?php endforeach; ?>
+            <?php endif; ?>
+        </div>
+
+    
+       
+            <div class="review">
+            <h2>Leave a Review</h2>
+                <div class="review form-group">
+                    <div class="post-review-form">
+                    <input type="text" placeholder="Wat denk je van dit product?" id="reviewText" required></input>
+                    <a href="#" class="btn" id="btnAddReview" data-productid="<?php echo $product['id']; ?>"
+                        data-userid="<?php echo $_SESSION['user']['id']; ?>">Plaats review</a>
+                    </div>
+                </div>
+            </div>
+       
+
+        <h2>Meer van de categorie <span
+                style="color:green;"><?php echo htmlspecialchars($product['category_name']); ?></span></h2>
         <div class="related-products">
             <div class="products">
                 <?php
@@ -131,7 +173,8 @@ $potOptions = array_filter($options, function ($option) {
                         continue;
                     $count++;
                     ?>
-                    <a href="product-page.php?id=<?php echo htmlspecialchars($relatedProduct['id']); ?>" class="product-card">
+                    <a href="product-page.php?id=<?php echo htmlspecialchars($relatedProduct['id']); ?>"
+                        class="product-card">
                         <img src="<?php echo htmlspecialchars($relatedProduct['image']); ?>"
                             alt="<?php echo htmlspecialchars($relatedProduct['name']); ?>">
                         <h4><?php echo htmlspecialchars($relatedProduct['name']); ?></h4>
@@ -141,8 +184,8 @@ $potOptions = array_filter($options, function ($option) {
             </div>
         </div>
     </section>
-    <script>
-        const sizeCheckboxes = document.querySelectorAll('.size-checkbox');
+    <script src="script/app.js">
+               const sizeCheckboxes = document.querySelectorAll('.size-checkbox');
         const potCheckboxes = document.querySelectorAll('.pot-checkbox');
         const finalPrice = document.getElementById('finalPrice');
         const productPrice = parseFloat(finalPrice.innerText);
@@ -215,6 +258,7 @@ $potOptions = array_filter($options, function ($option) {
             }
         });
     </script>
+
 </body>
 
 </html>

@@ -61,5 +61,16 @@ class Order
         $query->execute();
         return $query->fetchAll(PDO::FETCH_ASSOC);
     }
+    //check if user has purchased a product
+    public static function hasPurchasedProduct($userId, $productId)
+    {
+        $conn = Db::getConnection();
+        $statement = $conn->prepare("SELECT COUNT(*) FROM order_items JOIN orders ON order_items.order_id = orders.id WHERE orders.user_id = :user_id AND order_items.product_id = :product_id");
+        $statement->bindValue(':user_id', $userId);
+        $statement->bindValue(':product_id', $productId);
+        $statement->execute();
+        return $statement->fetchColumn() > 0;
+    }
 }
+
 ?>
