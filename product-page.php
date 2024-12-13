@@ -131,34 +131,37 @@ $reviews = Review::getByProductId($product['id']);
         <h2>Reviews</h2>
         <div class="reviews">
             <?php if (empty($reviews)): ?>
-                <p>No reviews yet.</p>
+            <h3>Dit product heeft nog geen reviews.</h3>
             <?php else: ?>
-                <?php foreach ($reviews as $review): ?>
-                    <div class="review">
-                        <p><strong><?php echo htmlspecialchars($review['firstname'] . ' ' . $review['lastname']); ?></strong></p>
-                        <p>Rating:
-                            <?php echo str_repeat('<i class="fas fa-star"></i>', $review['rating']) . str_repeat('<i class="far fa-star"></i>', 5 - $review['rating']); ?>
-                        </p>
-                        <p><?php echo htmlspecialchars($review['comment']); ?></p>
-                        <p><small><?php echo htmlspecialchars($review['created_at']); ?></small></p>
-                    </div>
-                <?php endforeach; ?>
+            <?php foreach ($reviews as $review): ?>
+                <div class="review">
+                <p><strong><?php echo htmlspecialchars($review['firstname'] . ' ' . $review['lastname']); ?></strong></p>
+                <p>Rating:
+                    <?php echo str_repeat('<i class="fas fa-star"></i>', $review['rating']) . str_repeat('<i class="far fa-star"></i>', 5 - $review['rating']); ?>
+                </p>
+                <p><?php echo htmlspecialchars($review['comment']); ?></p>
+                <p><small><?php echo htmlspecialchars($review['created_at']); ?></small></p>
+                </div>
+            <?php endforeach; ?>
             <?php endif; ?>
         </div>
 
-    
-       
+        <?php if (Order::hasPurchasedProduct($_SESSION['user']['id'], $product['id'])): ?>
             <div class="review">
             <h2>Leave a Review</h2>
-                <div class="review form-group">
-                    <div class="post-review-form">
-                    <input type="text" placeholder="Wat denk je van dit product?" id="reviewText" required></input>
-                    <a href="#" class="btn" id="btnAddReview" data-productid="<?php echo $product['id']; ?>"
-                        data-userid="<?php echo $_SESSION['user']['id']; ?>">Plaats review</a>
-                    </div>
+            <div class="review form-group">
+                <div class="post-review-form">
+                <input type="text" placeholder="Wat denk je van dit product?" id="reviewText" required></input>
+                <a href="#" class="btn" id="btnAddReview" data-productid="<?php echo $product['id']; ?>"
+                    data-userid="<?php echo $_SESSION['user']['id']; ?>">Plaats review</a>
                 </div>
             </div>
-       
+            </div>
+        <?php else: ?>
+            <h4>Want to review? Order the product before you can review it.</h4>
+        <?php endif; ?>
+
+    
 
         <h2>Meer van de categorie <span
                 style="color:green;"><?php echo htmlspecialchars($product['category_name']); ?></span></h2>

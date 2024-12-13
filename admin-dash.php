@@ -32,41 +32,9 @@ $products = $product->getAll();
 </head>
 
 <body>
-    <nav>
-        <a href="index.php"><img class="logo" src="images/logo-plantwerp.png" alt="Plantwerp Logo"></a>
-        <input type="text" placeholder="Zoek naar planten..." class="search-bar">
-        <div class="nav-items">
-
-            <a href="profile.php" class="icon profile-icon" aria-label="Profiel">
-                <i class="fas fa-user"></i>
-            </a>
-
-
-            <a href="#" class="icon basket-icon" aria-label="Winkelmand">
-                <i class="fas fa-shopping-basket"></i>
-            </a>
-
-
-            <?php if (isset($_SESSION['role']) && $_SESSION['role'] == 1): ?>
-                <a href="admin-dash.php" class="icon admin-icon" aria-label="Admin Dashboard">
-                    <i class="fas fa-tools"></i>
-                </a>
-            <?php endif; ?>
-
-            <!-- Currency -->
-            <?php if (isset($_SESSION['user']['currency'])): ?>
-                <span class="currency-display">
-                    <i class="fas fa-coins"></i>
-                    <?php echo htmlspecialchars($_SESSION['user']['currency']); ?>
-                </span>
-            <?php endif; ?>
-        </div>
-    </nav>
+<?php include 'classes/Nav.php'; ?>
 
         <h1 class="padding" >Admin Dashboard</h1>
-
-
-
         <section class=" admin-section category padding">
         <h2>Categories</h2>
             <div class="admin-options ">
