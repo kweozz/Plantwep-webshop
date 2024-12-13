@@ -31,21 +31,17 @@ $orderItems = OrderItem::getByOrderId($lastOrder['id']);
         <div class="success-actions">
            
             <div class="order-summary">
-                <h3>Order Summary</h3>
+                <h3>Jouw bestelling</h3>
                 <ul class="order-items">
              
                 </ul>
                 <div class="order-total">
-                    <p>Total Price: €<?php echo number_format($lastOrder['total_price'], 2); ?></p>
+                    <p>Totale Prijs: €<?php echo number_format($lastOrder['total_price'], 2); ?></p>
                 </div>
                 <a href="index.php" class="btn">Ga naar de homepage</a>
             </div>
         </div>
     </div>
-
-
-
-
 </body>
 
 </html>

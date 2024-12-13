@@ -47,7 +47,7 @@ if ($selectedCategoryId) {
     </section>
 
     <section class="category-section">
-        <h2>Categories</h2>
+        <h2>Categorieën</h2>
         <div class="categories-wrapper">
             <button class="scroll-btn left-btn">&#8592;</button>
             <div class="categories">
@@ -69,11 +69,11 @@ if ($selectedCategoryId) {
     </section>
 
     <section class="products-section">
-        <h2>Products</h2>
+        <h2>Producten</h2>
         <div class="products">
             <!-- Show products -->
             <?php if (empty($products)): ?>
-                <p>No products found for this category.</p>
+                <p>Geen producten gevonden voor deze Categorie.</p>
             <?php else: ?>
                 <?php foreach ($products as $product): ?>
                     <a href="product-page.php?id=<?php echo $product['id']; ?>" class="product-card">

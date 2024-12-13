@@ -46,7 +46,7 @@ if (isset($_POST['delete_product'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="style.css">
-    <title>Delete Product</title>
+    <title>Beheer Producten</title>
 </head>
 
 <body>
@@ -62,7 +62,7 @@ if (isset($_POST['delete_product'])) {
         <a class="back-icon" href="admin-dash.php">
             <i class="fa fa-arrow-left" aria-hidden="true"></i>
         </a>
-        <h1>Manage products</h1>
+        <h1>Beheer producten</h1>
     </div>
 
     <?php if (isset($_GET['message'])): ?>
@@ -71,7 +71,7 @@ if (isset($_POST['delete_product'])) {
         </div>
     <?php endif; ?>
     <div class="manage-products">
-        <h2>Filter by categories</h2>
+        <h2>Filter op categorie</h2>
         <section class="category-section manage-category">
 
             <div class="categories-wrapper">
@@ -79,7 +79,7 @@ if (isset($_POST['delete_product'])) {
                 <div class="categories">
                     <a href="manage-products.php"
                         class="category-card <?= $selectedCategoryId === null ? 'active' : ''; ?>">
-                        <p>All</p>
+                        <p>Alle</p>
                     </a>
                     <?php foreach ($categories as $category): ?>
                         <a href="manage-products.php?category_id=<?php echo $category['id']; ?>"
@@ -92,11 +92,11 @@ if (isset($_POST['delete_product'])) {
             </div>
         </section>
         <section class="products-section">
-            <h2>Products</h2>
+            <h2>Producten</h2>
             <!-- Dit is de HTML weergave van de producten -->
 
             <div class="products"> <?php if (empty($products)): ?>
-                    <p>No products found for this category.</p>
+                    <p>Geen producten gevonden voor deze categorie.</p>
                 <?php else: ?>
 
                     <?php foreach ($products as $product): ?>

@@ -23,7 +23,7 @@ $product['category_name'] = $category['name'];
 // Retrieve the options for this product via the ProductOption class
 $options = ProductOption::getByProductId($productId);
 if (!$product) {
-    die('Product not found.');
+    die('Product niet gevonden.');
 }
 
 // Filter size options
@@ -106,14 +106,14 @@ $potOptions = array_filter($options, function ($option) {
                     </div>
                     <div class="product-stock">
                         <?php if ($product['stock'] < 3): ?>
-                            <p class="alert-danger">Hurry, item is almost sold out!</p>
+                            <p class="alert-danger">Snel, Het is bijna uitverkocht!</p>
                         <?php endif; ?>
                     </div>
                     <div class="product-price">
                         <p>Price: €<span id="finalPrice"><?php echo htmlspecialchars($product['price']); ?></span></p>
-                        <button class="btn" type="submit" <?php echo $product['stock'] <= 0 ? 'disabled' : ''; ?>>Add to Cart</button>
+                        <button class="btn" type="submit" <?php echo $product['stock'] <= 0 ? 'disabled' : ''; ?>>Winkelmandje</button>
                         <?php if ($product['stock'] <= 0): ?>
-                            <p class="alert-danger">This item is out of stock.</p>
+                            <p class="alert-danger">Het product is uitverkocht</p>
                         <?php endif; ?>
                     </div>
                 </form>

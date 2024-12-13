@@ -29,15 +29,15 @@ if (isset($_SESSION['user'])) {
 if (isset($_POST["change_password"])) {
     // Check if all fields are filled
     if (empty($_POST["current_password"]) || empty($_POST["new_password"]) || empty($_POST["confirm_password"])) {
-        $error = "All fields are required!";
+        $error = "Alle velden moeten ingevuld zijn!";
     } else {
         // Check of het nieuwe wachtwoord en de bevestiging overeenkomen 
         if ($_POST["new_password"] !== $_POST["confirm_password"]) {
-            $error = "New password and confirmation do not match!";
+            $error = "Nieuw passwoord en confirmatie matchen niet!";
         } else {
             try {
                 $user->changePassword($_POST["current_password"], $_POST["new_password"]);
-                $success = "Password changed successfully!";  // Set success message here
+                $success = "Passwoord veranderd!";  // Set success message here
             } catch (Exception $e) {
                 $error = $e->getMessage();
             }
@@ -141,7 +141,8 @@ if (isset($_POST["logout"])) {
                                     alt="<?php echo htmlspecialchars($product['name']); ?>">
                                 <div class="basket-item-info">
                                     <p class="product-quantity">Aantal: <?php echo $orderItem['quantity']; ?></p>
-                                    <p class="product-price">Prijs: €<?php echo number_format($orderItem['total_price'], 2); ?></p>
+                                    
+                                    <p class="product-price">Prijs: €<?php echo number_format($orderItem['price'] + $orderItem['price_addition'], 2); ?></p>
                                 </div>
                                 <div class="basket-info">
                                     <p class="product-price">Totaal: €<?php echo htmlspecialchars($order['total_price']); ?></p>

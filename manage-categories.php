@@ -20,9 +20,9 @@ if (isset($_POST['delete_category'])) {
         $category = new Category();
         $category->setId($categoryId);
         if ($category->delete($categoryId)) {
-            $deleteSuccessMessage = 'Category successfully deleted!';
+            $deleteSuccessMessage = 'Categorie successvol verwijderd!';
         } else {
-            $deleteErrorMessage = 'Failed to delete category.';
+            $deleteErrorMessage = 'Categorie kon niet worden verwijderd.';
         }
     } catch (Exception $e) {
         $deleteErrorMessage = 'Error: ' . $e->getMessage();
@@ -63,7 +63,7 @@ if (isset($_SESSION['categoryErrorMessage'])) {
         <a class="back-icon" href="admin-dash.php">
             <i class="fa fa-arrow-left" aria-hidden="true"></i>
         </a>
-        <h1>Manage categories</h1>
+        <h1>Beheer categorieën</h1>
     </div>
 
     <?php if (isset($deleteSuccessMessage)): ?>
@@ -96,7 +96,7 @@ if (isset($_SESSION['categoryErrorMessage'])) {
     <script>
         document.querySelectorAll('.delete-form').forEach(form => {
             form.addEventListener('submit', function (event) {
-                if (!confirm('Are you sure you want to delete this category?')) {
+                if (!confirm('Ben je zeker dat je deze categorie wilt verwijderen?')) {
                     event.preventDefault();
                 }
             });

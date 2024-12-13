@@ -55,7 +55,7 @@ if (!empty($_POST)) {
 <body>
     <div class="signup-container">
         <a href="index.html"><img class="logo" src="images/logo-plantwerp.png" alt="Plantwerp Logo"></a>
-        <h2>Create an Account</h2>
+        <h2>Maak een account</h2>
 
         <!-- Display the error or success  -->
         <?php if (isset($error)): ?>
@@ -72,11 +72,11 @@ if (!empty($_POST)) {
 
         <form action="signup.php" method="POST">
             <div class="form-group">
-                <label for="firstname">First Name</label>
+                <label for="firstname">Voornaam</label>
                 <input type="text" id="firstname" name="firstname" placeholder="Enter your first name" required>
             </div>
             <div class="form-group">
-                <label for="lastname">Last Name</label>
+                <label for="lastname">Achternaam</label>
                 <input type="text" id="lastname" name="lastname" placeholder="Enter your last name" required>
             </div>
             <div class="form-group">
@@ -84,12 +84,12 @@ if (!empty($_POST)) {
                 <input type="email" id="email" name="email" placeholder="Enter your email" required>
             </div>
             <div class="form-group">
-                <label for="password">Password</label>
+                <label for="password">Wachtwoord</label>
                 <input type="password" id="password" name="password" placeholder="Enter your password" required>
             </div>
             <button type="submit" class="signup-btn">Sign Up</button>
         </form>
-        <p>Already have an account? <a href="login.php">Login</a></p>
+        <p>Heb je al een account? <a href="login.php">Login</a></p>
     </div>
 </body>
 

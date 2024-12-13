@@ -48,7 +48,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <body>
     <div class="signup-container">
         <a href="index.html"><img class="logo" src="images/logo-plantwerp.png" alt="Plantwerp Logo"></a>
-        <h2>Login to Your Account</h2>
+        <h2>Login</h2>
         <form action="login.php" method="POST" class="signup-form">
             <?php if (!empty($error)): ?>
                 <p class="alert-danger"><?php echo htmlspecialchars($error); ?></p>
@@ -63,7 +63,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </div>
             <button type="submit" class="signup-btn">Login</button>
         </form>
-        <p>Don’t have an account? <a href="signup.php">Sign up</a></p>
+        <p>Nog geen account? <a href="signup.php">Registreer</a></p>
     </div>
 </body>
 </html>

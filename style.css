@@ -834,11 +834,10 @@ button.remove {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    padding: 5%;
     background-color: #f6f6f6;
     border-radius: 16px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     text-align: center;
+    height: 100vh;
 }
 
 .success-icon {
