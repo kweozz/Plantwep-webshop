@@ -17,7 +17,10 @@ if (isset($_SESSION['user'])) {
 ?>
 <nav>
     <a href="index.php"><img class="logo" src="images/logo-plantwerp.png" alt="Plantwerp Logo"></a>
-    <input type="text" placeholder="Zoek naar planten..." class="search-bar">
+    <form action="search.php" method="GET" class="search-form">
+        <input type="text" name="query" placeholder="Zoek naar planten..." class="search-bar" required>
+        <button style="display: none;" type="submit" class="search-btn"><i class="fas fa-search"></i></button>
+    </form>
     <div class="nav-items">
         <a href="profile.php" class="icon profile-icon" aria-label="Profiel">
             <i class="fas fa-user"></i>

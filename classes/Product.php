@@ -256,5 +256,23 @@ class Product
             return "Het is niet gelukt om het product bij te werken";
         }
     }
+// Method to search for products
+    public static function search($query)
+    {
+        
+        $conn = Db::getConnection();
+        //search for products base on name and category and description
+        $statement = $conn->prepare("
+            SELECT products.*
+            FROM products
+            LEFT JOIN category ON products.category_id = category.id
+            WHERE products.name LIKE :query
+            OR products.description LIKE :query
+            OR category.name LIKE :query
+        ");
+        $statement->bindValue(':query', '%' . $query . '%');
+        $statement->execute();
+        return $statement->fetchAll(PDO::FETCH_ASSOC);
+    }
 }
 ?>
