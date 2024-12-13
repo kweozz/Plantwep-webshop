@@ -28,7 +28,7 @@ if (!$basket) {
 function deleteBasketItem($basketItemId)
 {
     BasketItem::removeItemFromBasket($basketItemId);
-    header('Location: basket-page.php');
+    header('Location: basket-page.php?removed=1');
     exit();
 }
 
@@ -40,10 +40,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_item'])) {
 $basketItems = BasketItem::getItemsByBasketId($basket['id']);
 $totalPrice = 0;
 
+$clearBasketMessage = '';
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['clear_basket'])) {
-    BasketItem::clearBasket($basket['id']);
-    header('Location: basket-page.php');
-    exit();
+    if (empty($basketItems)) {
+        $clearBasketMessage = '<p class="alert-danger">Mandje kan niet worden leeggemaakt, het is al leeg.</p>';
+    } else {
+        BasketItem::clearBasket($basket['id']);
+        $clearBasketMessage = '<p class="alert-success">Mandje succesvol leeggemaakt.</p>';
+        header('Location: basket-page.php?cleared=1');
+        exit();
+    }
+}
+
+if (isset($_GET['cleared']) && $_GET['cleared'] == 1) {
+    $clearBasketMessage = '<p class="alert-success">Mandje succesvol leeggemaakt.</p>';
+}
+
+$removeItemMessage = '';
+if (isset($_GET['removed']) && $_GET['removed'] == 1) {
+    $removeItemMessage = '<p class="alert-success">Product succesvol verwijderd.</p>';
 }
 ?>
 
@@ -59,44 +75,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['clear_basket'])) {
 </head>
 
 <body>
-    <nav>
-        <a href="index.php"><img class="logo" src="images/logo-plantwerp.png" alt="Plantwerp Logo"></a>
-        <input type="text" placeholder="Zoek naar planten..." class="search-bar">
-        <div class="nav-items">
-            <a href="profile.php" class="icon profile-icon" aria-label="Profiel">
-                <i class="fas fa-user"></i>
-            </a>
-            <?php if (isset($_SESSION['user']['currency'])): ?>
-                <div class="currency" >
-                    <i class="fas fa-coins currency"></i>
-                    <span class="display-currency"><?php echo htmlspecialchars($_SESSION['user']['currency']); ?></span>
-                </div>
-            <?php endif; ?>
-
-            <a href="basket-page.php" class="icon basket-icon" aria-label="Winkelmand">
-                <i class="fas fa-shopping-basket"></i>
-                <?php if ($totalItems > 0): ?>
-                    <span class="basket-count"><?php echo $totalItems; ?></span>
-                <?php endif; ?>
-            </a>
-            <?php if (isset($_SESSION['role']) && $_SESSION['role'] == 1): ?>
-                <a href="admin-dash.php" class="icon admin-icon" aria-label="Admin Dashboard">
-                    <i class="fas fa-tools"></i>
-                </a>
-            <?php endif; ?>
-
-        </div>
-    </nav>
+    <?php include 'classes/Nav.php'; ?>
 
     <section class="basket-container">
         <form action="" method="POST">
             <input type="hidden" name="clear_basket" value="1">
             <div class="basket-header">
                 <h2>Uw winkelmandje</h2>
-                <p><button class="remove" type="submit" class="icon-btn"><i class="fas fa-trash-alt"></i> </button>Clear
-                    basket</p>
+               <button class="remove" type="submit" class="icon-btn"><i class="fas fa-trash-alt"></i> <p>Leeg mandje</p></button>
             </div>
         </form>
+        <?php echo $clearBasketMessage; ?>
+        <?php echo $removeItemMessage; ?>
         <ul class="basket-list">
             <?php foreach ($basketItems as $item): ?>
                 <?php
@@ -109,7 +99,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['clear_basket'])) {
                         class="product-image-basket">
                     <div class="basket-item-info">
                         <h4 class="product-name"><?php echo htmlspecialchars($product['name']); ?></h4>
-                        <p class="product-quantity">Quantity: <?php echo $item['quantity']; ?></p>
+                        <p class="product-quantity">Aantal: <?php echo $item['quantity']; ?></p>
                         <?php if (!empty($options)): ?>
                             <?php foreach ($options as $optionId):
                                 $option = BasketItem::getOptionById($optionId); // Assuming you have a method to get option by ID in BasketItem class
@@ -140,13 +130,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['clear_basket'])) {
                     <?php if ($_SESSION['user']['currency'] >= $totalPrice): ?>
                         <form action="payment.php" method="POST">
                             <input type="hidden" name="total_price" value="<?php echo $totalPrice; ?>">
-                            <button type="submit" class="btn">Pay</button>
+                            <button type="submit" class="btn">Checkout</button>
                         </form>
                     <?php else: ?>
-                        <p class="alert-danger basket-alert">You don't have enough credits to complete this purchase.</p>
+                        <p class="alert-danger basket-alert">U heeft niet genoeg credits om deze aankoop te voltooien.</p>
                     <?php endif; ?>
                 <?php else: ?>
-                    <p class="alert-danger">Your basket is empty. Add items to your basket to proceed with payment.</p>
+                    <p class="alert-danger basket-alert">Uw mandje is leeg. Voeg items toe aan uw mandje om door te gaan met betalen.</p>
                 <?php endif; ?>
             </div>
         </div>
