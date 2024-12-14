@@ -13,22 +13,30 @@ if (!isset($_SESSION['user'])) {
     header('Location: login.php');
     exit();
 }
-// If the form has been submitted, use process checkout function from order.php
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    if (isset($_POST['address']) && isset($_POST['payment_method'])) {
-        $address = $_POST['address'];
-        $paymentMethod = $_POST['payment_method'];
-        
-        $order = new Order();
-        Order::processCheckout($_SESSION['user']['id'], $address, $paymentMethod);
-        header('Location: success.php');
-        exit();
+
+// Handle form submission
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['checkout_form_submitted'])) {
+    if (isset($_POST['street_name']) && isset($_POST['city']) && isset($_POST['number']) && isset($_POST['postal_code']) && isset($_POST['payment_method'])) {
+        $streetName = htmlspecialchars(trim($_POST['street_name']), ENT_QUOTES, 'UTF-8');
+        $city = htmlspecialchars(trim($_POST['city']), ENT_QUOTES, 'UTF-8');
+        $number = htmlspecialchars(trim($_POST['number']), ENT_QUOTES, 'UTF-8');
+        $postalCode = htmlspecialchars(trim($_POST['postal_code']), ENT_QUOTES, 'UTF-8');
+        $paymentMethod = htmlspecialchars(trim($_POST['payment_method']), ENT_QUOTES, 'UTF-8');
+
+        // Join the address components into a single string
+        $address = "$streetName $number, $postalCode $city";
+
+        try {
+            Order::processCheckout($_SESSION['user']['id'], $address, $paymentMethod);
+            header('Location: success.php');
+            exit();
+        } catch (Exception $e) {
+            die('An error occurred during checkout: ' . $e->getMessage());
+        }
     } else {
         echo "Please fill in all required fields.";
     }
 }
-
-
 ?>
 
 <!DOCTYPE html>
@@ -48,9 +56,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <section class="checkout-container">
         <h2>Checkout</h2>
         <form action="checkout.php" method="POST">
+            <input type="hidden" name="checkout_form_submitted" value="1">
             <div class="form-group">
-                <label for="address">Delivery Address</label>
-                <input type="text" id="address" name="address" placeholder="Enter your delivery address" required>
+                <label for="street_name">Street Name</label>
+                <input type="text" id="street_name" name="street_name" placeholder="Enter your street name" required>
+            </div>
+            <div class="form-group">
+                <label for="number">Number</label>
+                <input type="text" id="number" name="number" placeholder="Enter your house number" required>
+            </div>
+            <div class="form-group">
+                <label for="postal_code">Postal Code</label>
+                <input type="text" id="postal_code" name="postal_code" placeholder="Enter your postal code" required>
+            </div>
+            <div class="form-group">
+                <label for="city">City</label>
+                <input type="text" id="city" name="city" placeholder="Enter your city" required>
             </div>
             <div class="form-group">
                 <label for="payment-method">Payment Method</label>
