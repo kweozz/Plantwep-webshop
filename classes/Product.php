@@ -125,27 +125,8 @@ class Product
     
         return false;
     }
-    // delete a product
-    public function delete()
-    {
-        $conn = Db::getConnection();
 
-        // Step 1: Delete the product options
-        $deleteOptionsStatement = $conn->prepare("
-            DELETE FROM product_options WHERE product_id = :product_id
-        ");
-        $deleteOptionsStatement->bindValue(':product_id', $this->getId());
-        $deleteOptionsStatement->execute();
-
-        // Step 2: Delete the product
-        $statement = $conn->prepare("
-            DELETE FROM products WHERE id = :id
-        ");
-        $statement->bindValue(':id', $this->getId());
-
-        return $statement->execute();
-    }
-
+    // Update an existing product
     public function update($options = [])
     {
         $conn = Db::getConnection();
@@ -194,6 +175,43 @@ class Product
         return false;
     }
 
+    // Delete a product
+    public function delete()
+    {
+        $conn = Db::getConnection();
+
+        // Retrieve the image path before deleting the product
+        $statement = $conn->prepare("SELECT image FROM products WHERE id = :id");
+        $statement->bindValue(':id', $this->getId());
+        $statement->execute();
+        $product = $statement->fetch(PDO::FETCH_ASSOC);
+
+        if ($product) {
+            // Delete the image file if it exists
+            $imagePath = $product['image'];
+            if (file_exists($imagePath)) {
+                unlink($imagePath);
+            }
+
+            // Delete the product options
+            $deleteOptionsStatement = $conn->prepare("
+                DELETE FROM product_options WHERE product_id = :product_id
+            ");
+            $deleteOptionsStatement->bindValue(':product_id', $this->getId());
+            $deleteOptionsStatement->execute();
+
+            // Delete the product
+            $statement = $conn->prepare("
+                DELETE FROM products WHERE id = :id
+            ");
+            $statement->bindValue(':id', $this->getId());
+
+            return $statement->execute();
+        }
+
+        return false;
+    }
+
     // Retrieve a single product by ID
     public static function getById($id)
     {
@@ -203,7 +221,7 @@ class Product
         $statement->execute();
         return $statement->fetch(PDO::FETCH_ASSOC);
     }
-// Retrieve a single product by ID
+
     // Retrieve all products
     public static function getAll()
     {
@@ -226,6 +244,7 @@ class Product
         $query->execute();
 
     }
+
     // Retrieve products by category
     public static function getByCategory($category_id)
     {
@@ -256,12 +275,12 @@ class Product
             return "Het is niet gelukt om het product bij te werken";
         }
     }
-// Method to search for products
+
+    // Method to search for products
     public static function search($query)
     {
-        
         $conn = Db::getConnection();
-        //search for products base on name and category and description
+        // Search for products based on name, category, and description
         $statement = $conn->prepare("
             SELECT products.*
             FROM products

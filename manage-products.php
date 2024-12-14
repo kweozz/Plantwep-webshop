@@ -1,10 +1,10 @@
 <?php
 session_start();
 
-if ($_SESSION['role'] !== 1) {
+if (!isset($_SESSION['role']) || $_SESSION['role'] !== 1) {
     header("refresh:3;url=login.php");
-    echo '<h1 style="text-align: center; padding:10%; color:red; font-family:Helvetica;">' . htmlspecialchars('You do not have access to this page') . '</h1>';
     exit();
+    echo '<h1 style="text-align: center; padding:10%; color:red; font-family:Helvetica;">' . htmlspecialchars('You do not have access to this page') . '</h1>';
 }
 
 include_once __DIR__ . '/classes/Db.php';
@@ -94,13 +94,23 @@ if (isset($_POST['delete_product'])) {
         <section class="products-section">
             <h2>Producten</h2>
             <!-- Dit is de HTML weergave van de producten -->
-
-            <div class="products"> <?php if (empty($products)): ?>
+         
+            <?php if (isset($deleteSuccessMessage)): ?>
+                <div class="alert-success">
+                    <?php echo htmlspecialchars($deleteSuccessMessage); ?>
+                </div>
+            <?php endif; ?>
+            <?php if (isset($deleteErrorMessage)): ?>
+                <div class="alert-danger">
+                    <?php echo htmlspecialchars($deleteErrorMessage); ?>
+                </div>
+            <?php endif; ?>
+            <div class="manage-product"> <?php if (empty($products)): ?>
                     <p>Geen producten gevonden voor deze categorie.</p>
                 <?php else: ?>
 
                     <?php foreach ($products as $product): ?>
-                        <div class="product-card manage-card">
+                        <div class=" manage-card">
                             <!-- Verwijder knop (Rood kruisje) -->
                             <form class="delete-form" action="" method="POST" style="display:inline;">
                                 <input type="hidden" name="product_id" value="<?= intval($product['id']); ?>">
@@ -168,15 +178,15 @@ if (isset($_POST['delete_product'])) {
         //are you sure u want to delete this product
         //if yes, delete
         //if no, prevent default
-       
-    document.querySelectorAll('.delete-form').forEach(form => {
-        form.addEventListener('submit', function (event) {
-            if (!confirm('Are you sure you want to delete this product?')) {
-                event.preventDefault();
-            }
+
+        document.querySelectorAll('.delete-form').forEach(form => {
+            form.addEventListener('submit', function (event) {
+                if (!confirm('Are you sure you want to delete this product?')) {
+                    event.preventDefault();
+                }
+            });
         });
-    });
-</script>
+    </script>
 </body>
 
 </html>

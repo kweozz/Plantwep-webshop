@@ -32,50 +32,41 @@ $products = $product->getAll();
 </head>
 
 <body>
-<?php include 'classes/Nav.php'; ?>
+    <?php include 'classes/Nav.php'; ?>
 
-        <h1 class="padding" >Admin Dashboard</h1>
-        <section class=" admin-section category padding">
+    <h1 class="padding">Admin Dashboard</h1>
+    <section class=" admin-section category padding">
         <h2>Categories</h2>
-            <div class="admin-options ">
-            
-                <div>
-                    <h3>Add Category</h3>
-                    <a href="add-category.php" class="btn btn-admin">Add Category</a>
-                </div>
-                <div>
-                    <h3>Manage Categories</h3>
-                    <?php if (!empty($deleteErrorMessage)): ?>
-                        <div class="alert-danger"><?= htmlspecialchars($deleteErrorMessage); ?></div>
-                    <?php endif; ?>
-                    <form class="form-group" method="post" action="manage-categories.php">
-                        <button class="btn btn-admin" type="submit" name="edit_category">Edit or delete
-                            Category</button>
+        <div class="admin-options ">
 
-                    </form>
-                </div>
+            <div>
+
+                <a href="add-category.php" class="btn btn-admin">Add Category</a>
             </div>
-        </section>
+         
+            <div>
 
-        <section class="admin-section product padding">
-            <h2>Products</h2>
-            <div class="admin-options">
-                <div>
-                    <h3>Add Product</h3>
-                    <a href="add-product.php" class="btn btn-admin">Add Product</a>
-                </div>
-                <div>
-                    <h3>Manage Products</h3>
-                    <?php if (!empty($deleteErrorMessage)): ?>
-                        <div class="alert-danger"><?= htmlspecialchars($deleteErrorMessage); ?></div>
-                    <?php endif; ?>
-                    <form class="form-group" method="post" action="manage-products.php">
-                        <button class="btn btn-admin" type="submit" name="edit_product">Edit or delete Product</button>
 
-                    </form>
-                </div>
+                <a class="btn btn-admin" href="manage-categories.php">Edit or delete Category</a>
+
+
+
             </div>
-        </section>
+        </div>
+    </section>
+
+    <section class="admin-section product padding">
+        <h2>Products</h2>
+        <div class="admin-options">
+            <div>
+
+                <a href="add-product.php" class="btn btn-admin">Add Product</a>
+            </div>
+            <div>
+                <a class="btn btn-admin" href="manage-products.php">Edit or delete Product</a>
+            </div>
+        </div>
+    </section>
 
     <script>
         function previewImage(event, previewId) {

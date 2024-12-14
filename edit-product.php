@@ -97,9 +97,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 </head>
 
 <body>
-    <nav>
-        <a href="index.php"><img class="logo" src="images/logo-plantwerp.png" alt="Plantwerp Logo"></a>
-    </nav>
+<?php include 'classes/Nav.php'; ?>
 
     <section class="product padding">
 
