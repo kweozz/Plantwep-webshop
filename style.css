@@ -310,20 +310,7 @@ label {
 }
 
 
-.btn {
-    display: inline-block;
-    padding: 10px 0px;
-    width: 100%;
-    font-size: 1.1em;
-    color: #fff;
-    background-color: #2f8f46;
-    border: none;
-    border-radius: 12px;
-    text-align: center;
-    text-decoration: none;
-    transition: background-color 0.3s;
-    cursor: pointer;
-}
+
 
 .btn:hover {
     background-color: #267b3a;
@@ -509,11 +496,11 @@ textarea,
 /* Buttons */
 .btn {
     display: inline-block;
-    padding: 10px 0px;
-    width: 100%;
+    padding: 1% ;
+    width: auto;
     font-size: 1.1em;
     color: #fff;
-    background-color: #45a049;
+    background-color: #2f8f46;
     border: none;
     border-radius: 12px;
     text-align: center;
