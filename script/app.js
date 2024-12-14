@@ -1,7 +1,7 @@
 document.querySelector('#btnAddReview').addEventListener('click', function () {
     let productid = this.dataset.productid;
     let userid = this.dataset.userid;
-    let rating = 5; // Assuming a fixed rating for testing
+    let rating = document.querySelector('input[name="rating"]:checked').value;
     let comment = document.querySelector('#reviewText').value;
 
     let formData = new FormData();
@@ -33,11 +33,12 @@ document.querySelector('#btnAddReview').addEventListener('click', function () {
             div.classList.add('review');
             div.innerHTML = `
                 <p><strong>${result.user_name}</strong></p>
-                <p>Rating: ${'★'.repeat(result.rating)}${'☆'.repeat(5 - result.rating)}</p>
+                <p>Rating: ${'<i class="fas fa-star"></i>'.repeat(result.rating)}${'<i class="far fa-star"></i>'.repeat(5 - result.rating)}</p>
                 <p>${result.body}</p>
-                <p><small>${new Date().toLocaleString()}</small></p>
+                <p><small>${new Date().toLocaleDateString()}</small></p>
             `;
             document.querySelector('.reviews').appendChild(div);
+            document.querySelector('#reviewText').value = ''; // Clear the input field
         } else {
             console.error('Error:', result.message);
         }

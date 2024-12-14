@@ -48,6 +48,14 @@ class Review {
         $this->comment = $comment;
     }
 
+    public static function getByProductId($product_id) {
+        $conn = Db::getConnection();
+        $statement = $conn->prepare("SELECT reviews.*, users.firstname, users.lastname FROM reviews JOIN users ON reviews.user_id = users.id WHERE product_id = :product_id ORDER BY created_at DESC");
+        $statement->bindValue(":product_id", $product_id);
+        $statement->execute();
+        return $statement->fetchAll(PDO::FETCH_ASSOC);
+    }
+
     public function save() {
         $conn = Db::getConnection();
         $statement = $conn->prepare("INSERT INTO reviews (user_id, product_id, rating, comment, created_at) VALUES (:user_id, :product_id, :rating, :comment, NOW())");
@@ -56,14 +64,6 @@ class Review {
         $statement->bindValue(":rating", $this->getRating());
         $statement->bindValue(":comment", $this->getComment());
         return $statement->execute();
-    }
-
-    public static function getByProductId($productId) {
-        $conn = Db::getConnection();
-        $statement = $conn->prepare("SELECT reviews.*, users.firstname, users.lastname FROM reviews JOIN users ON reviews.user_id = users.id WHERE product_id = :product_id ORDER BY created_at DESC");
-        $statement->bindValue(":product_id", $productId);
-        $statement->execute();
-        return $statement->fetchAll(PDO::FETCH_ASSOC);
     }
 }
 ?>

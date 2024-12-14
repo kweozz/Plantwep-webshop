@@ -55,10 +55,10 @@ $reviews = Review::getByProductId($product['id']);
 
 <body>
     <?php include 'classes/Nav.php'; ?>
-    <section>
+    <section class="product">
         <h1><?php echo htmlspecialchars($product['name']); ?></h1>
 
-        <div class="product-container padding">
+        <div class="product-container">
 
             <div class="product-image">
                 <img src="<?php echo htmlspecialchars($product['image']); ?>"
@@ -126,43 +126,63 @@ $reviews = Review::getByProductId($product['id']);
                 </form>
             </div>
         </div>
-
-        <!-- Display reviews -->
+    </section>
+    <!-- Display reviews -->
+    <section class="review-section">
         <h2>Reviews</h2>
+
         <div class="reviews">
             <?php if (empty($reviews)): ?>
-            <h3>Dit product heeft nog geen reviews.</h3>
+                <h3 class="">Dit product heeft nog geen reviews.</h3>
             <?php else: ?>
-            <?php foreach ($reviews as $review): ?>
-                <div class="review">
-                <p><strong><?php echo htmlspecialchars($review['firstname'] . ' ' . $review['lastname']); ?></strong></p>
-                <p>Rating:
-                    <?php echo str_repeat('<i class="fas fa-star"></i>', $review['rating']) . str_repeat('<i class="far fa-star"></i>', 5 - $review['rating']); ?>
-                </p>
-                <p><?php echo htmlspecialchars($review['comment']); ?></p>
-                <p><small><?php echo htmlspecialchars($review['created_at']); ?></small></p>
-                </div>
-            <?php endforeach; ?>
+                <?php foreach ($reviews as $review): ?>
+                    <div class="review">
+                        <div class="review-details">
+                            <h3><?php echo htmlspecialchars($review['firstname'] . ' ' . $review['lastname']); ?>
+                            </h3>
+                            <p>
+                                <?php echo str_repeat('<i class="fas fa-star"></i>', $review['rating']) . str_repeat('<i class="far fa-star"></i>', 5 - $review['rating']); ?>
+                            </p>
+                            <p><?php echo htmlspecialchars($review['comment']); ?></p>
+                        </div>
+                        <div class="date">
+                            <p><?php echo htmlspecialchars(date('Y-m-d', strtotime($review['created_at']))); ?></p>
+                        </div>
+                    </div>
+                <?php endforeach; ?>
             <?php endif; ?>
         </div>
 
         <?php if (Order::hasPurchasedProduct($_SESSION['user']['id'], $product['id'])): ?>
-            <div class="review">
-            <h2>Leave a Review</h2>
-            <div class="review form-group">
-                <div class="post-review-form">
-                <input type="text" placeholder="Wat denk je van dit product?" id="reviewText" required></input>
-                <a href="#" class="btn" id="btnAddReview" data-productid="<?php echo $product['id']; ?>"
-                    data-userid="<?php echo $_SESSION['user']['id']; ?>">Plaats review</a>
+            <h3>Beoordeel dit product!</h3>
+            <div class="create-review">
+
+                <div class="create-review-content">
+                    <div class="post-review-form">
+                        <div class="star-rating  ">
+                            <input type="radio" id="star5" name="rating" value="5"><label for="star5" title="5 stars"><i
+                                    class="fas fa-star"></i></label>
+                            <input type="radio" id="star4" name="rating" value="4"><label for="star4" title="4 stars"><i
+                                    class="fas fa-star"></i></label>
+                            <input type="radio" id="star3" name="rating" value="3"><label for="star3" title="3 stars"><i
+                                    class="fas fa-star"></i></label>
+                            <input type="radio" id="star2" name="rating" value="2"><label for="star2" title="2 stars"><i
+                                    class="fas fa-star"></i></label>
+                            <input type="radio" id="star1" name="rating" value="1"><label for="star1" title="1 star"><i
+                                    class="fas fa-star"></i></label>
+                        </div>
+                        <div class="form-group">
+                            <input type="text" placeholder="Wat denk je van dit product?" id="reviewText" required>
+                            <a href="#" class="btn" id="btnAddReview" data-productid="<?php echo $product['id']; ?>"
+                                data-userid="<?php echo $_SESSION['user']['id']; ?>">Plaats review</a>
+                        </div>
+                    </div>
                 </div>
             </div>
-            </div>
-        <?php else: ?>
-            <h4>Want to review? Order the product before you can review it.</h4>
         <?php endif; ?>
+    </section>
 
-    
-
+    <section class="related-products">
         <h2>Meer van de categorie <span
                 style="color:green;"><?php echo htmlspecialchars($product['category_name']); ?></span></h2>
         <div class="related-products">
@@ -188,7 +208,7 @@ $reviews = Review::getByProductId($product['id']);
         </div>
     </section>
     <script src="script/app.js">
-               const sizeCheckboxes = document.querySelectorAll('.size-checkbox');
+        const sizeCheckboxes = document.querySelectorAll('.size-checkbox');
         const potCheckboxes = document.querySelectorAll('.pot-checkbox');
         const finalPrice = document.getElementById('finalPrice');
         const productPrice = parseFloat(finalPrice.innerText);

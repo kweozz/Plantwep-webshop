@@ -4,9 +4,7 @@ body {
     padding: 0 10% 10%;
     box-sizing: border-box;
     color: #2A2B2A;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
+    
 }
 
 nav {
@@ -47,7 +45,7 @@ nav {
 
 .icon {
     color: #2A2B2A;
-    font-size: 1.2em;
+    font-size: 1.6em;
     text-decoration: none;
     display: flex;
     align-items: center;
@@ -60,7 +58,7 @@ nav {
 }
 
 .logo {
-    width: 50px;
+    width: 80px;
 }
 
 .categories {
@@ -81,7 +79,7 @@ nav {
 
 h2 {
     margin: 0%;
-    padding-bottom: 3%;
+    padding-bottom: 2%;
     color: #45a049;
     font-size: 1.8em;
 }
@@ -231,7 +229,9 @@ h2 {
     justify-content: center;
     align-items: center;
 }
-
+.product h1{
+    padding-bottom: 2%;
+}
 .product-image {
     display: flex;
     align-items: center;
@@ -329,7 +329,33 @@ label {
 .btn:hover {
     background-color: #267b3a;
 }
+/*reviews*/
+.star-rating {
+    display: flex;
+    flex-direction: row-reverse; /* Reverse the order of the stars */
+    justify-content: flex-end; /* Align the stars to the right */
+   
+}
 
+.star-rating input[type="radio"] {
+    display: none;
+}
+
+.star-rating label {
+    font-size: 2em;
+    width: auto;
+    color: #ddd;
+    cursor: pointer;
+}
+
+.star-rating input[type="radio"]:checked ~ label {
+    color: #45a049;
+}
+
+.star-rating label:hover,
+.star-rating label:hover ~ label {
+    color: #45a049;
+}
 
 /* related products */
 .related-products {
@@ -342,6 +368,39 @@ label {
 .related-products .products {
     width: 100%;
 }
+.review{
+    display: flex;
+    background-color: #f6f6f6;
+    border-radius: 16px;
+    margin-bottom: 2%;
+    width: auto;
+    justify-content: space-between;
+   
+}
+.review i {
+    font-size: 1.5em;
+    color: #45a049;
+    margin-bottom: 20px;
+}
+
+.review div{
+    width: auto;
+    padding-right: 2%;
+    padding-left: 2%;
+}
+.create-review{
+    display: flex;
+    flex-direction: column;
+
+   
+    background-color: #f6f6f6;
+    border-radius: 16px;
+    width: auto;
+    padding: 2%;
+}
+#reviewText{
+    background-color: #fff;
+}
 
 /* Profile & Signup Form */
 .signup-container {
@@ -352,7 +411,6 @@ label {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     border-radius: 10px;
     text-align: center;
-
 }
 
 .profile-info p {

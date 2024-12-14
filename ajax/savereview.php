@@ -26,7 +26,7 @@ try {
         $review = new Review();
         $review->setUserId($_SESSION['user']['id']);
         $review->setProductId($_POST['product_id']);
-        $review->setRating(5); // Assuming a fixed rating for testing
+        $review->setRating($_POST['rating']);
         $review->setComment($_POST['comment']);
 
         if ($review->save()) {
