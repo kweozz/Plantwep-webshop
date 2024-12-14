@@ -173,9 +173,10 @@ $reviews = Review::getByProductId($product['id']);
                         </div>
                         <div class="form-group">
                             <input type="text" placeholder="Wat denk je van dit product?" id="reviewText" required>
-                            <a href="#" class="btn" id="btnAddReview" data-productid="<?php echo $product['id']; ?>"
-                                data-userid="<?php echo $_SESSION['user']['id']; ?>">Plaats review</a>
+
                         </div>
+                        <a href="#" class="btn" id="btnAddReview" data-productid="<?php echo $product['id']; ?>"
+                            data-userid="<?php echo $_SESSION['user']['id']; ?>">Plaats review</a>
                     </div>
                 </div>
             </div>
@@ -208,7 +209,7 @@ $reviews = Review::getByProductId($product['id']);
         </div>
     </section>
     <script>
-          const sizeCheckboxes = document.querySelectorAll('.size-checkbox');
+        const sizeCheckboxes = document.querySelectorAll('.size-checkbox');
         const potCheckboxes = document.querySelectorAll('.pot-checkbox');
         const finalPrice = document.getElementById('finalPrice');
         const productPrice = parseFloat(finalPrice.innerText);
@@ -282,7 +283,7 @@ $reviews = Review::getByProductId($product['id']);
         });
     </script>
     <script src="script/app.js">
-      
+
     </script>
 
 </body>

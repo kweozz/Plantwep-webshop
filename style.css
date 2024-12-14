@@ -44,7 +44,7 @@ nav {
 
 .icon {
     color: #2A2B2A;
-    font-size: 1.6em;
+    font-size: 1.2em;
     text-decoration: none;
     display: flex;
     align-items: center;
@@ -57,7 +57,7 @@ nav {
 }
 
 .logo {
-    width: 80px;
+    width: 60px;
 }
 
 .categories {
@@ -327,17 +327,20 @@ label {
     flex-direction: row-reverse;
     /* Reverse the order of the stars */
     justify-content: flex-end;
+
     /* Align the stars to the right */
 
 }
+
 
 .star-rating input[type="radio"] {
     display: none;
 }
 
 .star-rating label {
-    font-size: 2em;
+    font-size: 1.6em;
     width: auto;
+    padding: 0%;
     color: #ddd;
     cursor: pointer;
 }
@@ -388,12 +391,13 @@ label {
 .create-review {
     display: flex;
     flex-direction: column;
-
-
     background-color: #f6f6f6;
     border-radius: 16px;
     width: auto;
     padding: 2%;
+}
+div.post-review-form div{
+    padding-bottom: 1%;
 }
 
 #reviewText {
@@ -508,7 +512,7 @@ textarea,
 /* Buttons */
 .btn {
     display: inline-block;
-    padding: 2%;
+    padding: 16px;
     width: auto;
     font-size: 1.1em;
     color: #fff;
