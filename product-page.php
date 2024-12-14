@@ -146,7 +146,7 @@ $reviews = Review::getByProductId($product['id']);
                             <p><?php echo htmlspecialchars($review['comment']); ?></p>
                         </div>
                         <div class="date">
-                            <p><?php echo htmlspecialchars(date('Y-m-d', strtotime($review['created_at']))); ?></p>
+                            <p><?php echo htmlspecialchars(date('Y-d-m', strtotime($review['created_at']))); ?></p>
                         </div>
                     </div>
                 <?php endforeach; ?>
@@ -173,8 +173,8 @@ $reviews = Review::getByProductId($product['id']);
                         </div>
                         <div class="form-group">
                             <input type="text" placeholder="Wat denk je van dit product?" id="reviewText" required>
-                            <a href="#" class="btn" id="btnAddReview" data-productid="<?php echo htmlspecialchars($product['id']); ?>"
-                                data-userid="<?php echo htmlspecialchars($_SESSION['user']['id']); ?>">Plaats review</a>
+                            <a href="#" class="btn" id="btnAddReview" data-productid="<?php echo $product['id']; ?>"
+                                data-userid="<?php echo $_SESSION['user']['id']; ?>">Plaats review</a>
                         </div>
                     </div>
                 </div>
@@ -207,8 +207,8 @@ $reviews = Review::getByProductId($product['id']);
             </div>
         </div>
     </section>
-    <script src="script/app.js">
-        const sizeCheckboxes = document.querySelectorAll('.size-checkbox');
+    <script>
+          const sizeCheckboxes = document.querySelectorAll('.size-checkbox');
         const potCheckboxes = document.querySelectorAll('.pot-checkbox');
         const finalPrice = document.getElementById('finalPrice');
         const productPrice = parseFloat(finalPrice.innerText);
@@ -280,6 +280,9 @@ $reviews = Review::getByProductId($product['id']);
                 quantityError.style.display = 'block';
             }
         });
+    </script>
+    <script src="script/app.js">
+      
     </script>
 
 </body>
