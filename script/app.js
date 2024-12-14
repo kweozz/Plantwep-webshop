@@ -1,4 +1,6 @@
-document.querySelector('#btnAddReview').addEventListener('click', function () {
+document.querySelector('#btnAddReview').addEventListener('click', function (event) {
+    event.preventDefault(); // Prevent the default form submission
+
     let productid = this.dataset.productid;
     let userid = this.dataset.userid;
     let rating = document.querySelector('input[name="rating"]:checked').value;
@@ -32,10 +34,16 @@ document.querySelector('#btnAddReview').addEventListener('click', function () {
             let div = document.createElement('div');
             div.classList.add('review');
             div.innerHTML = `
-                <p><strong>${result.user_name}</strong></p>
-                <p>Rating: ${'<i class="fas fa-star"></i>'.repeat(result.rating)}${'<i class="far fa-star"></i>'.repeat(5 - result.rating)}</p>
-                <p>${result.body}</p>
-                <p><small>${new Date().toLocaleDateString()}</small></p>
+                <div class="review-details">
+                    <h3>${result.user_name}</h3>
+                    <p>
+                        ${'<i class="fas fa-star"></i>'.repeat(result.rating)}${'<i class="far fa-star"></i>'.repeat(5 - result.rating)}
+                    </p>
+                    <p>${result.body}</p>
+                </div>
+                <div class="date">
+                    <p>${new Date().toLocaleDateString()}</p>
+                </div>
             `;
             document.querySelector('.reviews').appendChild(div);
             document.querySelector('#reviewText').value = ''; // Clear the input field

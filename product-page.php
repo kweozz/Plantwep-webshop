@@ -173,8 +173,8 @@ $reviews = Review::getByProductId($product['id']);
                         </div>
                         <div class="form-group">
                             <input type="text" placeholder="Wat denk je van dit product?" id="reviewText" required>
-                            <a href="#" class="btn" id="btnAddReview" data-productid="<?php echo $product['id']; ?>"
-                                data-userid="<?php echo $_SESSION['user']['id']; ?>">Plaats review</a>
+                            <a href="#" class="btn" id="btnAddReview" data-productid="<?php echo htmlspecialchars($product['id']); ?>"
+                                data-userid="<?php echo htmlspecialchars($_SESSION['user']['id']); ?>">Plaats review</a>
                         </div>
                     </div>
                 </div>
