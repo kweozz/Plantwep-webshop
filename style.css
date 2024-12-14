@@ -4,6 +4,9 @@ body {
     padding: 0 10% 10%;
     box-sizing: border-box;
     color: #2A2B2A;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
 
 nav {
@@ -163,7 +166,7 @@ h2 {
 
 .products {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
 }
 
 .product-card {
@@ -224,7 +227,7 @@ h2 {
 .product-container {
     display: flex;
     flex-direction: column;
- gap: 2%;
+ gap: 5%;
     justify-content: center;
     align-items: center;
 }
@@ -237,8 +240,8 @@ h2 {
     height: 100%;
     width: 100%;
     overflow: hidden;
-    max-height: 600px;
-    max-width: 600px;
+    max-height: 700px;
+    max-width: 700px;
     aspect-ratio: 1;
     /* Houdt de hoogte en breedte in een 1:1 verhouding */
 }
