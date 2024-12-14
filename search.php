@@ -30,7 +30,7 @@ $products = Product::search($query);
 <?php include 'classes/Nav.php'; ?>
 
 <section class="search-results">
-    <h1 class="padding">Search Results for "<?php echo $query; ?>"</h1>
+    <h2 class="padding">Search Results for "<?php echo $query; ?>"</h2>
     <div class="products">
         <?php if (empty($products)): ?>
             <p>No products found.</p>
