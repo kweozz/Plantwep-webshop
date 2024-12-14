@@ -21,27 +21,22 @@ $orderItems = OrderItem::getByOrderId($lastOrder['id']);
 </head>
 
 <body>
+    <section class="success">
     <div class="success-container">
-        <div class="success-icon">
-            <!-- Voeg een icoon of afbeelding toe als nodig -->
-            <i class="icon">✔</i>
+    <h1 class="success-title">Succesvol!</h1>
+        <div class="success-image">
+            <img src="images/checkout-image.png" alt="checkout bag image">
         </div>
-        <h1 class="success-title">Succesvol!</h1>
         <p class="success-message">Je bestelling is succesvol geplaatst. Bedankt voor je aankoop!</p>
+        <p class="success-message">De geschatte levertijd is 3-5 werkdagen.</p>
+
         <div class="success-actions">
-           
-            <div class="order-summary">
-                <h3>Jouw bestelling</h3>
-                <ul class="order-items">
-             
-                </ul>
-                <div class="order-total">
-                    <p>Totale Prijs: €<?php echo number_format($lastOrder['total_price'], 2); ?></p>
-                </div>
-                <a href="index.php" class="btn">Ga naar de homepage</a>
-            </div>
+
+            <a href="index.php" class="btn">Terug naar Plantwerp</a>
+
         </div>
     </div>
+    </section>
 </body>
 
 </html>

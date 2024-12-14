@@ -4,8 +4,10 @@ class Order
     private $id;
     private $user_id;
     private $total_price;
+    private $address;
     private $created_at;
-// getters and setters
+
+    // Getters and Setters
     public function getId()
     {
         return $this->id;
@@ -19,6 +21,11 @@ class Order
     public function getTotalPrice()
     {
         return $this->total_price;
+    }
+
+    public function getAddress()
+    {
+        return $this->address;
     }
 
     public function getCreatedAt()
@@ -36,18 +43,23 @@ class Order
         $this->total_price = $total_price;
     }
 
+    public function setAddress($address)
+    {
+        $this->address = $address;
+    }
+
     public function setCreatedAt($created_at)
     {
         $this->created_at = $created_at;
     }
 
-
     public function save()
     {
         $db = Db::getConnection();
-        $query = $db->prepare('INSERT INTO orders (user_id, total_price) VALUES (:user_id, :total_price)');
+        $query = $db->prepare('INSERT INTO orders (user_id, total_price, address) VALUES (:user_id, :total_price, :address)');
         $query->bindValue(':user_id', $this->user_id, PDO::PARAM_INT);
         $query->bindValue(':total_price', $this->total_price, PDO::PARAM_STR);
+        $query->bindValue(':address', $this->address, PDO::PARAM_STR);
         $query->execute();
         $this->id = $db->lastInsertId();
         return $this->id;
@@ -61,7 +73,7 @@ class Order
         $query->execute();
         return $query->fetchAll(PDO::FETCH_ASSOC);
     }
-    //check if user has purchased a product
+
     public static function hasPurchasedProduct($userId, $productId)
     {
         $conn = Db::getConnection();
@@ -71,6 +83,81 @@ class Order
         $statement->execute();
         return $statement->fetchColumn() > 0;
     }
-}
 
+    public static function processCheckout($userId, $address, $paymentMethod)
+    {
+        // Get the user's basket
+        $basket = Basket::getBasket($userId);
+        if (!$basket) {
+            throw new Exception('Basket not found.');
+        }
+
+        // Get basket items
+        $basketItems = BasketItem::getItemsByBasketId($basket['id']);
+        if (empty($basketItems)) {
+            throw new Exception('Your basket is empty.');
+        }
+
+        // Calculate total price of the basket
+        $totalPrice = 0;
+        foreach ($basketItems as $item) {
+            $totalPrice += $item['total_price'];
+        }
+
+        try {
+            // Start a database transaction
+            $db = Db::getConnection();
+            $db->beginTransaction();
+
+            // Save the order
+            $order = new Order();
+            $order->setUserId($userId);
+            $order->setTotalPrice($totalPrice);
+            $order->setAddress($address);
+            $orderId = $order->save();
+
+            // Save each item in the order
+            foreach ($basketItems as $item) {
+                $orderItem = new OrderItem();
+                $orderItem->setOrderId($orderId);
+                $orderItem->setProductId($item['product_id']);
+                $orderItem->setQuantity($item['quantity']);
+                $orderItem->setPrice($item['price']);
+                $orderItem->setOptionIds($item['option_ids']);
+                $orderItem->setPriceAddition($item['price_addition']);
+                $orderItem->setTotalPrice($item['total_price']);
+                $orderItem->save();
+
+                // Update the stock for the product
+                $product = Product::getById($item['product_id']);
+                if ($product) {
+                    $newStock = $product['stock'] - $item['quantity'];
+                    if ($newStock < 0) {
+                        throw new Exception('Not enough stock for product ID: ' . $item['product_id']);
+                    }
+                    $productObj = new Product();
+                    $productObj->setId($product['id']);
+                    $productObj->setStock($newStock);
+                    $productObj->save();
+                } else {
+                    throw new Exception('Product not found: ' . $item['product_id']);
+                }
+            }
+
+            // Clear the user's basket
+            BasketItem::clearBasket($basket['id']);
+
+            // Commit the transaction
+            $db->commit();
+
+            // Redirect to success page
+            header('Location: success.php');
+            exit();
+        } catch (Exception $e) {
+            // Rollback the transaction if an error occurs
+            $db->rollBack();
+            throw new Exception('An error occurred during checkout: ' . $e->getMessage());
+        }
+    }
+}
 ?>

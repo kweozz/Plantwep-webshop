@@ -127,16 +127,11 @@ if (isset($_GET['removed']) && $_GET['removed'] == 1) {
             <div class="redirect">
                 <a href="index.php" class="btn">Continue Shopping</a>
                 <?php if ($totalPrice > 0): ?>
-                    <?php if ($_SESSION['user']['currency'] >= $totalPrice): ?>
-                        <form action="payment.php" method="POST">
-                            <input type="hidden" name="total_price" value="<?php echo $totalPrice; ?>">
-                            <button type="submit" class="btn">Checkout</button>
-                        </form>
-                    <?php else: ?>
-                        <p class="alert-danger basket-alert">U heeft niet genoeg credits om deze aankoop te voltooien.</p>
-                    <?php endif; ?>
+                    <form action="checkout.php" method="POST">
+                        <button type="submit" class="btn">Proceed to Checkout</button>
+                    </form>
                 <?php else: ?>
-                    <p class="alert-danger basket-alert">Uw mandje is leeg. Voeg items toe aan uw mandje om door te gaan met betalen.</p>
+                    <p class="alert-danger basket-alert">Your basket is empty. Add items to your basket to proceed to checkout.</p>
                 <?php endif; ?>
             </div>
         </div>

@@ -1,10 +1,9 @@
 body {
     font-family: 'Roboto', sans-serif;
     margin: 0;
-    padding: 0 10% 10%;
+    padding: 0% 10%;
     box-sizing: border-box;
     color: #2A2B2A;
-    
 }
 
 nav {
@@ -899,18 +898,21 @@ button.remove {
 .success-container {
     display: flex;
     flex-direction: column;
-    align-items: center;
+    padding : 5% 0%;
     justify-content: center;
     background-color: #f6f6f6;
     border-radius: 16px;
     text-align: center;
-    height: 100vh;
+   
 }
 
-.success-icon {
-    font-size: 3em;
-    color: #45a049;
-    margin-bottom: 20px;
+
+.success-image img {
+    width: 100%;
+    max-width: 300px;
+    height: auto;
+    margin-bottom: 2%;
+    border-radius: 16px;
 }
 
 .success-title {
@@ -929,9 +931,17 @@ button.remove {
     display: flex;
     gap: 10px;
     justify-content: center;
-    width: 100%;
+    width: auto;
 }
-
+.success-actions .btn{
+    padding: 1%;
+    width: auto;
+}
+section.success{
+    height: 100vh;
+    padding: 0%;
+    
+}
 
 /* Responsive */
 @media (min-width: 800px) {
