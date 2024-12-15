@@ -84,7 +84,7 @@ class Order
         return $statement->fetchColumn() > 0;
     }
 
-    public static function processCheckout($userId, $address, $paymentMethod)
+    public static function processCheckout($userId, $address)
     {
         // Get the user's basket
         $basket = Basket::getBasket($userId);
@@ -104,10 +104,26 @@ class Order
             $totalPrice += $item['total_price'];
         }
 
+        // Get the user's current currency
+        $user = User::getById($userId);
+        $currentCurrency = $_SESSION['user']['currency'];
+
+        // Check if user has enough currency
+        if ($currentCurrency < $totalPrice) {
+            throw new Exception('You do not have enough digital currency to complete this purchase.');
+        }
+
         try {
             // Start a database transaction
             $db = Db::getConnection();
             $db->beginTransaction();
+
+            // Deduct total price from user's currency
+            $newCurrency = $currentCurrency - $totalPrice;
+            $updateCurrencyQuery = $db->prepare('UPDATE users SET currency = :currency WHERE id = :user_id');
+            $updateCurrencyQuery->bindValue(':currency', $newCurrency, PDO::PARAM_INT);
+            $updateCurrencyQuery->bindValue(':user_id', $userId, PDO::PARAM_INT);
+            $updateCurrencyQuery->execute();
 
             // Save the order
             $order = new Order();
@@ -149,6 +165,9 @@ class Order
 
             // Commit the transaction
             $db->commit();
+
+            // Update the user's session currency
+            $_SESSION['user']['currency'] = $newCurrency;
 
             // Redirect to success page
             header('Location: success.php');

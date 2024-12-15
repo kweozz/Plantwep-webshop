@@ -112,16 +112,19 @@ $reviews = Review::getByProductId($product['id']);
                         </p>
                     </div>
                     <div class="product-stock">
-                        <?php if ($product['stock'] < 3): ?>
+                        <?php if ($product['stock'] < 3 && $product['stock'] > 0): ?>
                             <p class="alert-danger">Snel, Het is bijna uitverkocht!</p>
+                          
+                        <?php elseif ($product['stock'] <= 0): ?>
+                            <p class="alert-danger">Het product is uitverkocht</p>
+                        <?php else: ?>
+                            <p>Op voorraad: <?php echo htmlspecialchars($product['stock']); ?></p>
+
                         <?php endif; ?>
                     </div>
                     <div class="product-price">
                         <p>Price: €<span id="finalPrice"><?php echo htmlspecialchars($product['price']); ?></span></p>
                         <button class="btn" type="submit" <?php echo $product['stock'] <= 0 ? 'disabled' : ''; ?>>Winkelmandje</button>
-                        <?php if ($product['stock'] <= 0): ?>
-                            <p class="alert-danger">Het product is uitverkocht</p>
-                        <?php endif; ?>
                     </div>
                 </form>
             </div>
@@ -208,7 +211,7 @@ $reviews = Review::getByProductId($product['id']);
             </div>
         </div>
     </section>
-   
+   <script src="script/product-page.js" ></script>
     <script src="script/app.js">
 
     </script>
