@@ -27,16 +27,14 @@ $orderItems = OrderItem::getByOrderId($lastOrder['id']);
         <div class="success-image">
             <img src="images/checkout-image.png" alt="checkout bag image">
         </div>
-        <p class="success-message">Je bestelling is succesvol geplaatst. Bedankt voor je aankoop!</p>
-        <p class="success-message">De geschatte levertijd is 3-5 werkdagen.</p>
+        <h3 class="success-message">Je bestelling is succesvol geplaatst. Bedankt voor je aankoop!</h3>
+        <p class="success-message">De geschatte levertijd naar <?php echo htmlspecialchars($lastOrder['address']);?> is 3-5 werkdagen.</p>
 
         <div class="success-actions">
-
             <a href="index.php" class="btn">Terug naar Plantwerp</a>
-
         </div>
-    </div>
-    </section>
-</body>
+        </div>
+        </section>
+    </body>
 
 </html>

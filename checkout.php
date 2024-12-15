@@ -58,23 +58,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['checkout_form_submitt
         <form action="checkout.php" method="POST">
             <input type="hidden" name="checkout_form_submitted" value="1">
             <div class="form-group">
-                <label for="street_name">Street Name</label>
+                <label for="street_name">Straatnaam</label>
                 <input type="text" id="street_name" name="street_name" placeholder="Enter your street name" required>
             </div>
             <div class="form-group">
-                <label for="number">Number</label>
-                <input type="text" id="number" name="number" placeholder="Enter your house number" required>
+                <label for="number">Huisnummer</label>
+                <input type="number" id="number" name="number" placeholder="Enter your house number" required>
             </div>
             <div class="form-group">
-                <label for="postal_code">Postal Code</label>
-                <input type="text" id="postal_code" name="postal_code" placeholder="Enter your postal code" required>
+                <label for="postal_code">Post code</label>
+                <input type="number" id="postal_code" name="postal_code" placeholder="Enter your postal code" required>
             </div>
             <div class="form-group">
-                <label for="city">City</label>
+                <label for="city">Stad</label>
                 <input type="text" id="city" name="city" placeholder="Enter your city" required>
             </div>
             <div class="form-group">
-                <label for="payment-method">Payment Method</label>
+                <label for="payment-method">Betaal Methode</label>
                 <select id="payment-method" name="payment_method" required>
                     <option value="credit_card">Credit Card</option>
                     <option value="paypal">PayPal</option>
