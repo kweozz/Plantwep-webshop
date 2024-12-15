@@ -24,7 +24,7 @@ nav {
     height: 300px;
     overflow-y: hidden;
     border-radius: 16px;
-    background-image: url(images/store.jpg);
+    background-image: url(../images/store.jpg);
     background-size: cover;
     background-position: center;
 }
