@@ -35,6 +35,7 @@ $productOptions = ProductOption::getByProductId($productId);
 $selectedOptions = array_column($productOptions, 'option_id');
 $priceAdditions = array_column($productOptions, 'price_addition', 'option_id');
 
+
 $message = '';
 
 // Verwerk het bewerkte product
@@ -169,7 +170,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             <label for="price_addition_<?= $option['id']; ?>">Price Addition:</label>
                             <input type="number" id="price_addition_<?= $option['id']; ?>"
                                 name="options[<?= $option['id']; ?>][price_addition]" step="0.01"
-                                value="<?= isset($priceAdditions[$option['id']]) ? htmlspecialchars($priceAdditions[$option['id']]) : '0'; ?>"
+                                value="<?= in_array($option['id'], $selectedOptions) ? htmlspecialchars($priceAdditions[$option['id']]) : '0'; ?>"
                                 autocomplete="price-addition">
                         </div>
                     <?php endif; ?>
