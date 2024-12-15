@@ -28,7 +28,7 @@ if (isset($_POST['delete_category'])) {
         $deleteErrorMessage = 'Error: ' . $e->getMessage();
     }
 }
- 
+
 
 // Retrieve messages from session
 if (isset($_SESSION['categorySuccessMessage'])) {
@@ -55,44 +55,44 @@ if (isset($_SESSION['categoryErrorMessage'])) {
 
 <body>
     <nav>
-        <a href="index.php"><img class="logo" src="images/logo-plantwerp.png" alt="Plantwerp Logo"></a>
-        <input type="text" placeholder="Search categories..." class="search-bar">
+        <?php include 'classes/Nav.php'; ?>
     </nav>
+    <section class="manage-categories">
+        <div class="back">
+            <a class="back-icon" href="admin-dash.php">
+                <i class="fa fa-arrow-left" aria-hidden="true"></i>
+            </a>
+            <h2>Beheer categorieën</h2>
+        </div>
 
-    <div class="back">
-        <a class="back-icon" href="admin-dash.php">
-            <i class="fa fa-arrow-left" aria-hidden="true"></i>
-        </a>
-        <h1>Beheer categorieën</h1>
-    </div>
+        <?php if (isset($deleteSuccessMessage)): ?>
+            <div class="alert-success"><?= htmlspecialchars($deleteSuccessMessage); ?></div>
+        <?php endif; ?>
+        <?php if (isset($deleteErrorMessage)): ?>
+            <div class="alert-danger"><?= htmlspecialchars($deleteErrorMessage); ?></div>
+        <?php endif; ?>
 
-    <?php if (isset($deleteSuccessMessage)): ?>
-        <div class="alert-success"><?= htmlspecialchars($deleteSuccessMessage); ?></div>
-    <?php endif; ?>
-    <?php if (isset($deleteErrorMessage)): ?>
-        <div class="alert-danger"><?= htmlspecialchars($deleteErrorMessage); ?></div>
-    <?php endif; ?>
+        <div class="categories">
+            <?php foreach ($categories as $category): ?>
+                <div class="category-card ">
+                    <form class="delete-form" action="" method="POST" style="display:inline;">
+                        <input type="hidden" name="category_id" value="<?= htmlspecialchars($category['id']); ?>">
+                        <button class="delete-btn" type="submit" name="delete_category">
+                            <i class="fas fa-times-circle"></i>
+                        </button>
+                    </form>
+                    <img src="<?= htmlspecialchars($category['image']); ?>"
+                        alt="<?= htmlspecialchars($category['name']); ?>">
+                    <h4><?= htmlspecialchars($category['name']); ?></h4>
 
-    <div class="categories">
-        <?php foreach ($categories as $category): ?>
-            <div class="category-card manage-card">
-                <form class="delete-form" action="" method="POST" style="display:inline;">
-                    <input type="hidden" name="category_id" value="<?= htmlspecialchars($category['id']); ?>">
-                    <button class="delete-btn" type="submit" name="delete_category">
-                        <i class="fas fa-times-circle"></i>
-                    </button>
-                </form>
-                <img src="<?= htmlspecialchars($category['image']); ?>" alt="<?= htmlspecialchars($category['name']); ?>">
-                <h4><?= htmlspecialchars($category['name']); ?></h4>
+                    <a href="edit-category.php?id=<?= $category['id']; ?>" class="btn btn-edit">
+                        <i class="fa fa-edit"></i> Bewerken
+                    </a>
+                </div>
+            <?php endforeach; ?>
+        </div>
 
-                <a href="edit-category.php?id=<?= $category['id']; ?>" class="btn btn-edit">
-                    <i class="fa fa-edit"></i> Bewerken
-                </a>
-            </div>
-        <?php endforeach; ?>
-    </div>
-
-
+    </section>
     <script>
         document.querySelectorAll('.delete-form').forEach(form => {
             form.addEventListener('submit', function (event) {

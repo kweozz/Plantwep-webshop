@@ -11,6 +11,7 @@ nav {
     justify-content: space-between;
     align-items: center;
     padding-top: 2%;
+    width: 100%;
 }
 
 .nav-items {
@@ -66,6 +67,7 @@ nav {
     padding-bottom: 10px;
     scroll-snap-type: x mandatory;
     overflow-x: auto;
+   width: auto;
     -ms-overflow-style: none;
     /* Hide scrollbar in Internet Explorer */
     scrollbar-width: none;
@@ -457,7 +459,6 @@ div.form-group {
 .back {
     display: flex;
     gap: 2%;
-    align-items: center;
 }
 
 .form-group input,
