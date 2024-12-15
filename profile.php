@@ -1,29 +1,27 @@
 <?php
-
 session_start();
-
 include_once __DIR__ . '/classes/Db.php';
 include_once __DIR__ . '/classes/User.php';
 include_once __DIR__ . '/classes/Order.php';
 include_once __DIR__ . '/classes/OrderItem.php';
 include_once __DIR__ . '/classes/Product.php';
 
+// Check if the user is logged in
+if (!isset($_SESSION['user'])) {
+    header('Location: login.php');
+    exit();
+}
 
+$user = User::getById($_SESSION['user']['id']);
 
-// Controleer of de gebruiker is ingelogd
-if (isset($_SESSION['user'])) {
-    // haaal de user data op uit de sessie
-    $userData = $_SESSION['user'];
+// Fetch the last 3 orders
+$orders = Order::getLastOrderByUserId($user->getId(), 3);
 
-    // maak een nieuwe User obj
-    $user = new User();
-    $user->setFirstname($userData['firstname']);
-    $user->setLastname($userData['lastname']);
-    $user->setEmail($userData['email']);
-} else {
-    // Redirect als je niet ingelogd bent
-    header("Location: login.php");
-    exit;
+// Fetch all orders if requested
+$allOrders = false;
+if (isset($_GET['view_all_orders'])) {
+    $orders = Order::getByUserId($user->getId());
+    $allOrders = true;
 }
 
 if (isset($_POST["change_password"])) {
@@ -54,8 +52,6 @@ if (isset($_POST["logout"])) {
 }
 ?>
 
-
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -71,11 +67,7 @@ if (isset($_POST["logout"])) {
 
 <?php include 'classes/Nav.php'; ?>
 
-
-
-
     <h1 class="padding">Welkom, <?php echo htmlspecialchars($user->getFirstname()); ?>!</h1>
-
 
     <div class="profile-info">
         <div class="profile-details">
@@ -83,7 +75,7 @@ if (isset($_POST["logout"])) {
             <p><span>Voornaam:</span> <?php echo htmlspecialchars($user->getFirstname()); ?></p>
             <p><span>Achternaam:</span> <?php echo htmlspecialchars($user->getLastname()); ?></p>
             <p><span> Email:</span> <?php echo htmlspecialchars($user->getEmail()); ?></p>
-            <p> <span>Saldo:</span> <?php echo htmlspecialchars($_SESSION['currency']); ?> units</p>
+            <p> <span>Saldo:</span> € <?php echo htmlspecialchars($_SESSION['user']['currency']);?></p>
         </div>
     </div>
 
@@ -119,13 +111,6 @@ if (isset($_POST["logout"])) {
             <button type="submit" class="btn" name="change_password">Wijzig wachtwoord</button>
         </form>
 
-        <?php
-        // Haal bestellingen op voor de ingelogde gebruiker
-        $orders = Order::getByUserId($userData['id']);
-
-
-        ?>
-
         <section class="profile-orders ">
             <h2>Bestellingen</h2>
             <?php if (!empty($orders)): ?>
@@ -155,11 +140,27 @@ if (isset($_POST["logout"])) {
             <?php else: ?>
                 <p>Er zijn geen bestellingen gevonden.</p>
             <?php endif; ?>
+            <?php if (!$allOrders): ?>
+            <div><a href="profile.php?view_all_orders=true" class="btn">Bekijk alle bestellingen</a></div>
+                
+            <?php else: ?>
+                <div><a href="profile.php" class="btn">Verberg alle bestellingen</a></div>
+            <?php endif; ?>
         </section>
         <!-- Uitloggen -->
         <form action="profile.php" method="POST" class="logout-form form-group">
             <h2>Uitloggen</h2>
             <script>
+                document.addEventListener('DOMContentLoaded', function () {
+                    const viewAllOrdersBtn = document.querySelector('.btn[href*="view_all_orders=true"]');
+                    if (viewAllOrdersBtn) {
+                        viewAllOrdersBtn.addEventListener('click', function (event) {
+                         
+                            this.textContent = 'Verberg alle bestellingen';
+                        });
+                    }
+                });
+                
                 document.querySelector('.logout-form').addEventListener('submit', function (event) {
                     if (!confirm('Weet je zeker dat je wilt uitloggen?')) {
                         event.preventDefault();
@@ -168,7 +169,6 @@ if (isset($_POST["logout"])) {
             </script>
             <button type="submit" name="logout" class="logout-btn btn">Uitloggen</button>
         </form>
-
 
         </div>
 

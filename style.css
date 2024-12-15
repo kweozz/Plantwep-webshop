@@ -793,6 +793,7 @@ h1 {
 .basket-item-profile {
     background-color: #f6f6f6;
     margin-top: 2%;
+   height: 90px;
 }
 
 img.product-image-basket {

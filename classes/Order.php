@@ -159,5 +159,23 @@ class Order
             throw new Exception('An error occurred during checkout: ' . $e->getMessage());
         }
     }
+    // get last order by user id
+    public static function getLastOrderByUserId($userId, $limit)
+
+    {
+
+        $db = Db::getConnection();
+
+        $query = $db->prepare('SELECT * FROM orders WHERE user_id = :user_id ORDER BY created_at DESC LIMIT :limit');
+
+        $query->bindValue(':user_id', $userId, PDO::PARAM_INT);
+
+        $query->bindValue(':limit', $limit, PDO::PARAM_INT);
+
+        $query->execute();
+
+        return $query->fetchAll(PDO::FETCH_ASSOC);
+
+    }
 }
 ?>
