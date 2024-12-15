@@ -3,8 +3,8 @@ session_start();
 
 if (!isset($_SESSION['role']) || $_SESSION['role'] !== 1) {
     header("refresh:3;url=login.php");
-    exit();
     echo '<h1 style="text-align: center; padding:10%; color:red; font-family:Helvetica;">' . htmlspecialchars('You do not have access to this page') . '</h1>';
+    exit();
 }
 
 include_once __DIR__ . '/classes/Db.php';
