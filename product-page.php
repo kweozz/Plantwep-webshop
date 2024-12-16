@@ -117,8 +117,6 @@ $reviews = Review::getByProductId($product['id']);
                           
                         <?php elseif ($product['stock'] <= 0): ?>
                             <p class="alert-danger">Het product is uitverkocht</p>
-                        <?php else: ?>
-                            <p>Op voorraad: <?php echo htmlspecialchars($product['stock']); ?></p>
 
                         <?php endif; ?>
                     </div>

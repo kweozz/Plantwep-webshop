@@ -123,7 +123,7 @@ if (isset($_GET['removed']) && $_GET['removed'] == 1) {
             <?php endforeach; ?>
         </ul>
         <div class="basket-summary">
-            <h2 class="total-price">Total: €<?php echo number_format($totalPrice, 2); ?></h2>
+            <h3 class="total-price">Total: €<?php echo number_format($totalPrice, 2); ?></h3>
             <div class="redirect">
                 <a href="index.php" class="btn">Continue Shopping</a>
                 <?php if ($totalPrice > 0): ?>

@@ -126,7 +126,7 @@ h2 {
     text-align: center;
     transition: transform 0.3s, border 0.3s;
     text-decoration: none;
-    padding: 0px 15px;
+   padding: 10px 20px;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -472,7 +472,7 @@ textarea,
     /* Ensure they don't exceed the container's width */
     margin-bottom: 10px;
     /* Add some space below each element */
-
+    margin-top: 10px;
     border: 0px solid #ddd;
     /* Define border color */
     border-radius: 12px;
@@ -492,11 +492,12 @@ textarea,
     width: 100%;
     font-weight: bold;
     padding-top: 5px;
+    margin: 0%;
     padding-bottom: 2%;
 }
 
 .alert-success {
-    color: green;
+    color: #45a049;
     font-size: 1em;
     text-align: left;
     font-weight: bold;
@@ -513,11 +514,11 @@ textarea,
 /* Buttons */
 .btn {
     display: inline-block;
-    padding: 8px;
+    padding: 10px 20px;
     width: auto;
    
     color: #fff;
-    background-color: #2f8f46;
+    background-color: #45a049;
     border: none;
     border-radius: 12px;
     text-align: center;
@@ -532,7 +533,7 @@ textarea,
 }
 
 .signup-btn {
-    background-color: #4CAF50;
+    background-color: #45a049;
     color: #fff;
     padding: 10px 0;
     font-size: 16px;
@@ -764,7 +765,9 @@ h1 {
 .option-button:hover {
     transform: translateY(-5px);
 }
-
+button{
+    font-size: 1em;
+}
 /*winkelmandje*/
 .basket-container {
     padding: 5%;
@@ -844,20 +847,7 @@ div.basket-item-actions {
 }
 
 
-.redirect button {
-    padding: 10px 20px;
-   
-    color: #fff;
-    background-color: #45a049;
-    border: none;
-    border-radius: 12px;
-    width: auto;
-    text-align: center;
-    text-decoration: none;
-    transition: background-color 0.3s;
-    cursor: pointer;
 
-}
 
 .redirect {
     display: flex;
@@ -1009,7 +999,6 @@ section.success {
         padding: 16px;
 
     }
-
     .category-card img {
         display: block;
     }
