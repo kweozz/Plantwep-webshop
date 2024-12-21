@@ -1,22 +1,29 @@
 <?php
 class Db {
-    // Declare de statische eigenschap $conn
+    // Declare the static property $conn
     private static $conn;
-//singleton pattern:
-    // Methode om de databaseverbinding te verkrijgen
+
+    // Method to get the database connection
     public static function getConnection() {
-        // Controleer of de verbinding al bestaat
+        // Check if the connection already exists
         if (self::$conn === null) {
             try {
-                // Maak een nieuwe verbinding
-                self::$conn = new PDO("mysql:host=localhost;dbname=plantwerp", "root", "");
-                
+                // Use Railway database connection details
+                $host = 'mysql.railway.internal';
+                $port = '3306';
+                $dbname = 'railway';
+                $username = 'root';
+                $password = 'wRKVCAXctmaZqxdZXcqWcyxQeBUdvsjV';
+
+                // Create a new connection
+                self::$conn = new PDO("mysql:host=$host;port=$port;dbname=$dbname", $username, $password);
+                self::$conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
             } catch (PDOException $e) {
-                // Geef een duidelijke foutmelding als de verbinding mislukt
+                // Throw a clear error message if the connection fails
                 throw new Exception("Database connection failed: " . $e->getMessage());
             }
         }
-        return self::$conn; // Retourneer de verbinding
+        return self::$conn; // Return the connection
     }
 }
 ?>
