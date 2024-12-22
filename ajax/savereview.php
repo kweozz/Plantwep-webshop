@@ -22,7 +22,7 @@ try {
         $product_id = filter_input(INPUT_POST, 'product_id', FILTER_VALIDATE_INT);
         $user_id = filter_input(INPUT_POST, 'user_id', FILTER_VALIDATE_INT);
         $rating = filter_input(INPUT_POST, 'rating', FILTER_VALIDATE_INT);
-        $comment = filter_input(INPUT_POST, 'comment', FILTER_SANITIZE_STRING);
+        $comment = filter_input(INPUT_POST, 'comment', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
         if (!$product_id || !$user_id || !$rating || !$comment) {
             throw new Exception('Invalid input.');
