@@ -1,5 +1,4 @@
 <?php
-// admin-dash.php
 include_once __DIR__ . '/classes/Db.php';
 include_once __DIR__ . '/classes/Category.php';
 include_once __DIR__ . '/classes/ImageUploader.php';
@@ -115,9 +114,7 @@ if (isset($_SESSION['categoryErrorMessage'])) {
 
     </section>
 
-    <script src="script/image-preview.js" >
-    
-    </script>
+    <script src="script/image-preview.js"></script>
 </body>
 
 </html>
