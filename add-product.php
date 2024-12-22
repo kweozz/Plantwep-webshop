@@ -14,7 +14,6 @@ if (!isset($_SESSION['role']) || (int) $_SESSION['role'] !== 1) {
 }
 
 // Handle form submission
-// Handle form submission
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $productName = htmlspecialchars(trim($_POST['product_name']), ENT_QUOTES, 'UTF-8');
     $productDescription = htmlspecialchars(trim($_POST['product_description']), ENT_QUOTES, 'UTF-8');
@@ -31,7 +30,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             if ($uploadResult) {
                 // Instantiate the product object here
-                $product = new Product(); // Create the product object
+                $product = new Product();
 
                 // Now set the product properties
                 $product->setName($productName);
@@ -39,12 +38,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $product->setDescription($productDescription);
                 $product->setStock($productStock);
                 $product->setCategory($categoryId);
-
-                // Set the image only after the product has been created
                 $product->setImage($uploadResult);
 
                 // Create the product and assign options with price additions
-                $productId = $product->create(); // Create the product first
+                $productId = $product->create();
 
                 if ($productId) {
                     // Loop through the selected options and save them with price addition
@@ -52,13 +49,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         foreach ($_POST['options'] as $optionData) {
                             $optionId = $optionData['id'] ?? null;
                             $priceAddition = isset($optionData['price_addition']) ? (float) $optionData['price_addition'] : 0.0;
-                
+
                             if ($optionId) {
                                 ProductOption::save($productId, $optionId, $priceAddition);
                             }
                         }
                     }
-
                     $productSuccessMessage = 'Product added successfully!';
                 } else {
                     $productErrorMessage = 'Failed to add product.';
@@ -73,8 +69,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $productErrorMessage = 'Please choose an image.';
     }
 }
-
-
 
 // Fetch categories
 $categories = Category::getAll();
@@ -95,9 +89,7 @@ $options = Option::getAll();
 </head>
 
 <body>
-
     <section class="product padding">
-
         <!-- Success or error messages -->
         <?php if (!empty($productSuccessMessage)): ?>
             <div class="alert-success"><?= htmlspecialchars($productSuccessMessage); ?></div>
@@ -108,11 +100,9 @@ $options = Option::getAll();
         <?php endif; ?>
 
         <form class="form-group add-product-container" method="post" action="" enctype="multipart/form-data">
-           
-                <a class="back-icon" href="admin-dash.php">
-                    <i class="fa fa-arrow-left" aria-hidden="true"></i>
-                </a>
-    
+            <a class="back-icon" href="admin-dash.php">
+                <i class="fa fa-arrow-left" aria-hidden="true"></i>
+            </a>
 
             <!-- File upload input (hidden) and preview section -->
             <div class="product-image">
@@ -128,40 +118,37 @@ $options = Option::getAll();
             <div class="product-details">
                 <h2>Add products</h2>
                 <div class="options-group">
-                <label for="product_name">Product Name:</label>
-                <input type="text" id="product_name" name="product_name" required>
+                    <label for="product_name">Product Name:</label>
+                    <input type="text" id="product_name" name="product_name" required>
 
-                <label for="product_price">Product Price:</label>
-                <input type="number" id="product_price" name="product_price" required>
+                    <label for="product_price">Product Price:</label>
+                    <input type="number" id="product_price" name="product_price" required>
 
-                <label for="product_description">Product Description:</label>
-                <textarea id="product_description" name="product_description" required></textarea>
+                    <label for="product_description">Product Description:</label>
+                    <textarea id="product_description" name="product_description" required></textarea>
 
-                <label for="category">Category:</label>
-                <select name="category" id="category">
-                    <?php if (!empty($categories)): ?>
-                        <?php foreach ($categories as $category): ?>
-                            <option value="<?= htmlspecialchars($category['id']); ?>">
-                                <?= htmlspecialchars($category['name']); ?>
-                            </option>
-                        <?php endforeach; ?>
-                    <?php else: ?>
-                        <option value="">No categories available</option>
-                    <?php endif; ?>
-                </select>
+                    <label for="category">Category:</label>
+                    <select name="category" id="category">
+                        <?php if (!empty($categories)): ?>
+                            <?php foreach ($categories as $category): ?>
+                                <option value="<?= htmlspecialchars($category['id']); ?>">
+                                    <?= htmlspecialchars($category['name']); ?>
+                                </option>
+                            <?php endforeach; ?>
+                        <?php else: ?>
+                            <option value="">No categories available</option>
+                        <?php endif; ?>
+                    </select>
                 </div>
                 <div class="options-group">
                     <label>Beschikbare maten:</label>
-                    <!-- Select All Sizes -->
                     <label class="option-button">
                         <input type="checkbox" id="select-all-sizes">
                         <span>Select All Sizes</span>
                     </label>
 
-                    <!-- Individuele maten -->
                     <?php foreach ($options as $option): ?>
                         <?php if ($option['type'] == 'size'): ?>
-
                             <label class="option-button">
                                 <input type="checkbox" class="size-checkbox" name="options[<?= $option['id']; ?>][id]"
                                     value="<?= $option['id']; ?>"
@@ -173,7 +160,6 @@ $options = Option::getAll();
                                 <input type="number" name="options[<?= $option['id']; ?>][price_addition]" step="0.01" min="0"
                                     placeholder="Price addition">
                             </div>
-
                         <?php endif; ?>
                     <?php endforeach; ?>
                 </div>
@@ -182,33 +168,29 @@ $options = Option::getAll();
                     <label>Beschikbare potten:</label>
                     <?php foreach ($options as $option): ?>
                         <?php if ($option['type'] == 'pot'): ?>
-                          
-                                <label class="option-button">
-                                    <input type="checkbox" class="pot-checkbox" name="options[<?= $option['id']; ?>][id]"
-                                        value="<?= $option['id']; ?>"
-                                        data-price-addition-input="price_addition_<?= $option['id']; ?>">
-                                    <span><?= htmlspecialchars($option['name']); ?></span>
-                                </label>
-                                <div class="price-addition" id="price_addition_<?= $option['id']; ?>" style="display:none;">
-                                    <label for="price_addition_<?= $option['id']; ?>">Price Addition:</label>
-                                    <input type="number" name="options[<?= $option['id']; ?>][price_addition]" step="0.01"
-                                        min="0" placeholder="Price addition">
-                                </div>
-                           
+                            <label class="option-button">
+                                <input type="checkbox" class="pot-checkbox" name="options[<?= $option['id']; ?>][id]"
+                                    value="<?= $option['id']; ?>"
+                                    data-price-addition-input="price_addition_<?= $option['id']; ?>">
+                                <span><?= htmlspecialchars($option['name']); ?></span>
+                            </label>
+                            <div class="price-addition" id="price_addition_<?= $option['id']; ?>" style="display:none;">
+                                <label for="price_addition_<?= $option['id']; ?>">Price Addition:</label>
+                                <input type="number" name="options[<?= $option['id']; ?>][price_addition]" step="0.01"
+                                    min="0" placeholder="Price addition">
+                            </div>
                         <?php endif; ?>
                     <?php endforeach; ?>
                 </div>
+
                 <label for="product_stock">Product Stock:</label>
                 <input type="number" id="product_stock" name="product_stock" required>
                 <button class="btn btn-admin" type="submit" name="add_product">Add Product</button>
             </div>
         </form>
-
     </section>
 
-    <script src="script/add-product.js" >
-        
-    </script>
+    <script src="script/add-product.js"></script>
 </body>
 
 </html>

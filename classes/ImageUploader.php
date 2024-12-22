@@ -1,48 +1,56 @@
-
 <?php
+
+require 'vendor/autoload.php'; // Ensure Cloudinary SDK is autoloaded
+
+use Cloudinary\Cloudinary;
+use Dotenv\Dotenv;
+
 class ImageUploader
 {
+    private $cloudinary;
+
+    public function __construct()
+    {
+        // Load .env file using an absolute path
+        $dotenv = Dotenv::createImmutable('C:\xampp\htdocs\Plantwep-webshop-2');
+        $dotenv->load();
+
+        $this->cloudinary = new Cloudinary([
+            'cloud' => [
+                'cloud_name' => $_ENV['CLOUDINARY_CLOUD_NAME'],
+                'api_key' => $_ENV['CLOUDINARY_API_KEY'],
+                'api_secret' => $_ENV['CLOUDINARY_API_SECRET'],
+            ]
+        ]);
+    }
+
     public function uploadImage($file)
     {
         if ($_SESSION['role'] !== 1) {
             throw new Exception('Geen toestemming om afbeeldingen te uploaden');
         }
-    
-        $targetDir = __DIR__ . "/../images/uploads/";
-        $targetFile = $targetDir . basename($file["name"]);
-        $imageFileType = strtolower(pathinfo($targetFile, PATHINFO_EXTENSION));
-    
-        // Controleer of bestand een afbeelding is
+
+        // Validate file is an image
         $check = getimagesize($file["tmp_name"]);
         if ($check === false) {
             throw new Exception('Bestand is geen afbeelding');
         }
-    
-        // Controleer bestandsgrootte
+
+        // Validate file size (5MB max)
         if ($file["size"] > 5000000) {
             throw new Exception('Sorry, het bestand is te groot');
         }
-    
-        // Allowed formats
-        $allowedFormats = ["jpg", "png", "jpeg", "gif"];
-        if (!in_array($imageFileType, $allowedFormats)) {
-            throw new Exception('Sorry, alleen JPG, JPEG, PNG en GIF-bestanden zijn toegestaan');
-        }
-    
-        // Controleer of bestand al bestaat
-        if (file_exists($targetFile)) {
-            throw new Exception('Sorry, bestand bestaat al');
-        }
-    
-        // Try to upload the file
-        if (!move_uploaded_file($file["tmp_name"], $targetFile)) {
-            throw new Exception('Sorry, er is een fout opgetreden bij het uploaden van het bestand');
-        }
-    
-        // Return the relative URL path of the image
-        return 'images/uploads/' . basename($file["name"]);
-    }
-    
-}
 
+        // Upload to Cloudinary
+        try {
+            $uploadResult = $this->cloudinary->uploadApi()->upload(
+                $file["tmp_name"],
+                ['folder' => 'uploads']
+            );
+            return $uploadResult['secure_url']; // Return the Cloudinary URL
+        } catch (Exception $e) {
+            throw new Exception('Upload to Cloudinary failed: ' . $e->getMessage());
+        }
+    }
+}
 ?>
