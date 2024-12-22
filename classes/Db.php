@@ -9,11 +9,12 @@ class Db {
         if (self::$conn === null) {
             try {
                 // Use Railway database connection details
-                $host = 'autorack.proxy.rlwy.net';
-                $port = '45276';
-                $dbname = 'railway';
-                $username = 'root';
-                $password = 'wRKVCAXctmaZqxdZXcqWcyxQeBUdvsjV';
+                $host = $_ENV['MYSQLHOST'] ?? 'autorack.proxy.rlwy.net';
+                $port = $_ENV['MYSQLPORT'] ?? '45276';
+                $dbname = $_ENV['MYSQLDATABASE'] ?? 'railway';
+                $username = $_ENV['MYSQLUSER'] ?? 'root';
+                $password = $_ENV['MYSQLPASSWORD'] ?? 'wRKVCAXctmaZqxdZXcqWcyxQeBUdvsjV';
+                
 
                 // Create a new connection
                 self::$conn = new PDO("mysql:host=$host;port=$port;dbname=$dbname", $username, $password);
