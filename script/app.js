@@ -12,7 +12,7 @@ document.querySelector('#btnAddReview').addEventListener('click', function (even
     formData.append('rating', rating);
     formData.append('comment', comment);
 
-    fetch('app/ajax/savereview.php', {
+    fetch('/ajax/savereview.php', {
         method: 'POST',
         body: formData
     })
