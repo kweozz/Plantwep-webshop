@@ -1,6 +1,6 @@
 <?php
 // Include the User class
-include_once(__DIR__ . '/classes/user.php');
+include_once(__DIR__ . '/classes/User.php');
 include_once(__DIR__ . '/classes/Basket.php');
 
 if (!empty($_POST)) {
