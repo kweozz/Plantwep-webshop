@@ -1,6 +1,7 @@
 <?php
 session_start(); // Start the session only once at the top
-include_once __DIR__ . '/classes/User.php';
+include_once __DIR__ . '/classes/user.php';
+
 include_once __DIR__ . '/classes/Db.php';
 
 $error = ''; // Variable to hold error message
