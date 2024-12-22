@@ -4,7 +4,7 @@ include_once __DIR__ . '/classes/Product.php';
 include_once __DIR__ . '/classes/Category.php';
 include_once __DIR__ . '/classes/ProductOption.php';
 include_once __DIR__ . '/classes/Order.php';
-include_once(__DIR__ . '/classes/Review.php');
+include_once __DIR__ . '/classes/Review.php';
 
 // Start session
 session_start();
