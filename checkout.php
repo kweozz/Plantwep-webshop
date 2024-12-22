@@ -5,7 +5,7 @@ include_once __DIR__ . '/classes/Basket.php';
 include_once __DIR__ . '/classes/BasketItem.php';
 include_once __DIR__ . '/classes/Order.php';
 include_once __DIR__ . '/classes/OrderItem.php';
-include_once __DIR__ . '/classes/User.php';
+include_once __DIR__ . '/classes/user.php';
 include_once __DIR__ . '/classes/Product.php';
 
 // Check if user is logged in

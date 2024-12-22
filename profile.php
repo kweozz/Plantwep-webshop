@@ -1,7 +1,7 @@
 <?php
 session_start();
 include_once __DIR__ . '/classes/Db.php';
-include_once __DIR__ . '/classes/User.php';
+include_once __DIR__ . '/classes/user.php';
 include_once __DIR__ . '/classes/Order.php';
 include_once __DIR__ . '/classes/OrderItem.php';
 include_once __DIR__ . '/classes/Product.php';
