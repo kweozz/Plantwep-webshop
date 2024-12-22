@@ -12,7 +12,7 @@ $response = [];
 try {
     if (!empty($_POST)) {
         include_once(__DIR__ . '/../classes/Review.php');
-        include_once(__DIR__ . '/../classes/user.php');
+        include_once(__DIR__ . '/../classes/User.php');
 
         if (!isset($_SESSION['user']['id'])) {
             throw new Exception('User not logged in.');
