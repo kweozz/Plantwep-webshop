@@ -9,8 +9,8 @@ class Db {
         if (self::$conn === null) {
             try {
                 // Use Railway database connection details
-                $host = 'mysql.railway.internal';
-                $port = '3306';
+                $host = 'autorack.proxy.rlwy.net';
+                $port = '45276';
                 $dbname = 'railway';
                 $username = 'root';
                 $password = 'wRKVCAXctmaZqxdZXcqWcyxQeBUdvsjV';
