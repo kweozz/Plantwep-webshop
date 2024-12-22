@@ -1,29 +1,32 @@
-document.querySelector('#btnAddReview').addEventListener('click', function (event) {
-    event.preventDefault(); // Prevent the default form submission
+document.getElementById('btnAddReview').addEventListener('click', function (event) {
+    event.preventDefault();
 
-    let productid = this.dataset.productid;
-    let userid = this.dataset.userid;
-    let rating = document.querySelector('input[name="rating"]:checked').value;
-    let comment = document.querySelector('#reviewText').value;
+    const productId = this.getAttribute('data-productid');
+    const userId = this.getAttribute('data-userid');
+    const ratingElement = document.querySelector('input[name="rating"]:checked');
+    const commentElement = document.getElementById('reviewText');
 
-    let formData = new FormData();
-    formData.append('product_id', productid);
-    formData.append('user_id', userid);
-    formData.append('rating', rating);
-    formData.append('comment', comment);
+    if (!ratingElement || !commentElement) {
+        console.error('Rating or comment element not found');
+        return;
+    }
+
+    const rating = ratingElement.value;
+    const comment = commentElement.value;
 
     fetch('/ajax/savereview.php', {
         method: 'POST',
-        body: formData
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: `product_id=${productId}&user_id=${userId}&rating=${rating}&comment=${encodeURIComponent(comment)}`,
     })
     .then(response => {
-        if (!response.ok) {
-            throw new Error('Network response was not ok');
-        }
         if (response.headers.get('content-type') && response.headers.get('content-type').includes('application/json')) {
             return response.json();
         } else {
             return response.text().then(text => {
+                console.error('Invalid JSON response:', text);
                 throw new Error('Invalid JSON response: ' + text);
             });
         }

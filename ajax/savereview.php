@@ -2,6 +2,10 @@
 session_start();
 header('Content-Type: application/json');
 
+// Enable error reporting
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 
 $response = [];
 
@@ -14,8 +18,7 @@ try {
             throw new Exception('User not logged in.');
         }
 
-        // Sanitize and validate inputs: filter_input(INPUT_POST, 'input_name', FILTER_VALIDATE_INT) is een handige functie om input te valideren.
-        // Hiermee kun je controleren of een variabele een integer is. Als de variabele geen integer is, wordt er false geretourneerd.  info op https://www.php.net/manual/en/function.filter-input.php
+        // Sanitize and validate inputs
         $product_id = filter_input(INPUT_POST, 'product_id', FILTER_VALIDATE_INT);
         $user_id = filter_input(INPUT_POST, 'user_id', FILTER_VALIDATE_INT);
         $rating = filter_input(INPUT_POST, 'rating', FILTER_VALIDATE_INT);
@@ -42,7 +45,7 @@ try {
                 'status' => 'success',
                 'body' => htmlspecialchars($review->getComment()),
                 'rating' => $review->getRating(),
-                'user_name' => htmlspecialchars($user->getName()),
+                'user_name' => htmlspecialchars($user->getFirstname() . ' ' . $user->getLastname()),
                 'message' => 'Review is geplaatst!'
             ];
         } else {
@@ -60,6 +63,9 @@ try {
         'message' => $e->getMessage()
     ];
 }
+
+// Log the response for debugging
+error_log(json_encode($response));
 
 echo json_encode($response);
 ?>
