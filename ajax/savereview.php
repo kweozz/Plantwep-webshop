@@ -45,7 +45,7 @@ try {
                 'status' => 'success',
                 'body' => htmlspecialchars($review->getComment()),
                 'rating' => $review->getRating(),
-                'user_name' => htmlspecialchars($user->getName()),
+                'user_name' => htmlspecialchars($user->getFirstname() . ' ' . $user->getLastname()),
                 'message' => 'Review is geplaatst!'
             ];
         } else {
@@ -63,6 +63,9 @@ try {
         'message' => $e->getMessage()
     ];
 }
+
+// Log the response for debugging
+error_log(json_encode($response));
 
 echo json_encode($response);
 ?>
