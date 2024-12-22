@@ -38,7 +38,7 @@ foreach ($options as $optionId => $option) {
 $totalPrice = ($basePrice + $optionPriceAdditions) * $quantity; // Bereken de totale prijs
 
 // Debugging: controleer berekende prijzen
-var_dump($totalPrice, $optionPriceAdditions);
+// var_dump($totalPrice, $optionPriceAdditions); // Comment out or remove this line
 
 // Krijg of maak de winkelmand van de gebruiker
 $basket = Basket::getBasket($userId);
