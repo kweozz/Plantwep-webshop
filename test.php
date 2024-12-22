@@ -1,4 +1,7 @@
 <?php
 echo "Current Directory: " . __DIR__ . "<br>";
-echo "Directory Contents:<br>";
-print_r(scandir(__DIR__));
+echo "Contents of 'classes':<br>";
+$files = scandir(__DIR__ . '/classes');
+print_r($files);
+?>
+
