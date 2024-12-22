@@ -1,3 +1,9 @@
+{
+    "require": {
+        "cloudinary/cloudinary_php": "^2.14",
+        "vlucas/phpdotenv": "^5.6"
+    }
+}
 <?php
 
 require 'vendor/autoload.php'; // Ensure Cloudinary SDK is autoloaded
