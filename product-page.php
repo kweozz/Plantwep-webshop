@@ -38,6 +38,28 @@ $potOptions = array_filter($options, function ($option) {
     return $option['type'] == 'pot';
 });
 
+// Find the size option with the lowest price
+$lowestSizeOption = null;
+if (!empty($sizeOptions)) {
+    $lowestSizeOption = array_reduce($sizeOptions, function ($carry, $item) {
+        if ($carry === null || $item['price_addition'] < $carry['price_addition']) {
+            return $item;
+        }
+        return $carry;
+    });
+}
+
+// Find the pot option with the lowest price
+$lowestPotOption = null;
+if (!empty($potOptions)) {
+    $lowestPotOption = array_reduce($potOptions, function ($carry, $item) {
+        if ($carry === null || $item['price_addition'] < $carry['price_addition']) {
+            return $item;
+        }
+        return $carry;
+    });
+}
+
 // Fetch reviews for the product
 $reviews = Review::getByProductId($product['id']);
 ?>
@@ -80,7 +102,8 @@ $reviews = Review::getByProductId($product['id']);
                                     <input type="checkbox" class="size-checkbox"
                                         name="options[<?php echo $option['id']; ?>][id]"
                                         value="<?= htmlspecialchars($option['id']); ?>"
-                                        data-price="<?= htmlspecialchars($option['price_addition']); ?>">
+                                        data-price="<?= htmlspecialchars($option['price_addition']); ?>"
+                                        <?php echo $option === $lowestSizeOption ? 'checked' : ''; ?>>
                                     <span><?= htmlspecialchars($option['name']); ?></span>
                                 </label>
                                 <input type="hidden" name="options[<?php echo $option['id']; ?>][price_addition]"
@@ -95,7 +118,8 @@ $reviews = Review::getByProductId($product['id']);
                             <label class="option-button">
                                 <input type="checkbox" class="pot-checkbox" name="options[<?php echo $option['id']; ?>][id]"
                                     value="<?= htmlspecialchars($option['id']); ?>"
-                                    data-price="<?= htmlspecialchars($option['price_addition']); ?>">
+                                    data-price="<?= htmlspecialchars($option['price_addition']); ?>"
+                                    <?php echo $option === $lowestPotOption ? 'checked' : ''; ?>>
                                 <span><?= htmlspecialchars($option['name']); ?></span>
                             </label>
                             <input type="hidden" name="options[<?php echo $option['id']; ?>][price_addition]"
