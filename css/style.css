@@ -281,6 +281,9 @@ h2 {
     flex-direction: column;
     justify-content: space-between;
 }
+.product-details h2{
+    padding-top: 2%;
+}
 
 .product-details h1 {
     font-size: 2em;
@@ -722,7 +725,7 @@ section div {
 .delete-btn {
     background: transparent;
     border: none;
-    color: red;
+    color: #721c24;
     font-size: 1.8em;
     cursor: pointer;
     transition: color 0.3s;
@@ -907,7 +910,7 @@ div.basket-item-actions {
 
 button.remove {
     background-color: none;
-    color: red;
+    color: #721c24;
     border: none;
     background-color: white;
     font-size: 1.2em;
@@ -1083,7 +1086,7 @@ section.success {
 /* Add this at the end of your style.css file */
 
 /* Media query for screen widths from 0 to 1050 pixels */
-@media (max-width: 1050px) {
+@media (max-width: 600px) {
 
     .product-container,
     .categories-wrapper,
