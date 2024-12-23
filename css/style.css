@@ -1,5 +1,6 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
 body {
-    font-family: 'Roboto', sans-serif;
+    font-family: 'Montserrat', sans-serif;
     margin: 0;
     padding: 0% 10%;
     box-sizing: border-box;
@@ -67,7 +68,7 @@ nav {
     padding-bottom: 10px;
     scroll-snap-type: x mandatory;
     overflow-x: auto;
-   width: auto;
+    width: auto;
     -ms-overflow-style: none;
     /* Hide scrollbar in Internet Explorer */
     scrollbar-width: none;
@@ -126,7 +127,7 @@ h2 {
     text-align: center;
     transition: transform 0.3s, border 0.3s;
     text-decoration: none;
-   padding: 10px 20px;
+    padding: 10px 20px;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -166,7 +167,7 @@ h2 {
 
 .products {
     display: grid;
-   
+
     box-sizing: border-box;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
 }
@@ -219,9 +220,11 @@ h2 {
     margin: 0 0 12px 0;
 
 }
-.search{
+
+.search {
     margin: 0%;
 }
+
 /* Product Page */
 .h3 {
     margin: 0%;
@@ -400,7 +403,8 @@ label {
     width: auto;
     padding: 2%;
 }
-div.post-review-form div{
+
+div.post-review-form div {
     padding-bottom: 1%;
 }
 
@@ -419,22 +423,50 @@ div.post-review-form div{
     text-align: center;
 }
 
-.profile-info p {
-    font-size: 1em;
-    color: #333;
-    margin-bottom: 0%;
-
+.profile-info {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
 }
 
-.profile-info p span {
+.profile-details {
+    flex: 1;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 16px;
+}
+
+.profile-details h2 {
+    margin-bottom: 20px;
+}
+
+.profile-details p {
+    margin: 10px 0;
+}
+
+.profile-details span {
     font-weight: bold;
 }
 
-.signup-container h2 {
-    font-size: 24px;
-    color: #333;
+.profile-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.change-password-form,
+.logout-form {
+    padding: 20px;
+    background-color: #f6f6f6;
+    border-radius: 16px;
+}
+
+.change-password-form h2,
+.logout-form h2 {
     margin-bottom: 20px;
 }
+
+
 
 .signup-form {
     display: flex;
@@ -486,26 +518,26 @@ textarea,
     /* Include padding and border in the element's total width */
 }
 
+.change-password-form input {
+    background-color: #ffff;
+}
 
 .alert-danger {
-    color: red;
-    font-size: 1em;
-    text-align: left;
-    width: 100%;
+    background-color: #f8d7da;
+    color: #721c24;
+    padding: 10px;
+    border-radius: 12px;
+    width: auto;
     font-weight: bold;
-    padding-top: 5px;
-    margin: 0%;
-    padding-bottom: 2%;
 }
 
 .alert-success {
-    color: #45a049;
-    font-size: 1em;
-    text-align: left;
+    background-color: #d4edda;
+    color: #155724;
+    padding: 10px;
+    border-radius: 12px;
+    width: auto;
     font-weight: bold;
-    width: 100%;
-    padding-top: 5px;
-    padding-bottom: 2%;
 }
 
 .padding {
@@ -518,7 +550,7 @@ textarea,
     display: inline-block;
     padding: 10px 20px;
     width: auto;
-   
+
     color: #fff;
     background-color: #45a049;
     border: none;
@@ -623,7 +655,8 @@ section div {
     pointer-events: none;
     z-index: 1;
 }
-.manage-product{
+
+.manage-product {
     display: grid;
     box-sizing: border-box;
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -767,9 +800,11 @@ h1 {
 .option-button:hover {
     transform: translateY(-5px);
 }
-button{
+
+button {
     font-size: 1em;
 }
+
 /*winkelmandje*/
 .basket-container {
     padding: 5%;
@@ -798,7 +833,7 @@ button{
 .basket-item-profile {
     background-color: #f6f6f6;
     margin-top: 2%;
-   height: 90px;
+    height: 90px;
 }
 
 img.product-image-basket {
@@ -911,11 +946,13 @@ button.remove {
     padding: 2px 4px;
     border-radius: 16px;
 }
-.basket-items{
+
+.basket-items {
     padding: 0%;
 }
+
 .currency {
-    font-size: 1.2em;
+    font-size: 1.1em;
     align-items: center;
     display: flex;
     justify-content: center;
@@ -924,9 +961,9 @@ button.remove {
 .display-currency {
     background-color: #333;
     color: white;
-    font-size: 0.6em;
+    font-size: 0.45em;
     font-weight: bold;
-    padding: 6px 4px;
+    padding: 4px 2px;
     border-radius: 16px;
 }
 
@@ -1004,6 +1041,7 @@ section.success {
         padding: 16px;
 
     }
+
     .category-card img {
         display: block;
     }
