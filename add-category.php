@@ -18,9 +18,9 @@ $categoryErrorMessage = '';
 if (isset($_POST['add_category'])) {
     $categoryName = htmlspecialchars(trim($_POST['category_name']), ENT_QUOTES, 'UTF-8');
 
+    // Check if an image is uploaded
     if (isset($_FILES['category_image']) && $_FILES['category_image']['error'] === 0) {
         try {
-            // Use ImageUploader to upload the image
             $imageUploader = new ImageUploader();
             $uploadResult = $imageUploader->uploadImage($_FILES['category_image']);
             if ($uploadResult) {
@@ -98,7 +98,8 @@ if (isset($_SESSION['categoryErrorMessage'])) {
                 <img id="imagePreview" src="" style="display:none;"> <!-- Hide preview initially -->
                 <span class="upload-icon">+</span> <!-- Make sure this is visible -->
             </label>
-            <input type="file" id="image" name="category_image" accept="image/*" required style="display: none;">
+            <input type="file" id="image" name="category_image" accept="image/*" required
+                onchange="previewImage(event, 'imagePreview')" style="display: none;">
         </div>
 
         <!-- Category Details Form -->
@@ -115,41 +116,40 @@ if (isset($_SESSION['categoryErrorMessage'])) {
 </section>
 
 <script>
-    const form = document.getElementById('categoryForm');
-    const imageInput = document.getElementById('image');
-    const imagePreview = document.getElementById('imagePreview');
+const imageInput = document.getElementById('image');
+const imagePreview = document.getElementById('imagePreview');
 
-    // Update image preview and compress image
-    imageInput.addEventListener('change', function (event) {
-        const file = event.target.files[0];
+// Update image preview and compress image
+imageInput.addEventListener('change', function (event) {
+    const file = event.target.files[0];
 
-        if (file) {
-            // Preview the image
-            const reader = new FileReader();
-            reader.onload = function (e) {
-                imagePreview.src = e.target.result;
-                imagePreview.style.display = 'block';
-            };
-            reader.readAsDataURL(file);
+    if (file) {
+        // Preview the image
+        const reader = new FileReader();
+        reader.onload = function (e) {
+            imagePreview.src = e.target.result;
+            imagePreview.style.display = 'block';
+        };
+        reader.readAsDataURL(file);
 
-            // Compress the image
-            new Compressor(file, {
-                quality: 0.6, // Compress to 60% quality
-                maxWidth: 800, // Optional: resize if necessary
-                success(result) {
-                    const dataTransfer = new DataTransfer();
-                    const compressedFile = new File([result], file.name, { type: file.type });
+        // Compress the image
+        new Compressor(file, {
+            quality: 0.6, // Compress to 60% quality
+            maxWidth: 800, // Optional: resize if necessary
+            success(result) {
+                const dataTransfer = new DataTransfer();
+                const compressedFile = new File([result], file.name, { type: file.type });
 
-                    // Replace the file in the input with the compressed file
-                    dataTransfer.items.add(compressedFile);
-                    imageInput.files = dataTransfer.files;
-                },
-                error(err) {
-                    console.error('Image compression error:', err.message);
-                },
-            });
-        }
-    });
+                // Replace the file in the input with the compressed file
+                dataTransfer.items.add(compressedFile);
+                imageInput.files = dataTransfer.files;
+            },
+            error(err) {
+                console.error('Image compression error:', err.message);
+            },
+        });
+    }
+});
 </script>
 
 </body>
