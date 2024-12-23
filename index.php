@@ -49,7 +49,7 @@ if ($selectedCategoryId) {
     <section class="category-section">
         <h2>Categorieën</h2>
         <div class="categories-wrapper">
-            <button class="scroll-btn left-btn">&#8592;</button>
+            <button class="scroll-btn left-btn"><i class="fas fa-arrow-left"></i></button>
             <div class="categories">
                 <!-- Show categories -->
                 <a href="index.php" class="category-card <?= $selectedCategoryId === null ? 'active' : ''; ?>">
@@ -64,7 +64,7 @@ if ($selectedCategoryId) {
                     </a>
                 <?php endforeach; ?>
             </div>
-            <button class="scroll-btn right-btn">&#8594;</button>
+            <button class="scroll-btn right-btn"><i class="fas fa-arrow-right"></i></button>
         </div>
     </section>
 
