@@ -32,7 +32,15 @@ RUN composer install --no-interaction --optimize-autoloader --no-dev
 
 # Set permissions
 RUN chown -R www-data:www-data /app
+# Add a non-root user
+RUN addgroup --system appgroup && adduser --system --ingroup appgroup appuser
+
+# Switch to the non-root user
+USER appuser
+
+# Run Composer as the non-root user
+RUN composer install --ignore-platform-reqs
 
 # Expose port 9000 and start php-fpm server
-EXPOSE 9000
+EXPOSE 8080
 CMD ["php-fpm"]
