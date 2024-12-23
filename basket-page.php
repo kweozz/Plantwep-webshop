@@ -69,72 +69,82 @@ if (isset($_GET['removed']) && $_GET['removed'] == 1) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Basket - Plantwerp Webshop</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="css/style.css">
+    <title>Basket</title>
 </head>
 
 <body>
     <?php include 'classes/Nav.php'; ?>
 
-    <section class="basket-container">
-        <form action="" method="POST">
-            <input type="hidden" name="clear_basket" value="1">
-            <div class="basket-header">
-                <h2>Uw winkelmandje</h2>
-               <button class="remove" type="submit" class="icon-btn"><i class="fas fa-trash-alt"></i> <p>Leeg mandje</p></button>
-            </div>
-        </form>
+    <section class="basket padding">
+        <div class="basket-header">
+            <h2>Uw winkelmandje</h2>
+            <?php if (!empty($basketItems)): ?>
+                <form action="" method="POST">
+                    <input type="hidden" name="clear_basket" value="1">
+                    <button class="remove" type="submit" class="icon-btn"><i class="fas fa-trash-alt"></i> <p>Leeg mandje</p></button>
+                </form>
+            <?php endif; ?>
+        </div>
         <?php echo $clearBasketMessage; ?>
         <?php echo $removeItemMessage; ?>
-        <ul class="basket-list">
-            <?php foreach ($basketItems as $item): ?>
-                <?php
-                $product = Product::getById($item['product_id']);
-                $totalPrice += $item['total_price'];
-                $options = json_decode($item['option_ids'], true); // Assuming options are stored as JSON
-                ?>
-                <li class="basket-item">
-                    <img src="<?php echo $product['image']; ?>" alt="<?php echo htmlspecialchars($product['name']); ?>"
-                        class="product-image-basket">
-                    <div class="basket-item-info">
-                        <h4 class="product-name"><?php echo htmlspecialchars($product['name']); ?></h4>
-                        <p class="product-quantity">Aantal: <?php echo $item['quantity']; ?></p>
-                        <?php if (!empty($options)): ?>
-                            <?php foreach ($options as $optionId):
-                                $option = BasketItem::getOptionById($optionId); // Assuming you have a method to get option by ID in BasketItem class
-                                ?>
-                                <p>Option: <?php echo htmlspecialchars($option['name']); ?></p>
-                            <?php endforeach; ?>
-                        <?php endif; ?>
-                    </div>
-                    <div class="basket-info">
-                        <div class="basket-item-actions">
-                            <form action="" method="POST">
-                                <input type="hidden" name="basket_item_id" value="<?php echo $item['id']; ?>">
-                                <button class="delete-btn" type="submit" name="delete_item" aria-label="Remove">
-                                    <i class="fas fa-times-circle"></i>
-                                </button>
-                            </form>
-                        </div>
-                        <p class="product-price">€<?php echo number_format($item['total_price'], 2); ?></p>
-                    </div>
-                </li>
-            <?php endforeach; ?>
-        </ul>
-        <div class="basket-summary">
-            <h3 class="total-price">Total: €<?php echo number_format($totalPrice, 2); ?></h3>
-            <div class="redirect">
+        <?php if (empty($basketItems)): ?>
+            <div class="empty-basket">
+                <h3>Your basket is empty</h3>
+                <p>It looks like you haven't added anything to your basket yet.</p>
                 <a href="index.php" class="btn">Continue Shopping</a>
-                <?php if ($totalPrice > 0): ?>
-                    <form action="checkout.php" method="POST">
-                        <button type="submit" class="btn">Proceed to Checkout</button>
-                    </form>
-                <?php else: ?>
-                    <p class="alert-danger basket-alert">Your basket is empty. Add items to your basket to proceed to checkout.</p>
-                <?php endif; ?>
             </div>
-        </div>
+        <?php else: ?>
+            <ul class="basket-items">
+                <?php foreach ($basketItems as $item): ?>
+                    <?php
+                    $product = Product::getById($item['product_id']);
+                    $totalPrice += $item['total_price'];
+                    $options = json_decode($item['option_ids'], true); // Assuming options are stored as JSON
+                    ?>
+                    <li class="basket-item">
+                        <img src="<?php echo $product['image']; ?>" alt="<?php echo htmlspecialchars($product['name']); ?>"
+                            class="product-image-basket">
+                        <div class="basket-item-details">
+                            <h3 class="product-name"><?php echo htmlspecialchars($product['name']); ?></h3>
+                            <p class="product-quantity">Aantal: <?php echo $item['quantity']; ?></p>
+                            <?php if (!empty($options)): ?>
+                                <?php foreach ($options as $optionId):
+                                    $option = BasketItem::getOptionById($optionId); // Assuming you have a method to get option by ID in BasketItem class
+                                    ?>
+                                    <p>Option: <?php echo htmlspecialchars($option['name']); ?></p>
+                                <?php endforeach; ?>
+                            <?php endif; ?>
+                        </div>
+                        <div class="basket-info">
+                            <div class="basket-item-actions">
+                                <form action="" method="POST">
+                                    <input type="hidden" name="basket_item_id" value="<?php echo $item['id']; ?>">
+                                    <button class="delete-btn" type="submit" name="delete_item" aria-label="Remove">
+                                        <i class="fas fa-times-circle"></i>
+                                    </button>
+                                </form>
+                            </div>
+                            <p class="product-price">€<?php echo number_format($item['total_price'], 2); ?></p>
+                        </div>
+                    </li>
+                <?php endforeach; ?>
+            </ul>
+            <div class="basket-summary">
+                <h3 class="total-price">Total: €<?php echo number_format($totalPrice, 2); ?></h3>
+                <div class="redirect">
+                    <a href="index.php" class="btn">Continue Shopping</a>
+                    <?php if ($totalPrice > 0): ?>
+                        <form action="checkout.php" method="POST">
+                            <button type="submit" class="btn">Proceed to Checkout</button>
+                        </form>
+                    <?php else: ?>
+                        <p class="alert-danger basket-alert">Your basket is empty. Add items to your basket to proceed to checkout.</p>
+                    <?php endif; ?>
+                </div>
+            </div>
+        <?php endif; ?>
     </section>
 </body>
 

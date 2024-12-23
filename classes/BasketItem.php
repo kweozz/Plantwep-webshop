@@ -101,7 +101,7 @@ class BasketItem
         $stmt->execute();
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
-    public static function createBasketItem($basket_id, $product_id, $quantity, $price, $total_price, $option_ids = null, $price_addition = 0)
+    public static function createBasketItem($basket_id, $product_id, $quantity, $price, $option_ids = null, $price_addition = 0, $total_price)
     {
         $db = Db::getConnection();
         $query = $db->prepare('INSERT INTO basket_item 

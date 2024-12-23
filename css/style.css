@@ -219,7 +219,9 @@ h2 {
     margin: 0 0 12px 0;
 
 }
-
+.search{
+    margin: 0%;
+}
 /* Product Page */
 .h3 {
     margin: 0%;
@@ -788,7 +790,7 @@ button{
     padding: 2%;
     gap: 5%;
     max-height: 200px;
-    background-color: #ffffff;
+    background-color: #f6f6f6;
     border-radius: 16px;
     margin-bottom: 2%;
 }
@@ -861,10 +863,11 @@ button.remove {
     background-color: none;
     color: red;
     border: none;
-    background-color: #f6f6f6;
+    background-color: white;
     font-size: 1.2em;
     cursor: pointer;
     display: flex;
+    padding: 0%;
     align-items: center;
 }
 
@@ -908,7 +911,9 @@ button.remove {
     padding: 2px 4px;
     border-radius: 16px;
 }
-
+.basket-items{
+    padding: 0%;
+}
 .currency {
     font-size: 1.2em;
     align-items: center;

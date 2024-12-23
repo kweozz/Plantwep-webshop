@@ -36,7 +36,7 @@ $products = Product::search($query);
             <p>No products found.</p>
         <?php else: ?>
             <?php foreach ($products as $product): ?>
-                <a href="product-page.php?id=<?php echo $product['id']; ?>" class="product-card">
+                <a href="product-page.php?id=<?php echo $product['id']; ?>" class="product-card search">
                     <img src="<?php echo htmlspecialchars($product['image']); ?>" alt="<?php echo htmlspecialchars($product['name']); ?>">
                     <h4><?php echo htmlspecialchars($product['name']); ?></h4>
                     <p>€<?php echo htmlspecialchars(number_format($product['price'], 2)); ?></p>
