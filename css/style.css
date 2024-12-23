@@ -1,4 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+
 body {
     font-family: 'Montserrat', sans-serif;
     margin: 0;
@@ -427,6 +428,12 @@ div.post-review-form div {
     text-align: center;
 }
 
+.profile-orders {
+    background-color: #f6f6f6;
+    border-radius: 16px;
+    padding: 20px;
+}
+
 .profile-info {
     display: flex;
     justify-content: space-between;
@@ -835,7 +842,7 @@ button {
 }
 
 .basket-item-profile {
-    background-color: #f6f6f6;
+    background-color: white;
     margin-top: 2%;
     height: 90px;
 }
