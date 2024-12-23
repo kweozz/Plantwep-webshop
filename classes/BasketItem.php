@@ -116,19 +116,8 @@ class BasketItem
         $query->bindValue(':total_price', $total_price, PDO::PARAM_STR);
 
         if (!$query->execute()) {
-            error_log("SQL Error: " . implode(" | ", $query->errorInfo()));
+            throw new Exception('Failed to create basket item');
         }
-
-        $basketItem = new self();
-        $basketItem->setId($db->lastInsertId());
-        $basketItem->setBasketId($basket_id);
-        $basketItem->setProductId($product_id);
-        $basketItem->setQuantity($quantity);
-        $basketItem->setPrice($price);
-        $basketItem->setOptionId($option_ids);
-        $basketItem->setPriceAddition($price_addition);
-        $basketItem->setTotalPrice($total_price);
-        return $basketItem;
     }
 
 
