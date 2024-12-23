@@ -1,8 +1,7 @@
 <?php
 session_start();
-include_once(__DIR__ . '/classes/Db.php');
-include_once(__DIR__ . '/classes/Category.php');
-include_once(__DIR__ . '/classes/ImageUploader.php');
+require_once(__DIR__ . '/classes/ImageUploader.php');
+require_once(__DIR__ . '/classes/Category.php');
 
 // Check if the user is logged in and has the correct role
 if (!isset($_SESSION['role']) || $_SESSION['role'] !== 1) {
@@ -61,6 +60,7 @@ if (isset($_SESSION['categoryErrorMessage'])) {
 }
 ?>
 
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -69,89 +69,52 @@ if (isset($_SESSION['categoryErrorMessage'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="css/style.css">
-    <script src="https://cdn.jsdelivr.net/npm/compressorjs@1.2.1/dist/compressor.min.js"></script>
     <title>Admin Dashboard</title>
 </head>
 
 <body>
 
-<section class="category padding">
+    <section class="category padding">
 
-    <!-- Success or error messages -->
-    <?php if (!empty($categorySuccessMessage)): ?>
-        <div class="alert-success"><?= htmlspecialchars($categorySuccessMessage); ?></div>
-    <?php endif; ?>
+        <!-- Success or error messages -->
+        <?php if (!empty($categorySuccessMessage)): ?>
+            <div class="alert-success"><?= htmlspecialchars($categorySuccessMessage); ?></div>
+        <?php endif; ?>
 
-    <?php if (!empty($categoryErrorMessage)): ?>
-        <div class="alert-danger"><?= htmlspecialchars($categoryErrorMessage); ?></div>
-    <?php endif; ?>
+        <?php if (!empty($categoryErrorMessage)): ?>
+            <div class="alert-danger"><?= htmlspecialchars($categoryErrorMessage); ?></div>
+        <?php endif; ?>
 
-    <form id="categoryForm" class="form-group add-product-container" method="post" action="" enctype="multipart/form-data">
+        <form class="form-group add-product-container" method="post" action="" enctype="multipart/form-data">
 
-        <a class="back-icon" href="admin-dash.php">
-            <i class="fa fa-arrow-left" aria-hidden="true"></i>
-        </a>
+            <a class="back-icon" href="admin-dash.php">
+                <i class="fa fa-arrow-left" aria-hidden="true"></i>
+            </a>
 
-        <!-- File upload input (hidden) and preview section -->
-        <div class="product-image">
-            <label for="image" class="image-upload-label">
-                <img id="imagePreview" src="" style="display:none;"> <!-- Hide preview initially -->
-                <span class="upload-icon">+</span> <!-- Make sure this is visible -->
-            </label>
-            <input type="file" id="image" name="category_image" accept="image/*" required
-                onchange="previewImage(event, 'imagePreview')" style="display: none;">
-        </div>
+            <!-- File upload input (hidden) and preview section -->
+            <div class="product-image">
+                <label for="image" class="image-upload-label">
+                    <img id="imagePreview" src="" style="display:none;"> <!-- Hide preview initially -->
+                    <span class="upload-icon">+</span> <!-- Make sure this is visible -->
+                </label>
+                <input type="file" id="image" name="category_image" accept="image/*" required
+                    onchange="previewImage(event, 'imagePreview')" style="display: none;">
+            </div>
 
-        <!-- Category Details Form -->
-        <div class="category-details">
-            <h2>Add Category</h2>
-            <label for="category_name">Category Name:</label>
-            <input type="text" id="category_name" name="category_name" required>
+            <!-- Category Details Form -->
+            <div class="category-details">
+                <h2>Add Category</h2>
+                <label for="category_name">Category Name:</label>
+                <input type="text" id="category_name" name="category_name" required>
 
-            <button class="btn btn-admin" type="submit" name="add_category">Add Category</button>
-        </div>
+                <button class="btn btn-admin" type="submit" name="add_category">Add Category</button>
+            </div>
 
-    </form>
+        </form>
 
-</section>
+    </section>
 
-<script>
-const imageInput = document.getElementById('image');
-const imagePreview = document.getElementById('imagePreview');
-
-// Update image preview and compress image
-imageInput.addEventListener('change', function (event) {
-    const file = event.target.files[0];
-
-    if (file) {
-        // Preview the image
-        const reader = new FileReader();
-        reader.onload = function (e) {
-            imagePreview.src = e.target.result;
-            imagePreview.style.display = 'block';
-        };
-        reader.readAsDataURL(file);
-
-        // Compress the image
-        new Compressor(file, {
-            quality: 0.6, // Compress to 60% quality
-            maxWidth: 800, // Optional: resize if necessary
-            success(result) {
-                const dataTransfer = new DataTransfer();
-                const compressedFile = new File([result], file.name, { type: file.type });
-
-                // Replace the file in the input with the compressed file
-                dataTransfer.items.add(compressedFile);
-                imageInput.files = dataTransfer.files;
-            },
-            error(err) {
-                console.error('Image compression error:', err.message);
-            },
-        });
-    }
-});
-</script>
-
+    <script src="script/image-preview.js"></script>
 </body>
 
 </html>
