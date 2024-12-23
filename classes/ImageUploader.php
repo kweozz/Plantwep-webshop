@@ -1,30 +1,16 @@
-
 <?php
 
-require '/vendor/autoload.php'; // Ensure Cloudinary SDK is autoloaded
+require __DIR__ . '/../vendor/autoload.php';
 
-use Cloudinary\Cloudinary;
-use Dotenv\Dotenv;
+// Use the Configuration and UploadApi classes
+use Cloudinary\Configuration\Configuration;
+use Cloudinary\Api\Upload\UploadApi;
+
+// Configure an instance of your Cloudinary cloud
+Configuration::instance('cloudinary://275734831993742:AjBbLTBeOkpRREDfFRqEJUTqUf4@dqivw031o?secure=true');
 
 class ImageUploader
 {
-    private $cloudinary;
-
-    public function __construct()
-    {
-        // Load .env file using an absolute path
-        $dotenv = Dotenv::createImmutable('C:\xampp\htdocs\Plantwep-webshop-2');
-        $dotenv->load();
-
-        $this->cloudinary = new Cloudinary([
-            'cloud' => [
-                'cloud_name' => $_ENV['CLOUDINARY_CLOUD_NAME'],
-                'api_key' => $_ENV['CLOUDINARY_API_KEY'],
-                'api_secret' => $_ENV['CLOUDINARY_API_SECRET'],
-            ]
-        ]);
-    }
-
     public function uploadImage($file)
     {
         if ($_SESSION['role'] !== 1) {
@@ -44,10 +30,12 @@ class ImageUploader
 
         // Upload to Cloudinary
         try {
-            $uploadResult = $this->cloudinary->uploadApi()->upload(
-                $file["tmp_name"],
-                ['folder' => 'uploads']
-            );
+            $uploadResult = (new UploadApi())->upload($file['tmp_name'], [
+                'folder' => 'uploads/', // Optional: Specify folder in Cloudinary
+                'public_id' => pathinfo($file["name"], PATHINFO_FILENAME),
+                'overwrite' => true,
+                'resource_type' => 'image',
+            ]);
             return $uploadResult['secure_url']; // Return the Cloudinary URL
         } catch (Exception $e) {
             throw new Exception('Upload to Cloudinary failed: ' . $e->getMessage());
