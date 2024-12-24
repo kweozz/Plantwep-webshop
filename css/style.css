@@ -440,14 +440,16 @@ div.post-review-form div {
 .profile-info {
     display: flex;
     justify-content: space-between;
-    margin-bottom: 20px;
 }
-
+section.profile-info{
+    padding: 0%;
+}
 .profile-details {
     flex: 1;
     padding: 20px;
     background-color: #f9f9f9;
     border-radius: 16px;
+    width: auto;
 }
 
 .profile-details h2 {

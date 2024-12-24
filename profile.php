@@ -69,7 +69,7 @@ if (isset($_POST["logout"])) {
 
     <h1 class="padding">Welkom, <?php echo htmlspecialchars($user->getFirstname()); ?>!</h1>
 
-    <div class="profile-info">
+    <section class="profile-info">
         <div class="profile-details">
             <h2>Profielgegevens</h2>
             <p><span>Voornaam:</span> <?php echo htmlspecialchars($user->getFirstname()); ?></p>
@@ -77,7 +77,7 @@ if (isset($_POST["logout"])) {
             <p><span> Email:</span> <?php echo htmlspecialchars($user->getEmail()); ?></p>
             <p> <span>Saldo:</span> € <?php echo htmlspecialchars($_SESSION['user']['currency']);?></p>
         </div>
-    </div>
+</section>
 
     <section class="profile-actions">
         <!-- Display error or success message above the form -->
