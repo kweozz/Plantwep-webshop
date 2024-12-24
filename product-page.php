@@ -89,7 +89,7 @@ $reviews = Review::getByProductId($product['id']);
             <div class="product-details">
                 <h2>Kies uw product</h2>
 
-                <form id="add-to-basket-form" action="add-to-basket.php" method="POST">
+                <form id="add-to-basket-form" action="<?php echo isset($_SESSION['user']) ? 'add-to-basket.php' : 'login-prompt.php'; ?>" method="POST">
 
                     <input type="hidden" name="product_id" value="<?php echo $product['id']; ?>">
                     <input type="hidden" name="product_price" value="<?php echo $product['price']; ?>">
@@ -178,7 +178,7 @@ $reviews = Review::getByProductId($product['id']);
             <?php endif; ?>
         </div>
 
-        <?php if (Order::hasPurchasedProduct($_SESSION['user']['id'], $product['id'])): ?>
+        <?php if (isset($_SESSION['user']) && Order::hasPurchasedProduct($_SESSION['user']['id'], $product['id'])): ?>
             <h3>Beoordeel dit product!</h3>
             <div class="create-review">
 

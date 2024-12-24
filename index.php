@@ -1,9 +1,6 @@
 <?php
 session_start();
-if (!isset($_SESSION['user'])) {
-    header('Location: login.php');
-    exit();
-}
+
 include_once(__DIR__ . '/classes/Db.php');
 include_once(__DIR__ . '/classes/Category.php');
 include_once(__DIR__ . '/classes/Product.php');

@@ -8,7 +8,7 @@ include_once __DIR__ . '/classes/Product.php';
 
 // Check if the user is logged in
 if (!isset($_SESSION['user'])) {
-    header('Location: login.php');
+    header('Location: login-prompt.php');
     exit();
 }
 

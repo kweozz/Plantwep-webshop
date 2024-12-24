@@ -543,6 +543,8 @@ textarea,
     border-radius: 12px;
     width: auto;
     font-weight: bold;
+    margin-bottom: 20px;
+    text-align: center;
 }
 
 .alert-success {
@@ -552,6 +554,8 @@ textarea,
     border-radius: 12px;
     width: auto;
     font-weight: bold;
+    margin-bottom: 20px;
+    text-align: center;
 }
 
 .padding {
@@ -938,7 +942,7 @@ button.remove {
 .basket-header p {
     padding: 0%;
     font-size: 1em;
-    color: red;
+    color: #721c24;
     margin: 0%;
     font-weight: bold;
     padding-left: 8px;
