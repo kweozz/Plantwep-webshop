@@ -120,7 +120,6 @@ class BasketItem
         }
     }
 
-
     public static function getItemsByBasketId($basketId)
     {
         $db = Db::getConnection();
@@ -130,8 +129,8 @@ class BasketItem
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    //add item to basket function
-    public static function addItemToBasket($basket_id, $product_id, $quantity, $price, $option_id = null, $price_addition = 0)
+    // Add item to basket function
+    public static function addItemToBasket($basket_id, $product_id, $quantity, $price, $total_price, $option_id = null, $price_addition = 0)
     {
         // Check if the item already exists in the basket
         $db = Db::getConnection();
@@ -140,8 +139,33 @@ class BasketItem
         $query->bindValue(':product_id', $product_id, PDO::PARAM_INT);
         $query->bindValue(':option_id', $option_id, PDO::PARAM_INT);
         $query->execute();
+        $existingItem = $query->fetch(PDO::FETCH_ASSOC);
+
+        if ($existingItem) {
+            // Update the quantity and total price of the existing item
+            $newQuantity = $existingItem['quantity'] + $quantity;
+            $newTotalPrice = $existingItem['total_price'] + $total_price;
+            $updateQuery = $db->prepare('UPDATE basket_item SET quantity = :quantity, total_price = :total_price WHERE id = :id');
+            $updateQuery->bindValue(':quantity', $newQuantity, PDO::PARAM_INT);
+            $updateQuery->bindValue(':total_price', $newTotalPrice, PDO::PARAM_STR);
+            $updateQuery->bindValue(':id', $existingItem['id'], PDO::PARAM_INT);
+            $updateQuery->execute();
+        } else {
+            // Insert a new item into the basket
+            $insertQuery = $db->prepare('INSERT INTO basket_item 
+                (basket_id, product_id, quantity, price, option_id, price_addition, total_price) 
+                VALUES (:basket_id, :product_id, :quantity, :price, :option_id, :price_addition, :total_price)');
+            $insertQuery->bindValue(':basket_id', $basket_id, PDO::PARAM_INT);
+            $insertQuery->bindValue(':product_id', $product_id, PDO::PARAM_INT);
+            $insertQuery->bindValue(':quantity', $quantity, PDO::PARAM_INT);
+            $insertQuery->bindValue(':price', $price, PDO::PARAM_STR);
+            $insertQuery->bindValue(':option_id', $option_id, PDO::PARAM_INT);
+            $insertQuery->bindValue(':price_addition', $price_addition, PDO::PARAM_STR);
+            $insertQuery->bindValue(':total_price', $total_price, PDO::PARAM_STR);
+            $insertQuery->execute();
+        }
     }
-   // remove form basket function
+
     public static function removeItemFromBasket($basket_item_id)
     {
         $db = Db::getConnection();
@@ -149,6 +173,7 @@ class BasketItem
         $query->bindValue(':basket_item_id', $basket_item_id, PDO::PARAM_INT);
         return $query->execute();
     }
+
     public static function clearBasket($basket_id)
     {
         $db = Db::getConnection();

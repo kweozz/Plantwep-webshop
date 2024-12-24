@@ -27,7 +27,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['checkout_form_submitt
         $address = "$streetName $number, $postalCode $city";
 
         try {
-            Order::processCheckout($_SESSION['user']['id'], $address, $paymentMethod);
+            Order::processCheckout($_SESSION['user']['id'], $address);
             header('Location: success.php');
             exit();
         } catch (Exception $e) {
