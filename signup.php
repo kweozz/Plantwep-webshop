@@ -74,19 +74,19 @@ if (!empty($_POST)) {
         <form action="signup.php" method="POST">
             <div class="form-group">
                 <label for="firstname">Voornaam</label>
-                <input type="text" id="firstname" name="firstname" placeholder="Enter your first name" required>
+                <input type="text" id="firstname" name="firstname" placeholder="Vul je voornaam in" required>
             </div>
             <div class="form-group">
                 <label for="lastname">Achternaam</label>
-                <input type="text" id="lastname" name="lastname" placeholder="Enter your last name" required>
+                <input type="text" id="lastname" name="lastname" placeholder="Vul je achternaam in" required>
             </div>
             <div class="form-group">
                 <label for="email">Email</label>
-                <input type="email" id="email" name="email" placeholder="Enter your email" required>
+                <input type="email" id="email" name="email" placeholder="Vul je email in" required>
             </div>
             <div class="form-group">
                 <label for="password">Wachtwoord</label>
-                <input type="password" id="password" name="password" placeholder="Enter your password" required>
+                <input type="password" id="password" name="password" placeholder="Vul je wachtwoord in" required>
             </div>
             <button type="submit" class="signup-btn">Sign Up</button>
         </form>
