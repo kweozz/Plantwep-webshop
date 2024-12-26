@@ -48,7 +48,7 @@ if ($selectedCategoryId) {
             <div class="categories">
                 <!-- Show categories -->
                 <a href="index.php" class="category-card <?= $selectedCategoryId === null ? 'active' : ''; ?>">
-                    <p>All</p>
+                    <p>Alle</p>
                 </a>
                 <?php foreach ($categories as $category): ?>
                     <a href="index.php?category_id=<?php echo $category['id']; ?>"
