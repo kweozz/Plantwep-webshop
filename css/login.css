@@ -9,14 +9,17 @@ body {
     background-position: center;
     font-family: 'Montserrat', sans-serif;
 }
+
 a {
     text-decoration: none;
     color: #333;
     font-weight: bold;
 }
+
 .logo {
-   width: 30%;
+    width: 30%;
 }
+
 .signup-container {
     background-color: #ffffff;
     width: 100%;
@@ -29,8 +32,8 @@ a {
 
 .signup-container h2 {
     font-size: 24px;
-    color: #333; 
-  margin: 0;
+    color: #333;
+    margin: 0;
 }
 
 .signup-form {
@@ -53,7 +56,7 @@ a {
 
 .form-group input {
     width: 100%;
-    padding: 10px  0px;
+    padding: 10px 0px;
     max-width: 100%;
     font-size: 1em;
     border: 0px solid #ddd;
@@ -67,7 +70,8 @@ a {
 }
 
 .signup-btn {
-    background-color: #4CAF50; /* Plant-themed color */
+    background-color: #4CAF50;
+    /* Plant-themed color */
     color: #fff;
     padding: 10px 0;
     font-size: 16px;
@@ -99,20 +103,29 @@ a {
 .signup-container .signup-btn {
     font-weight: bold;
 }
-.alert-danger{
-    color: red;
-    font-size:1em;
-    text-align: center;
-    width: 100%;
+
+.alert-danger {
+    background-color: #f8d7da;
+    color: #721c24;
     padding: 10px;
-}
-.alert-success{
-    color: green;
-    font-size:1em;
+    border-radius: 12px;
+    width: auto;
+    font-weight: bold;
+    margin-bottom: 20px;
     text-align: center;
-    width: 100%;
-    padding: 10px;
 }
+
+.alert-success {
+    background-color: #d4edda;
+    color: #155724;
+    padding: 10px;
+    border-radius: 12px;
+    width: auto;
+    font-weight: bold;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
 .form-group input,
 textarea,
 .form-group select {

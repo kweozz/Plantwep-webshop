@@ -433,15 +433,6 @@ div.post-review-form div {
 }
 
 /* Profile & Signup Form */
-.signup-container {
-    background-color: #ffffff;
-    width: 100%;
-    max-width: 400px;
-    padding: 20px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    border-radius: 10px;
-    text-align: center;
-}
 
 .profile-orders {
     background-color: #f6f6f6;
@@ -498,10 +489,7 @@ section.profile-info {
 
 
 
-.signup-form {
-    display: flex;
-    flex-direction: column;
-}
+
 
 div.form-group {
     padding-bottom: 1%;
@@ -592,20 +580,8 @@ textarea,
     background-color: #267b3a;
 }
 
-.signup-btn {
-    background-color: #45a049;
-    color: #fff;
-    padding: 10px 0;
-    font-size: 16px;
-    border: none;
-    border-radius: 12px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-}
 
-.signup-btn:hover {
-    background-color: #45a049;
-}
+
 
 section {
     padding: 2% 0%;
