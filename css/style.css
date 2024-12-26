@@ -42,8 +42,12 @@ nav {
     border-radius: 12px;
     font-size: 1em;
     background-color: #f6f6f6;
-    width: auto;
+    width: 100%;
+    max-width: 400px;
+    box-sizing: border-box;
 }
+
+
 
 .icon {
     color: #2A2B2A;
@@ -1131,5 +1135,79 @@ section.success {
         flex-direction: column;
         align-items: center;
     }
-    
+    .search-bar {
+        max-width: auto;
+        min-width: 50px;
+        font-size: 0.9em;
+    }
+    .admin-options div{
+       padding-bottom: 2%;
+    }
+    h1{
+        font-size: 1.5em;
+        padding-bottom: 2%;
+    }
+    h2{
+        font-size: 1.2em;
+        padding-bottom: 2%;
+    }
+    h3{
+        font-size: 1em;
+    }
+    h4{
+        font-size: 0.9em;
+    }
+    .btn{
+        font-size: 0.8em;
+    }
+    div .btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+    }
+    div.hero{
+        display: none;
+    }
+    p{
+        font-size: 0.8em;
+    }
+    .form-group label{
+        font-size: 0.7em;
+    }
+    label{
+        font-size: 0.7em;
+    }
+    .icon{
+        font-size: 0.8em;
+    }
+    .logo{
+        width: 40px;
+    }
+    .currency{
+        font-size: 0.9em;
+    }
+  
+    div.nav-items{
+        gap: 10px;
+    }
+    div.star-rating label{
+        font-size: 1.2em;
+    }
+    input[type="text"], textarea, select{
+        font-size: 0.7em;
+    }
+
+    .category-card p{
+        font-size: 0.7em;
+    }
+    .product-card{
+        max-width: auto;
+    }
+    .products{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+  
 }
