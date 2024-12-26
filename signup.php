@@ -32,10 +32,8 @@ if (!empty($_POST)) {
 
             // Success message
             $success = "Account is aangemaakt!";
-            // Redirect to the login page
-            
-            header("refresh:3;url=login.php");
-            exit(); // Don't forget to stop further execution after redirect
+       
+            exit(); 
         }
     } catch (Exception $e) {
         $error = $e->getMessage(); // Catch and display any errors
