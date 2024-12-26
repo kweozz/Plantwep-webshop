@@ -50,13 +50,7 @@ if (isset($_POST['delete_product'])) {
 </head>
 
 <body>
-    <nav>
-        <a href="index.php"><img class="logo" src="images/logo-plantwerp.png" alt="Plantwerp Logo"></a>
-        <input type="text" placeholder="Zoek naar planten..." class="search-bar">
-        <div class="nav-items">
-            <!-- Navigation Links -->
-        </div>
-    </nav>
+    <?php include 'classes/Nav.php'; ?>
 
     <div class="back">
         <a class="back-icon" href="admin-dash.php">
@@ -94,7 +88,7 @@ if (isset($_POST['delete_product'])) {
         <section class="products-section">
             <h2>Producten</h2>
             <!-- Dit is de HTML weergave van de producten -->
-         
+
             <?php if (isset($deleteSuccessMessage)): ?>
                 <div class="alert-success">
                     <?php echo htmlspecialchars($deleteSuccessMessage); ?>
@@ -137,7 +131,7 @@ if (isset($_POST['delete_product'])) {
 
         </section>
     </div>
-    <script src="script/manage-products.js" >
+    <script src="script/manage-products.js">
     </script>
 </body>
 

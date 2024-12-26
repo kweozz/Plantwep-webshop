@@ -62,7 +62,7 @@ if (isset($_SESSION['categoryErrorMessage'])) {
             <a class="back-icon" href="admin-dash.php">
                 <i class="fa fa-arrow-left" aria-hidden="true"></i>
             </a>
-            <h2>Beheer categorieën</h2>
+            <h1>Beheer categorieën</h1>
         </div>
 
         <?php if (isset($deleteSuccessMessage)): ?>

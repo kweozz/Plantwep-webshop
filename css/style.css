@@ -42,7 +42,7 @@ nav {
     border-radius: 12px;
     font-size: 1em;
     background-color: #f6f6f6;
-    width: 200px;
+    width: auto;
 }
 
 .icon {
@@ -515,23 +515,15 @@ div.form-group {
 textarea,
 .form-group select {
     width: 100%;
-    /* Make the input, textarea, and select take up 100% of the container */
     padding: 10px;
-    /* Padding inside the elements */
     max-width: 100%;
-    /* Ensure they don't exceed the container's width */
     margin-bottom: 10px;
-    /* Add some space below each element */
     margin-top: 10px;
     border: 0px solid #ddd;
-    /* Define border color */
     border-radius: 12px;
-    /* Rounded corners */
     background-color: #f6f6f6;
-    /* Light background color */
-
+    font-family: 'Montserrat', sans-serif;
     box-sizing: border-box;
-    /* Include padding and border in the element's total width */
 }
 
 .change-password-form input {
@@ -682,7 +674,9 @@ section div {
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
     gap: 5%;
 }
-
+.manage-categories h1, .manage-products h1 {
+    padding-bottom: 2%;
+}
 .manage-card {
     background-color: #f6f6f6;
     border-radius: 16px;
@@ -1137,4 +1131,5 @@ section.success {
         flex-direction: column;
         align-items: center;
     }
+    
 }
