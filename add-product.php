@@ -116,13 +116,13 @@ $options = Option::getAll();
 
             <!-- Product Details Form -->
             <div class="product-details">
-                <h2>Add products</h2>
+                <h2>Maak nieuw product aan</h2>
                 <div class="options-group">
-                    <label for="product_name">Product Name:</label>
+                    <label for="product_name">Product naam</label>
                     <input type="text" id="product_name" name="product_name" required>
 
-                    <label for="product_price">Product Price:</label>
-                    <input type="number" id="product_price" name="product_price" required>
+                    <label for="product_price">Product prijs:</label>
+                    <input type="number" id="product_price" name="product_price" step="0.01" required>
 
                     <label for="product_description">Product Description:</label>
                     <textarea id="product_description" name="product_description" required></textarea>
@@ -136,7 +136,7 @@ $options = Option::getAll();
                                 </option>
                             <?php endforeach; ?>
                         <?php else: ?>
-                            <option value="">No categories available</option>
+                            <option value="">Geen categorieen beschikbaar</option>
                         <?php endif; ?>
                     </select>
                 </div>
@@ -144,7 +144,7 @@ $options = Option::getAll();
                     <label>Beschikbare maten:</label>
                     <label class="option-button">
                         <input type="checkbox" id="select-all-sizes">
-                        <span>Select All Sizes</span>
+                        <span>Selecteer alle maten</span>
                     </label>
 
                     <?php foreach ($options as $option): ?>
@@ -156,7 +156,7 @@ $options = Option::getAll();
                                 <span><?= htmlspecialchars($option['name']); ?></span>
                             </label>
                             <div class="price-addition" id="price_addition_<?= $option['id']; ?>" style="display:none;">
-                                <label for="price_addition_<?= $option['id']; ?>">Price Addition:</label>
+                                <label for="price_addition_<?= $option['id']; ?>">Prijs toevoeging:</label>
                                 <input type="number" name="options[<?= $option['id']; ?>][price_addition]" step="0.01" min="0"
                                     placeholder="Price addition">
                             </div>
@@ -175,7 +175,7 @@ $options = Option::getAll();
                                 <span><?= htmlspecialchars($option['name']); ?></span>
                             </label>
                             <div class="price-addition" id="price_addition_<?= $option['id']; ?>" style="display:none;">
-                                <label for="price_addition_<?= $option['id']; ?>">Price Addition:</label>
+                                <label for="price_addition_<?= $option['id']; ?>">Prijs toevoeging:</label>
                                 <input type="number" name="options[<?= $option['id']; ?>][price_addition]" step="0.01"
                                     min="0" placeholder="Price addition">
                             </div>
@@ -183,9 +183,9 @@ $options = Option::getAll();
                     <?php endforeach; ?>
                 </div>
 
-                <label for="product_stock">Product Stock:</label>
+                <label for="product_stock">Product Voorraad:</label>
                 <input type="number" id="product_stock" name="product_stock" required>
-                <button class="btn btn-admin" type="submit" name="add_product">Add Product</button>
+                <button class="btn btn-admin" type="submit" name="add_product">Voeg product toe</button>
             </div>
         </form>
     </section>

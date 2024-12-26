@@ -39,8 +39,6 @@ if ($selectedCategoryId) {
         <h1>Plantwerp</h1>
         <div class="hero">
         </div>
-
-
     </section>
 
     <section class="category-section">
@@ -84,13 +82,7 @@ if ($selectedCategoryId) {
         </div>
     </section>
 
-    <script src="script/index.js" >
-
-     
-
-
-
-    </script>
+    <script src="script/index.js"></script>
 
 </body>
 

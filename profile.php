@@ -65,7 +65,7 @@ if (isset($_POST["logout"])) {
 
 <body>
 
-<?php include 'classes/Nav.php'; ?>
+    <?php include 'classes/Nav.php'; ?>
 
     <h1 class="padding">Welkom, <?php echo htmlspecialchars($user->getFirstname()); ?>!</h1>
 
@@ -75,9 +75,9 @@ if (isset($_POST["logout"])) {
             <p><span>Voornaam:</span> <?php echo htmlspecialchars($user->getFirstname()); ?></p>
             <p><span>Achternaam:</span> <?php echo htmlspecialchars($user->getLastname()); ?></p>
             <p><span> Email:</span> <?php echo htmlspecialchars($user->getEmail()); ?></p>
-            <p> <span>Saldo:</span> € <?php echo htmlspecialchars($_SESSION['user']['currency']);?></p>
+            <p> <span>Saldo:</span> € <?php echo htmlspecialchars($_SESSION['user']['currency']); ?></p>
         </div>
-</section>
+    </section>
 
     <section class="profile-actions">
         <!-- Display error or success message above the form -->
@@ -121,13 +121,14 @@ if (isset($_POST["logout"])) {
                             <?php $product = Product::getById($orderItem['product_id']); ?>
                             <h4 class="product-name"><?php echo htmlspecialchars($product['name']); ?></h4>
                             <li class="basket-item basket-item-profile">
-                             
+
                                 <img class="product-image-basket" src="<?php echo $product['image']; ?>"
                                     alt="<?php echo htmlspecialchars($product['name']); ?>">
                                 <div class="basket-item-info">
                                     <p class="product-quantity">Aantal: <?php echo $orderItem['quantity']; ?></p>
-                                    
-                                    <p class="product-price">Prijs: €<?php echo number_format($orderItem['price'] + $orderItem['price_addition'], 2); ?></p>
+
+                                    <p class="product-price">Prijs:
+                                        €<?php echo number_format($orderItem['price'] + $orderItem['price_addition'], 2); ?></p>
                                 </div>
                                 <div class="basket-info">
                                     <p class="product-price">Totaal: €<?php echo htmlspecialchars($order['total_price']); ?></p>
@@ -140,17 +141,18 @@ if (isset($_POST["logout"])) {
             <?php else: ?>
                 <p>Er zijn geen bestellingen gevonden.</p>
             <?php endif; ?>
-            <?php if (!$allOrders): ?>
-            <div><a href="profile.php?view_all_orders=true" class="btn">Bekijk alle bestellingen</a></div>
-                
-            <?php else: ?>
-                <div><a href="profile.php" class="btn">Verberg alle bestellingen</a></div>
+            <?php if (!empty($orders)): ?>
+                <?php if (!$allOrders): ?>
+                    <div><a href="profile.php?view_all_orders=true" class="btn">Bekijk alle bestellingen</a></div>
+                <?php else: ?>
+                    <div><a href="profile.php" class="btn">Verberg alle bestellingen</a></div>
+                <?php endif; ?>
             <?php endif; ?>
         </section>
         <!-- Uitloggen -->
         <form action="profile.php" method="POST" class="logout-form form-group">
             <h2>Uitloggen</h2>
-            <script src="script/profile.js" >
+            <script src="script/profile.js">
             </script>
             <button type="submit" name="logout" class="logout-btn btn">Uitloggen</button>
         </form>

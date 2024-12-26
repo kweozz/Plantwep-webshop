@@ -54,7 +54,7 @@ if (!empty($_POST)) {
 
 <body>
     <div class="signup-container">
-        <a href="index.html"><img class="logo" src="images/logo-plantwerp.png" alt="Plantwerp Logo"></a>
+        <a href="index.php"><img class="logo" src="images/logo-plantwerp.png" alt="Plantwerp Logo"></a>
         <h2>Maak een account</h2>
 
         <!-- Display the error or success  -->

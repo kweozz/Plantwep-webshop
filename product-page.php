@@ -152,6 +152,10 @@ $reviews = Review::getByProductId($product['id']);
             </div>
         </div>
     </section>
+    <section class="product-description">
+        <h2>Productbeschrijving</h2>
+        <p><?php echo htmlspecialchars($product['description']); ?></p>
+    </section>
     <!-- Display reviews -->
     <section class="review-section">
         <h2>Reviews</h2>

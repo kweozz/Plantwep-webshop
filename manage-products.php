@@ -45,20 +45,21 @@ if (isset($_POST['delete_product'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="css/normalize.css">
     <link rel="stylesheet" href="css/style.css">
     <title>Beheer Producten</title>
 </head>
 
 <body>
     <?php include 'classes/Nav.php'; ?>
-
-    <div class="back">
-        <a class="back-icon" href="admin-dash.php">
-            <i class="fa fa-arrow-left" aria-hidden="true"></i>
-        </a>
-        <h1>Beheer producten</h1>
-    </div>
-
+    <section class="manage">
+        <div class="back">
+            <a class="back-icon" href="admin-dash.php">
+                <i class="fa fa-arrow-left" aria-hidden="true"></i>
+            </a>
+            <h1>Beheer producten</h1>
+        </div>
+    </section>
     <?php if (isset($_GET['message'])): ?>
         <div class="message">
             <?php echo htmlspecialchars($_GET['message']); ?>
@@ -67,22 +68,23 @@ if (isset($_POST['delete_product'])) {
     <div class="manage-products">
         <h2>Filter op categorie</h2>
         <section class="category-section manage-category">
-
             <div class="categories-wrapper">
-                <button class="scroll-btn left-btn">&#8592;</button>
+                <button class="scroll-btn left-btn"><i class="fas fa-arrow-left"></i></button>
                 <div class="categories">
-                    <a href="manage-products.php"
-                        class="category-card <?= $selectedCategoryId === null ? 'active' : ''; ?>">
-                        <p>Alle</p>
+                    <!-- Show categories -->
+                    <a href="index.php" class="category-card <?= $selectedCategoryId === null ? 'active' : ''; ?>">
+                        <p>All</p>
                     </a>
                     <?php foreach ($categories as $category): ?>
-                        <a href="manage-products.php?category_id=<?php echo $category['id']; ?>"
+                        <a href="index.php?category_id=<?php echo $category['id']; ?>"
                             class="category-card <?= $selectedCategoryId == $category['id'] ? 'active' : ''; ?>">
+                            <img src="<?php echo htmlspecialchars($category['image']); ?>"
+                                alt="<?php echo htmlspecialchars($category['name']); ?>">
                             <p><?php echo htmlspecialchars($category['name']); ?></p>
                         </a>
                     <?php endforeach; ?>
                 </div>
-                <button class="scroll-btn right-btn">&#8594;</button>
+                <button class="scroll-btn right-btn"><i class="fas fa-arrow-right"></i></button>
             </div>
         </section>
         <section class="products-section">
