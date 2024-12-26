@@ -72,8 +72,8 @@ if (isset($_POST['delete_product'])) {
                 <button class="scroll-btn left-btn"><i class="fas fa-arrow-left"></i></button>
                 <div class="categories">
                     <!-- Show categories -->
-                    <a href="index.php" class="category-card <?= $selectedCategoryId === null ? 'active' : ''; ?>">
-                        <p>All</p>
+                    <a href="manage-products.php" class="category-card <?= $selectedCategoryId === null ? 'active' : ''; ?>">
+                        <p>Alle</p>
                     </a>
                     <?php foreach ($categories as $category): ?>
                         <a href="index.php?category_id=<?php echo $category['id']; ?>"

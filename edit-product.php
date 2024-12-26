@@ -167,7 +167,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         </label>
                         <div class="price-addition" id="price_addition_<?= $option['id']; ?>"
                             style="display: <?= in_array($option['id'], $selectedOptions) ? 'block' : 'none'; ?>;">
-                            <label for="price_addition_<?= $option['id']; ?>">Price Addition:</label>
+                            <label for="price_addition_<?= $option['id']; ?>">Prijs toevoeging:</label>
                             <input type="number" id="price_addition_<?= $option['id']; ?>"
                                 name="options[<?= $option['id']; ?>][price_addition]" step="0.01"
                                 value="<?= in_array($option['id'], $selectedOptions) ? htmlspecialchars($priceAdditions[$option['id']]) : '0'; ?>"

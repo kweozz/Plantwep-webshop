@@ -36,18 +36,18 @@ $products = $product->getAll();
 
     <h1 class="padding">Admin Dashboard</h1>
     <section class=" admin-section category padding">
-        <h2>Categories</h2>
+        <h2>Categorieën</h2>
         <div class="admin-options ">
 
             <div>
 
-                <a href="add-category.php" class="btn btn-admin">Add Category</a>
+                <a href="add-category.php" class="btn btn-admin">Categorie toevoegen</a>
             </div>
          
             <div>
 
 
-                <a class="btn btn-admin" href="manage-categories.php">Edit or delete Category</a>
+                <a class="btn btn-admin" href="manage-categories.php">Bewerk of verwijder Categorie</a>
 
 
 
@@ -56,14 +56,14 @@ $products = $product->getAll();
     </section>
 
     <section class="admin-section product padding">
-        <h2>Products</h2>
+        <h2>Producten</h2>
         <div class="admin-options">
             <div>
 
-                <a href="add-product.php" class="btn btn-admin">Add Product</a>
+                <a href="add-product.php" class="btn btn-admin">Product toevoegen</a>
             </div>
             <div>
-                <a class="btn btn-admin" href="manage-products.php">Edit or delete Product</a>
+                <a class="btn btn-admin" href="manage-products.php">Bewerk of verwijder Product</a>
             </div>
         </div>
     </section>
