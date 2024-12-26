@@ -1,5 +1,5 @@
 <?php
-require_once __DIR__ . '/./env.php';
+require_once __DIR__ . '/../env.php';
 
 class Db {
     // Declare the static property $conn
@@ -8,7 +8,11 @@ class Db {
     // Method to get the database connection
     public static function getConnection() {
         // Load environment variables
-        loadEnv(__DIR__ . '/../.env');
+        $envPath = __DIR__ . '/../.env';
+        loadEnv($envPath);
+
+        // Debugging: Print the path to verify it
+        echo "Loading .env file from path: $envPath\n";
 
         // Check if the connection already exists
         if (self::$conn === null) {
