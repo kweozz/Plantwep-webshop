@@ -1,5 +1,8 @@
 <?php
 function loadEnv($path) {
+    // Debugging: Print the path to verify it
+    echo "Loading .env file from path: $path\n";
+
     if (!file_exists($path)) {
         throw new Exception("The .env file does not exist at the specified path: $path");
     }
