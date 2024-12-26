@@ -4,10 +4,10 @@ body {
     align-items: center;
     height: 100vh;
     margin: 0;
-    background-image: url(images/store.jpg);
+    background-image: url(../images/store.jpg);
     background-size: cover;
     background-position: center;
-    font-family: 'Roboto', sans-serif;
+    font-family: 'Montserrat', sans-serif;
 }
 a {
     text-decoration: none;
