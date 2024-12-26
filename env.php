@@ -1,6 +1,4 @@
 <?php
-// dit is de code die je in je env.php bestand moet zetten
-//dit is nodig om veilig je database gegevens op te slaan
 function loadEnv($path) {
     if (!file_exists($path)) {
         throw new Exception("The .env file does not exist at the specified path: $path");
@@ -23,3 +21,4 @@ function loadEnv($path) {
         }
     }
 }
+?>
