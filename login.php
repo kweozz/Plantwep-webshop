@@ -26,10 +26,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 exit();
             } else {
                 // Optional: Handle unexpected role values
-                throw new Exception('Invalid role detected');
+                throw new Exception('Onbeschikbare rol gevonden');
             }
         } else {
-            $error = 'Invalid email or password';
+            $error = 'Email of wachtwoord is onjuist'; // Set error message here
         }
     } catch (Exception $e) {
         $error = $e->getMessage(); // Display any error message

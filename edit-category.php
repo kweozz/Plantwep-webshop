@@ -14,12 +14,12 @@ if ($_SESSION['role'] !== 1) {
 // Haal het specifieke categorie op
 $categoryId = isset($_GET['id']) && is_numeric($_GET['id']) ? intval($_GET['id']) : null;
 if (!$categoryId) {
-    die('Category ID is not valid.');
+    die('Category ID is niet correct.');
 }
 
 $category = Category::getById($categoryId);
 if (!$category) {
-    die('Category not found.');
+    die('Categorie niet gevonden.');
 }
 
 $message = '';

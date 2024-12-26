@@ -17,12 +17,12 @@ if ($_SESSION['role'] !== 1) {
 // Haal het specifieke product op
 $productId = isset($_GET['id']) && is_numeric($_GET['id']) ? intval($_GET['id']) : null;
 if (!$productId) {
-    die('Product ID is not valid.');
+    die('Product ID  is niet correct.');
 }
 
 $product = Product::getById($productId);
 if (!$product) {
-    die('Product not found.');
+    die('Product niet gevonden.');
 }
 
 // Haal categorieën op

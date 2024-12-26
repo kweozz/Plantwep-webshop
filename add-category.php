@@ -27,18 +27,18 @@ if (isset($_POST['add_category'])) {
                 $category->setName($categoryName);
                 $category->setImage($uploadResult);
                 if ($category->create()) {
-                    $categorySuccessMessage = 'Category added successfully!';
+                    $categorySuccessMessage = 'Categorie toegevoegd!';
                 } else {
-                    $categoryErrorMessage = 'Failed to add category.';
+                    $categoryErrorMessage = 'Categorie kon niet worden toegevoegd.';
                 }
             } else {
-                $categoryErrorMessage = 'Image upload failed.';
+                $categoryErrorMessage = 'Afbeelding uploaden mislukt.';
             }
         } catch (Exception $e) {
             $categoryErrorMessage = 'Error: ' . $e->getMessage();
         }
     } else {
-        $categoryErrorMessage = 'Please choose an image.';
+        $categoryErrorMessage = 'Kies een afbeelding.';
     }
 
     // Store messages in session and redirect
@@ -103,11 +103,11 @@ if (isset($_SESSION['categoryErrorMessage'])) {
 
             <!-- Category Details Form -->
             <div class="category-details">
-                <h2>Add Category</h2>
-                <label for="category_name">Category Name:</label>
+                <h2>Voeg categorie toe</h2>
+                <label for="category_name">Categorie naam::</label>
                 <input type="text" id="category_name" name="category_name" required>
 
-                <button class="btn btn-admin" type="submit" name="add_category">Add Category</button>
+                <button class="btn btn-admin" type="submit" name="add_category">Voeg categorie toe</button>
             </div>
 
         </form>

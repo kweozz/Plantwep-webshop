@@ -27,9 +27,9 @@ if (isset($_POST['delete_product'])) {
         $product = new Product();
         $product->setId($productId); // Zorg ervoor dat de ID goed wordt ingesteld
         if ($product->delete()) {
-            $deleteSuccessMessage = 'Product successfully deleted!';
+            $deleteSuccessMessage = 'Product successvol verwijderd!';
         } else {
-            $deleteErrorMessage = 'Failed to delete product.';
+            $deleteErrorMessage = 'Product kon niet worden verwijderd.';
         }
     } catch (Exception $e) {
         $deleteErrorMessage = 'Error: ' . $e->getMessage();

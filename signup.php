@@ -8,7 +8,7 @@ if (!empty($_POST)) {
         // Check if the account already exists by email
         if (User::exists($_POST['email'])) {
             // If the account exists, show the feedback message
-            $error = 'Account with this email already exists!';
+            $error = 'Account bestaat al!';
         } else {
             // Create a new User instance
             $user = new User();
@@ -31,9 +31,10 @@ if (!empty($_POST)) {
             $basket->save();
 
             // Success message
-            $success = "Account created successfully!";
+            $success = "Account is aangemaakt!";
             // Redirect to the login page
-            header('Location: login.php');
+            
+            header("refresh:3;url=login.php");
             exit(); // Don't forget to stop further execution after redirect
         }
     } catch (Exception $e) {

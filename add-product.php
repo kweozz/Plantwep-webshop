@@ -55,18 +55,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             }
                         }
                     }
-                    $productSuccessMessage = 'Product added successfully!';
+                    $productSuccessMessage = 'Product succesvol toegevoegd!';
                 } else {
-                    $productErrorMessage = 'Failed to add product.';
+                    $productErrorMessage = 'Product kon niet worden toegevoegd.';
                 }
             } else {
-                $productErrorMessage = 'Image upload failed.';
+                $productErrorMessage = 'Afbeelding uploaden mislukt.';
             }
         } catch (Exception $e) {
             $productErrorMessage = 'Error: ' . $e->getMessage();
         }
     } else {
-        $productErrorMessage = 'Please choose an image.';
+        $productErrorMessage = 'Kies aub een afbeelding.';
     }
 }
 
