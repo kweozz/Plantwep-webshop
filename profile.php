@@ -13,6 +13,9 @@ if (!isset($_SESSION['user'])) {
 }
 
 $user = User::getById($_SESSION['user']['id']);
+//fetch the user's orders
+$userOrders = Order::getByUserId($user->getId());
+$totalOrders = count($userOrders); // Count the total number of orders
 
 // Fetch the last 3 orders
 $orders = Order::getLastOrderByUserId($user->getId(), 3);
@@ -23,8 +26,6 @@ if (isset($_GET['view_all_orders'])) {
     $orders = Order::getByUserId($user->getId());
     $allOrders = true;
 }
-
-$orderCount = count($orders); // Count the number of orders
 
 if (isset($_POST["change_password"])) {
     // Check if all fields are filled
@@ -143,7 +144,7 @@ if (isset($_POST["logout"])) {
             <?php else: ?>
                 <p>Er zijn geen bestellingen gevonden.</p>
             <?php endif; ?>
-            <?php if ($orderCount > 3): ?>
+            <?php if ($totalOrders > 3): ?>
                 <?php if (!$allOrders): ?>
                     <div><a href="profile.php?view_all_orders=true" class="btn">Bekijk alle bestellingen</a></div>
                 <?php else: ?>
@@ -152,6 +153,7 @@ if (isset($_POST["logout"])) {
             <?php endif; ?>
         </section>
         <!-- Uitloggen -->
+
         <form action="profile.php" method="POST" class="logout-form form-group">
             <h2>Uitloggen</h2>
             <script src="script/profile.js">
