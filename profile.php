@@ -24,6 +24,8 @@ if (isset($_GET['view_all_orders'])) {
     $allOrders = true;
 }
 
+$orderCount = count($orders); // Count the number of orders
+
 if (isset($_POST["change_password"])) {
     // Check if all fields are filled
     if (empty($_POST["current_password"]) || empty($_POST["new_password"]) || empty($_POST["confirm_password"])) {
@@ -141,7 +143,7 @@ if (isset($_POST["logout"])) {
             <?php else: ?>
                 <p>Er zijn geen bestellingen gevonden.</p>
             <?php endif; ?>
-            <?php if (!empty($orders)): ?>
+            <?php if ($orderCount > 3): ?>
                 <?php if (!$allOrders): ?>
                     <div><a href="profile.php?view_all_orders=true" class="btn">Bekijk alle bestellingen</a></div>
                 <?php else: ?>
